@@ -8,7 +8,7 @@ import android.os.Bundle;
  */
 
 public class LocationListener implements android.location.LocationListener {
-    protected MainActivity mActivity;
+    MainActivity mActivity;
 
     public LocationListener(MainActivity activity) {
         mActivity = activity;
