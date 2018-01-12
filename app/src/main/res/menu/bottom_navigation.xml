@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_time"
+        android:icon="@drawable/icon_nav_time_light_24px"
+        android:title="@string/title_home"
+        android:enabled="true"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/navigation_satl"
+        android:icon="@drawable/icon_nav_satl_light_24px"
+        android:title="@string/title_dashboard"
+        android:enabled="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_serv"
+        android:icon="@drawable/icon_nav_serv_light_24px"
+        android:title="@string/title_notifications"
+        android:enabled="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/icon_nav_info_light_24px"
+        android:title="@string/title_activity_info"
+        android:enabled="true"
+        app:showAsAction="ifRoom" />
+
+</menu>

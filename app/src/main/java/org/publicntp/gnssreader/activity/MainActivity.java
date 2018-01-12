@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.activity;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -9,7 +9,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import org.publicntp.gnssreader.listener.LocationListener;
+import org.publicntp.gnssreader.listener.NmeaMsgListener;
+
 import java.util.concurrent.TimeUnit;
+
+import org.publicntp.gnssreader.R;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 

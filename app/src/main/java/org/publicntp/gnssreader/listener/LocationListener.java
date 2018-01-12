@@ -1,7 +1,9 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.listener;
 
 import android.location.Location;
 import android.os.Bundle;
+
+import org.publicntp.gnssreader.activity.MainActivity;
 
 /**
  * Created by TerryPC on 11/12/2017.
