@@ -5,14 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.publicntp.gnssreader.activity.MainActivity">
+    tools:context="org.publicntp.gnssreader.activity.ServerActivity">
 
     <TextView
-        android:id="@+id/screenOutputId"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/title_home" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

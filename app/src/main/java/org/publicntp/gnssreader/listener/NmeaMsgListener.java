@@ -1,6 +1,8 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.listener;
 
 import android.location.OnNmeaMessageListener;
+
+import org.publicntp.gnssreader.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
