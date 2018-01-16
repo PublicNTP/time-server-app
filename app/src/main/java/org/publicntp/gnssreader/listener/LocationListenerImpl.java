@@ -1,18 +1,17 @@
 package org.publicntp.gnssreader.listener;
 
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 
-import org.publicntp.gnssreader.activity.MainActivity;
+import org.publicntp.gnssreader.ui.MainActivity;
 
-/**
- * Created by TerryPC on 11/12/2017.
- */
 
-public class LocationListener implements android.location.LocationListener {
+public class LocationListenerImpl implements LocationListener {
+
     MainActivity mActivity;
 
-    public LocationListener(MainActivity activity) {
+    public LocationListenerImpl(MainActivity activity) {
         mActivity = activity;
     }
 
@@ -35,6 +34,4 @@ public class LocationListener implements android.location.LocationListener {
     public void onLocationChanged(Location loc) {
         //mActivity.displayMsg("Location changed");
     }
-
-
 }

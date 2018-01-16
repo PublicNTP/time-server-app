@@ -1,20 +1,20 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.model;
 
 import android.location.GnssClock;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by zac on 11/14/17.
- */
-
 public class GpsTime {
+
     public static final TimeZone UTC_TIMEZONE = TimeZone.getTimeZone("UTC");
     public static final Calendar GPS_EPOCH = Calendar.getInstance();
+
     static {
         TimeZone.setDefault(UTC_TIMEZONE);
 
@@ -27,7 +27,9 @@ public class GpsTime {
         GPS_EPOCH.set(Calendar.SECOND, 0);
         GPS_EPOCH.set(Calendar.MILLISECOND, 0);
     }
-    static SimpleDateFormat milliDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS z");
+
+    private static final String MILLI_DATE_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS z";
+
     //public final long nanos;
     //public final long millis;
     //public final long years;
@@ -109,6 +111,18 @@ public class GpsTime {
 
     @Override
     public String toString() {
-        return milliDateFormat.format(date);
+        return newDateFormat(MILLI_DATE_FORMAT).format(date);
+    }
+
+    public static String formatMilliSeconds(Date date) {
+        return newDateFormat(MILLI_DATE_FORMAT).format(date);
+    }
+
+    private static DateFormat newDateFormat(String format, Locale locale) {
+        return new SimpleDateFormat(format, locale);
+    }
+
+    private static DateFormat newDateFormat(String format) {
+        return newDateFormat(format, Locale.US);
     }
 }

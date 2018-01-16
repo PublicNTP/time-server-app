@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.model;
 
 import android.Manifest;
 

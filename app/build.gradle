@@ -1,13 +1,15 @@
+
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "org.publicntp.gnssreader"
 
-        minSdkVersion 24
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
 
         versionCode 1
         versionName "1.0"
@@ -17,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,16 +31,21 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '26.1.0'
+    butterknifeVersion = '8.8.1'
 }
 
 dependencies {
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
-    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    implementation "com.android.support:support-v4:${supportLibraryVersion}"
-    implementation "com.android.support:design:${supportLibraryVersion}"
+    // Uncomment if a need for local libraries arises.
+    //implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
+
+    implementation "com.jakewharton:butterknife:${butterknifeVersion}"
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

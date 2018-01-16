@@ -1,14 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
-        
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +20,20 @@ allprojects {
         google()
         jcenter()
     }
+}
+
+ext {
+    // As of 15 Jan 2018 KikKat (API19) is still on 13% of active devices
+    // and Marshmallow (API23) is the most popular with 29% and Oreo (API26)
+    // has very low presence at <1% of active devices.
+    //
+    // Refer to https://developer.android.com/about/dashboards/index.html
+
+    minSdkVersion = 24
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+
+    supportLibraryVersion = '27.0.2'
 }
 
 task clean(type: Delete) {

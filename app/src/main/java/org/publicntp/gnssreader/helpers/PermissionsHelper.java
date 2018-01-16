@@ -1,12 +1,14 @@
-package org.publicntp.gnssreader;
+package org.publicntp.gnssreader.helpers;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
+import org.publicntp.gnssreader.model.Permission;
+
 public class PermissionsHelper {
+
     public static boolean permissionIsGranted(Activity activity, Permission permission) {
         return ContextCompat.checkSelfPermission(activity, permission.getAndroidPermissionName()) != PackageManager.PERMISSION_GRANTED;
     }

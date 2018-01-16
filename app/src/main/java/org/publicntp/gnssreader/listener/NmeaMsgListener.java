@@ -2,17 +2,16 @@ package org.publicntp.gnssreader.listener;
 
 import android.location.OnNmeaMessageListener;
 
-import org.publicntp.gnssreader.activity.MainActivity;
+
+import org.publicntp.gnssreader.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by TerryPC on 11/12/2017.
- */
 
 public class NmeaMsgListener implements OnNmeaMessageListener {
+
     MainActivity mMainActivity;
     List<String> mNmeaCmdsSeen;
 

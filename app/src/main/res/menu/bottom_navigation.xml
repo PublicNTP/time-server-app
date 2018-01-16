@@ -3,30 +3,30 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/navigation_time"
+        android:id="@+id/action_time"
         android:icon="@drawable/icon_nav_time_light_24px"
-        android:title="@string/title_home"
+        android:title="@string/title_action_time"
         android:enabled="true"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/navigation_satl"
+        android:id="@+id/action_satl"
         android:icon="@drawable/icon_nav_satl_light_24px"
-        android:title="@string/title_dashboard"
+        android:title="@string/title_action_satl"
         android:enabled="true"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/navigation_serv"
+        android:id="@+id/action_serv"
         android:icon="@drawable/icon_nav_serv_light_24px"
-        android:title="@string/title_notifications"
+        android:title="@string/title_action_serv"
         android:enabled="true"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/navigation_info"
+        android:id="@+id/action_info"
         android:icon="@drawable/icon_nav_info_light_24px"
-        android:title="@string/title_activity_info"
+        android:title="@string/title_action_info"
         android:enabled="true"
         app:showAsAction="ifRoom" />
 

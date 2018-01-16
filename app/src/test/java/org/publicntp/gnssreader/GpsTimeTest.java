@@ -1,8 +1,7 @@
 package org.publicntp.gnssreader;
 
-import android.location.GnssClock;
-
 import org.junit.Test;
+import org.publicntp.gnssreader.model.GpsTime;
 
 import java.util.Date;
 
