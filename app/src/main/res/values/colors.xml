@@ -2,7 +2,7 @@
 <resources>
 
     <color name="accent">#67a2c5</color>
-    <color name="primary">#A1A1A1</color>
+    <color name="primary">#a1a1a1</color>
     <color name="primary_dark">#333333</color>
     <!--<color name="muted"></color>-->
 

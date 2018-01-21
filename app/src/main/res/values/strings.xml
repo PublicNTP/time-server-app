@@ -3,15 +3,10 @@
     <!-- App Info Strings -->
     <string name="app_name">GNSSReader</string>
 
-    <!-- Developer Info Strings -->
-    <string name="developer_name">Rooster Glue, Inc.</string>
-    <string name="developer_url">https://roosterglue.com</string>
+    <!-- Time Fragment Strings -->
+    <string name="time_image_logo_desc">PublicNTP Logo</string>
 
-    <!-- Organization Info Strings -->
-    <string name="organization_name">PublicNTP</string>
-    <string name="organization_url">https://publicntp.org/</string>
-
-    <!-- Info Fragment Strings-->
+    <!-- Info Fragment Strings -->
     <string name="info_btn_website_label">Website</string>
     <string name="info_btn_contact_label">Contact</string>
     <string name="info_text_title">About</string>
@@ -26,5 +21,12 @@
     <string name="title_action_serv">Server</string>
     <string name="title_action_time">Time</string>
 
+    <!-- Option Strings -->
+    <string name="chooser_app_email">Send email with …</string>
+    <string name="chooser_app_weburl">Open Url with …</string>
+
+    <!-- Error Strings -->
+    <string name="error_email_client_not_found">There are no email clients installed.</string>
+    <string name="error_web_browser_not_found">There are no web browsers installed.</string>
 
 </resources>

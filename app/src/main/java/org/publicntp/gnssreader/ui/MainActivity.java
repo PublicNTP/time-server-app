@@ -1,34 +1,26 @@
 package org.publicntp.gnssreader.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.GnssClock;
-import android.location.GnssMeasurementsEvent;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.OnNmeaMessageListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.BottomNavigationView;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helpers.PermissionsHelper;
 import org.publicntp.gnssreader.listener.LocationListenerImpl;
-import org.publicntp.gnssreader.model.GpsTime;
-import org.publicntp.gnssreader.model.Permission;
 
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
@@ -76,14 +68,14 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment_container, selectedFragment);
                     transaction.commit();
                     return true;
                 });
 
         //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, TimeFragment.newInstance());
         transaction.commit();
 
@@ -177,33 +169,33 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
-    public static String gnssClockSummary(GnssClock gnssClock) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(timeForNanos("Full Bias Nanos", gnssClock.getFullBiasNanos()));
-        stringBuilder.append(timeForNanos("Time Nanos", gnssClock.getTimeNanos()));
-        stringBuilder.append(timeForNanos("Bias Nanos", (long) gnssClock.getBiasNanos()));
-        return stringBuilder.toString();
-    }
+//    public static String gnssClockSummary(GnssClock gnssClock) {
+//        StringBuilder stringBuilder = new StringBuilder();
+//        stringBuilder.append(timeForNanos("Full Bias Nanos", gnssClock.getFullBiasNanos()));
+//        stringBuilder.append(timeForNanos("Time Nanos", gnssClock.getTimeNanos()));
+//        stringBuilder.append(timeForNanos("Bias Nanos", (long) gnssClock.getBiasNanos()));
+//        return stringBuilder.toString();
+//    }
 
-    public static String timeForNanos(String label, long nanos) {
-        long years = TimeUnit.NANOSECONDS.toDays(nanos) / 365;
-        long days = TimeUnit.NANOSECONDS.toDays(nanos) - years * 365;
-        long hours = TimeUnit.NANOSECONDS.toHours(nanos) - days * 24;
-        long minutes = TimeUnit.NANOSECONDS.toMinutes(nanos) - hours * 60;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(nanos) - minutes * 60;
-
-        return String.format("%s: %d years, %d days, %d hours, %d minutes, %d seconds\n", label, years, days, hours, minutes, seconds);
-    }
+//    public static String timeForNanos(String label, long nanos) {
+//        long years = TimeUnit.NANOSECONDS.toDays(nanos) / 365;
+//        long days = TimeUnit.NANOSECONDS.toDays(nanos) - years * 365;
+//        long hours = TimeUnit.NANOSECONDS.toHours(nanos) - days * 24;
+//        long minutes = TimeUnit.NANOSECONDS.toMinutes(nanos) - hours * 60;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(nanos) - minutes * 60;
+//
+//        return String.format("%s: %d years, %d days, %d hours, %d minutes, %d seconds\n", label, years, days, hours, minutes, seconds);
+//    }
 
     @Override
     public void onPause() {
-        updateTimer.cancel();
+        //updateTimer.cancel();
         super.onPause();
     }
 
-//    @Override
-//    public void onResume() {
+    @Override
+    public void onResume() {
 //        initializeTimeUpdates();
-//        super.onResume();
-//    }
+        super.onResume();
+    }
 }

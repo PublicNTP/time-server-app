@@ -1,25 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="org.publicntp.gnssreader.ui.TimeFragment">
 
-    <ImageView
-        android:id="@+id/truiton_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/time_layout_logo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/truiton_image"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Time Fragment"
-        android:textSize="30sp"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/time_image_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:contentDescription="@string/time_image_logo_desc"
+            android:src="@drawable/icon_publicntp_logo" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_layout_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_layout_logo">
+
+        <TextView
+            android:id="@+id/time_text_time_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="0dp"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/primary_dark"
+            android:textSize="56sp"
+            android:text="00:00:00" />
+
+        <TextView
+            android:id="@+id/time_text_time_zone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="0dp"
+            android:layout_alignBaseline="@+id/time_text_time_display"
+            android:layout_alignBottom="@+id/time_text_time_display"
+            android:layout_toEndOf="@+id/time_text_time_display"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/primary_dark"
+            android:textSize="20sp"
+            android:text="UTC" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_layout_offset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_layout_time">
+
+        <TextView
+            android:id="@+id/time_text_offset_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="0dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/primary"
+            android:textSize="45sp"
+            android:text="±0.003"/>
+
+        <TextView
+            android:id="@+id/time_text_offset_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="0dp"
+            android:layout_alignBaseline="@+id/time_text_offset_display"
+            android:layout_alignBottom="@+id/time_text_offset_display"
+            android:layout_toEndOf="@+id/time_text_offset_display"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:text="sec" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_layout_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_layout_offset">
+
+        <TextView
+            android:id="@+id/time_text_latitude_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="0dp"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/primary_dark"
+            android:textSize="56sp"
+            android:text="56.1234° N"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_layout_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_layout_latitude">
+
+        <TextView
+            android:id="@+id/time_text_longitude_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="0dp"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/primary_dark"
+            android:textSize="56sp"
+            android:text="122.1234° W"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/time_layout_accuracy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_layout_longitude">
+
+        <TextView
+            android:id="@+id/time_text_accuracy_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="0dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/primary"
+            android:textSize="45sp"
+            android:text="±2.93"/>
+
+        <TextView
+            android:id="@+id/time_text_accuracy_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="0dp"
+            android:layout_alignBaseline="@+id/time_text_accuracy_display"
+            android:layout_alignBottom="@+id/time_text_accuracy_display"
+            android:layout_toEndOf="@+id/time_text_accuracy_display"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:text="ft" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

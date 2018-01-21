@@ -29,7 +29,7 @@ ext {
     //
     // Refer to https://developer.android.com/about/dashboards/index.html
 
-    minSdkVersion = 24
+    minSdkVersion = 19
     targetSdkVersion = 27
     compileSdkVersion = 27
 

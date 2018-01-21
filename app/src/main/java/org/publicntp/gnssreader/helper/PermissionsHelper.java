@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helpers;
+package org.publicntp.gnssreader.helper;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
