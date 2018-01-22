@@ -13,9 +13,9 @@ public class TimeViewModel extends ViewModel {
     private TimeAndLocation timeAndLocation;
     private TimeAndLocationRepository repository;
 
-    public TimeViewModel(Context context) {
-        repository = new TimeAndLocationRepository(context);
-    }
+//    public TimeViewModel(Context context) {
+//        repository = new TimeAndLocationRepository(context);
+//    }
 
     public TimeAndLocation getTimeAndLocation() {
 

@@ -36,8 +36,8 @@ public class TimeFragment extends BaseFragment {
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel.class);
 
-        TextView textLatitude = getView().findViewById(R.id.time_text_latitude_display);
-        TextView textLongitude = getView().findViewById(R.id.time_text_longitude_display);
+//        TextView textLatitude = getView().findViewById(R.id.time_text_latitude_display);
+//        TextView textLongitude = getView().findViewById(R.id.time_text_longitude_display);
 
 //        if (viewModel != null) {
 //            viewModel.init();
