@@ -1,25 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
     tools:context="org.publicntp.gnssreader.ui.SatelliteFragment">
 
-    <ImageView
-        android:id="@+id/truiton_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/satellite_layout_count"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/truiton_image"
-        android:layout_centerHorizontal="true"
-        android:text="Satellite Fragment"
-        android:textSize="30sp"/>
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
+
+
+        <!--<TextView-->
+            <!--android:id="@+id/"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+
+    </RelativeLayout>
+
+    <com.github.mikephil.charting.charts.RadarChart
+        android:id="@+id/satellite_graph_radial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/satellite_layout_count" />
+
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/satellite_graph_signal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/satellite_graph_radial"/>
+
 
 </android.support.constraint.ConstraintLayout>

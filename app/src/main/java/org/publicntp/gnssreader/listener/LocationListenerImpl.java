@@ -1,13 +1,15 @@
 package org.publicntp.gnssreader.listener;
 
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.OnNmeaMessageListener;
 import android.os.Bundle;
 
 import org.publicntp.gnssreader.ui.MainActivity;
 
 
-public class LocationListenerImpl implements LocationListener {
+public class LocationListenerImpl implements LocationListener, GpsStatus.Listener, GpsStatus.NmeaListener {
 
     MainActivity mActivity;
 
@@ -33,5 +35,17 @@ public class LocationListenerImpl implements LocationListener {
     @Override
     public void onLocationChanged(Location loc) {
         //mActivity.displayMsg("Location changed");
+    }
+
+    @Override
+    public void onGpsStatusChanged(int event) {
+
+    }
+
+    @Override
+    public void onNmeaReceived(long timestamp, String nmeaSentence) {
+
+
+
     }
 }

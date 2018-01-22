@@ -45,7 +45,7 @@ public class NmeaMsgListener implements OnNmeaMessageListener {
                 displayString += mNmeaCmdsSeen.get(i) + "\n";
             }
 
-            mMainActivity.displayMsg(displayString);
+//            mMainActivity.displayMsg(displayString);
         }
     }
 

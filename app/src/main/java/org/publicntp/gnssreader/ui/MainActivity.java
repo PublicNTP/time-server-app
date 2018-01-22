@@ -1,13 +1,12 @@
 package org.publicntp.gnssreader.ui;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
 import android.support.v4.app.Fragment;
@@ -22,6 +21,7 @@ import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,41 +38,74 @@ public class MainActivity extends AppCompatActivity {
 //    @BindView(R.id.nmea_time) TextView mNMEATime;
 //    @BindView(R.id.time_difference) TextView mTimeDifference;
 
-    @SuppressLint("MissingPermission")
     @Override
+    @SuppressLint("MissingPermission")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initializeBottomNavigation();
 
-        mLocationListener = new LocationListenerImpl(this);
+        //mLocationListener = new LocationListenerImpl(this);
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_FINE_LOCATION:
 
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Timber.i("response for permissions check contains: granted");
+                } else {
+                    Timber.i("response for permissions check contains: denied");
+                }
 
+                break;
+
+            default:
+                Timber.w("unknown permissions type");
+                break;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        //updateTimer.cancel();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+//        initializeTimeUpdates();
+        super.onResume();
+    }
+
+    private void initializeBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener( item -> {
-                    Fragment selectedFragment;
-                    switch (item.getItemId()) {
-                        case R.id.action_info:
-                            selectedFragment = InfoFragment.newInstance();
-                            break;
-                        case R.id.action_serv:
-                            selectedFragment = ServerFragment.newInstance();
-                            break;
-                        case R.id.action_satl:
-                            selectedFragment = SatelliteFragment.newInstance();
-                            break;
-                        default:
-                            selectedFragment = TimeFragment.newInstance();
-                            break;
-                    }
+            Fragment selectedFragment;
+            switch (item.getItemId()) {
+                case R.id.action_info:
+                    selectedFragment = InfoFragment.newInstance();
+                    break;
+                case R.id.action_serv:
+                    selectedFragment = ServerFragment.newInstance();
+                    break;
+                case R.id.action_satl:
+                    selectedFragment = SatelliteFragment.newInstance();
+                    break;
+                default:
+                    selectedFragment = TimeFragment.newInstance();
+                    break;
+            }
 
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, selectedFragment);
-                    transaction.commit();
-                    return true;
-                });
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, selectedFragment);
+            transaction.commit();
+            return true;
+        });
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -84,30 +117,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        switch (requestCode) {
-//            case PERMISSIONS_REQUEST_FINE_LOCATION: {
-//                mDisplayWindow.setText("Got response back for permissions check");
-//
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    mDisplayWindow.setText("Permission Granted!");
-//                } else {
-//                    mDisplayWindow.setText("Permission Denied!");
-//                }
-//
-//                break;
-//            }
-//            default: {
-//                mDisplayWindow.setText("Unknown permissions type");
-//                break;
-//            }
-//        }
-//    }
 
-    public void displayMsg(String msg) {
+
+
+
+
+
+
+
+
+
+//    public void displayMsg(String msg) {
 //        mDisplayWindow.setText(msg);
-    }
+//    }
 
 //    @SuppressLint("MissingPermission")
 //    public void initializeTimeUpdates() {
@@ -186,16 +208,4 @@ public class MainActivity extends AppCompatActivity {
 //
 //        return String.format("%s: %d years, %d days, %d hours, %d minutes, %d seconds\n", label, years, days, hours, minutes, seconds);
 //    }
-
-    @Override
-    public void onPause() {
-        //updateTimer.cancel();
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-//        initializeTimeUpdates();
-        super.onResume();
-    }
 }
