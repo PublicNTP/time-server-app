@@ -46,23 +46,23 @@ public class GNSSMessageService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.e(TAG, "onLocationChanged: " + location);
+//            Log.e(TAG, "onLocationChanged: " + location);
             location.set(location);
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            Log.e(TAG, "onProviderDisabled: " + provider);
+//            Log.e(TAG, "onProviderDisabled: " + provider);
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-            Log.e(TAG, "onProviderEnabled: " + provider);
+//            Log.e(TAG, "onProviderEnabled: " + provider);
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.e(TAG, "onStatusChanged: " + provider);
+//            Log.e(TAG, "onStatusChanged: " + provider);
         }
     }
 
@@ -80,7 +80,7 @@ public class GNSSMessageService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        Log.e(TAG, "onStartCommand");
+//        Log.e(TAG, "onStartCommand");
 
         return START_STICKY;
     }
@@ -88,39 +88,39 @@ public class GNSSMessageService extends Service {
     @Override
     public void onCreate() {
 
-        Log.e(TAG, "onCreate");
-        initializeLocationManager();
-
-        try {
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
-                    locationListeners[1]);
-
-        } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
-
-        } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
-        }
-
-        try {
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
-                    locationListeners[0]);
-
-        } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
-
-        } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
-        }
+//        Log.e(TAG, "onCreate");
+//        initializeLocationManager();
+//
+//        try {
+//            locationManager.requestLocationUpdates(
+//                    LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+//                    locationListeners[1]);
+//
+//        } catch (java.lang.SecurityException ex) {
+//            Log.i(TAG, "fail to request location update, ignore", ex);
+//
+//        } catch (IllegalArgumentException ex) {
+//            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+//        }
+//
+//        try {
+//            locationManager.requestLocationUpdates(
+//                    LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+//                    locationListeners[0]);
+//
+//        } catch (java.lang.SecurityException ex) {
+//            Log.i(TAG, "fail to request location update, ignore", ex);
+//
+//        } catch (IllegalArgumentException ex) {
+//            Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+//        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        Log.e(TAG, "onDestroy");
+//        Log.e(TAG, "onDestroy");
 
         if (locationManager != null) {
             for (int i = 0; i < locationListeners.length; i++) {
@@ -128,7 +128,7 @@ public class GNSSMessageService extends Service {
                     locationManager.removeUpdates(locationListeners[i]);
 
                 } catch (Exception ex) {
-                    Log.i(TAG, "fail to remove location listners, ignore", ex);
+//                    Log.i(TAG, "fail to remove location listners, ignore", ex);
                 }
             }
         }
@@ -140,42 +140,40 @@ public class GNSSMessageService extends Service {
 
     private void initializeLocationManager() {
         Timber.e("initializeLocationManager");
-        if (locationManager == null) {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locationManager.registerGnssMeasurementsCallback(new GnssMeasurementsEvent.Callback() {
-                    @Override
-                    public void onGnssMeasurementsReceived(GnssMeasurementsEvent eventArgs) {
-                        final Collection<GnssMeasurement> measurements = eventArgs.getMeasurements();
-
-                        handler.post(() -> {
-                            timeAndLocation = TimeAndLocation.newInstance(measurements);
-                            // TODO: Add logging here
-
+//        if (locationManager == null) {
+//            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//
+//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                // TODO: Consider calling
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//                return;
+//            }
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                locationManager.registerGnssMeasurementsCallback(new GnssMeasurementsEvent.Callback() {
+//                    @Override
+//                    public void onGnssMeasurementsReceived(GnssMeasurementsEvent eventArgs) {
+//                        final Collection<GnssMeasurement> measurements = eventArgs.getMeasurements();
+//
+//                        handler.post(() -> {
+//                            timeAndLocation = TimeAndLocation.newInstance(measurements);
+//                            // TODO: Add logging here
+//
 //                            GpsTime gpsTime = new GpsTime(gnssClock);
 //                            Date gpsDate = gpsTime.getDate();
 //                            Date deviceDate = new Date();
 //                            mDeviceTime.setText(GpsTime.formatMilliSeconds(deviceDate));
 //                            mGpsTime.setText(GpsTime.formatMilliSeconds(gpsDate));
 //                            mTimeDifference.setText(String.format("%d millis", gpsDate.getTime() - deviceDate.getTime()));
-                        });
-                    }
-                });
-            }
-
-
-        }
+//                        });
+//                    }
+//                });
+//            }
+//        }
     }
 }

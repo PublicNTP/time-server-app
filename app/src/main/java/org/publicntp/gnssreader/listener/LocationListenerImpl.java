@@ -9,43 +9,44 @@ import android.os.Bundle;
 import org.publicntp.gnssreader.ui.MainActivity;
 
 
-public class LocationListenerImpl implements LocationListener, GpsStatus.Listener, GpsStatus.NmeaListener {
+public class LocationListenerImpl // implements LocationListener
+{
 
-    MainActivity mActivity;
+//    MainActivity mActivity;
+//
+//    public LocationListenerImpl(MainActivity activity) {
+//        mActivity = activity;
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String s) {
+//        //mActivity.displayMsg( "Provider enabled: " + s);
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String s) {
+//        //mActivity.displayMsg( "Provider disabled: " + s );
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String s, int i, Bundle bundle) {
+//        //mActivity.displayMsg( "Status changed: " + s);
+//    }
+//
+//    @Override
+//    public void onLocationChanged(Location loc) {
+//        //mActivity.displayMsg("Location changed");
+//    }
 
-    public LocationListenerImpl(MainActivity activity) {
-        mActivity = activity;
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-        //mActivity.displayMsg( "Provider enabled: " + s);
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        //mActivity.displayMsg( "Provider disabled: " + s );
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-        //mActivity.displayMsg( "Status changed: " + s);
-    }
-
-    @Override
-    public void onLocationChanged(Location loc) {
-        //mActivity.displayMsg("Location changed");
-    }
-
-    @Override
-    public void onGpsStatusChanged(int event) {
-
-    }
-
-    @Override
-    public void onNmeaReceived(long timestamp, String nmeaSentence) {
-
-
-
-    }
+//    @Override
+//    public void onGpsStatusChanged(int event) {
+//
+//    }
+//
+//    @Override
+//    public void onNmeaReceived(long timestamp, String nmeaSentence) {
+//
+//
+//
+//    }
 }
