@@ -25,14 +25,19 @@ allprojects {
 }
 
 ext {
-    // As of 15 Jan 2018 KikKat (API19) is still on 13% of active devices
-    // and Marshmallow (API23) is the most popular with 29% and Oreo (API26)
-    // has very low presence at <1% of active devices.
+    // As of 15 Jan 2018 KikKat (API19) is still on %13 of active devices
+    // and Marshmallow (API23) is the most popular with %29, Nougat (API24)
+    // is fairly popular with %21 and Oreo (API26) has very low presence
+    // at <%1 of active devices.
     //
     // Refer to https://developer.android.com/about/dashboards/index.html
 
-    minSdkVersion = 21
-    targetSdkVersion = 23
+    // This app will not be compatible with devices running an older version
+    // of Android than Nougat (API24) to allow us to build using the new time
+    // and location APIs introduced in that version.
+
+    minSdkVersion = 24
+    targetSdkVersion = 24
     compileSdkVersion = 27
 
     supportLibraryVersion = '27.0.2'
