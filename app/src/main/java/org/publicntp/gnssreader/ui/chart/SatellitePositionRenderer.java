@@ -5,11 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.renderer.LineRadarRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -17,9 +14,9 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public class SatelliteRadialPlotRenderer extends LineRadarRenderer {
+public class SatellitePositionRenderer extends LineRadarRenderer {
 
-    private SatelliteRadialPlotChart mChart;
+    private SatellitePositionChart mChart;
 
     private Paint mRadialGridPaint;
     private Paint mHighlightCirclePaint;
@@ -28,9 +25,9 @@ public class SatelliteRadialPlotRenderer extends LineRadarRenderer {
     private Path mDrawHighlightCirclePathBuffer = new Path();
 
 
-    SatelliteRadialPlotRenderer(SatelliteRadialPlotChart chart,
-                                ChartAnimator animator,
-                                ViewPortHandler viewPortHandler) {
+    SatellitePositionRenderer(SatellitePositionChart chart,
+                              ChartAnimator animator,
+                              ViewPortHandler viewPortHandler) {
 
         super(animator, viewPortHandler);
 

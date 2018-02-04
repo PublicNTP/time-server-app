@@ -1,8 +1,10 @@
 package org.publicntp.gnssreader.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +15,19 @@ import org.publicntp.gnssreader.ui.chart.ISatelliteDataSet;
 import org.publicntp.gnssreader.ui.chart.SatelliteData;
 import org.publicntp.gnssreader.ui.chart.SatelliteDataSet;
 import org.publicntp.gnssreader.ui.chart.SatelliteEntry;
-import org.publicntp.gnssreader.ui.chart.SatelliteMarkerView;
 import org.publicntp.gnssreader.ui.chart.SatellitePointValueFormatter;
-import org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart;
+import org.publicntp.gnssreader.ui.chart.SatellitePositionChart;
 import org.publicntp.gnssreader.ui.chart.SatelliteSignalChart;
 
 
 import android.graphics.Color;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -38,18 +35,32 @@ import java.util.ArrayList;
 
 public class SatelliteFragment extends Fragment {
 
-    private SatelliteRadialPlotChart mPositionChart;
+    private SatelliteViewModel mSatelliteViewModel;
+
+    private SatellitePositionChart mPositionChart;
     private SatelliteSignalChart mSignalChart;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_satellite, container, false);
-
-
-////[ BEGIN Position Chart ]////
-
         mPositionChart = view.findViewById(R.id.satellite_position_radial_chart);
+        mSignalChart = view.findViewById(R.id.satellite_signal_bar_chart);
+
+        mSatelliteViewModel = ViewModelProviders.of(this).get(SatelliteViewModel.class);
+
+        setupSatellitePositionView();
+        setupSatelliteSignalView();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    private void setupSatellitePositionView() {
         mPositionChart.setBackgroundColor(Color.WHITE);
 
         mPositionChart.getDescription().setEnabled(false);
@@ -98,12 +109,9 @@ public class SatelliteFragment extends Fragment {
 //        l.setXEntrySpace(7f);
 //        l.setYEntrySpace(5f);
 //        l.setTextColor(Color.BLACK);
+    }
 
-////[ BEGIN Signal Quality Chart ]////
-
-        mSignalChart = view.findViewById(R.id.satellite_signal_bar_chart);
-//        mSignalChart.setOnChartValueSelectedListener(this);
-
+    private void setupSatelliteSignalView() {
         mSignalChart.setDrawBarShadow(false);
         mSignalChart.setDrawValueAboveBar(true);
 
@@ -164,11 +172,9 @@ public class SatelliteFragment extends Fragment {
 //        mSignalChart.setMarker(mv); // Set the marker to the chart
 
         setSignalData(12, 50);
-
-        return view;
     }
 
-    public void setPositionData() {
+    private void setPositionData() {
 
         float min = 1;
         int count = 10;

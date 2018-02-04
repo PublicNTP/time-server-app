@@ -14,7 +14,7 @@ import org.publicntp.gnssreader.ui.renderer.SatelliteRadialPlotXAxisRenderer;
 import org.publicntp.gnssreader.ui.renderer.SatelliteRadialPlotYAxisRenderer;
 
 
-public class SatelliteRadialPlotChart extends PieRadarChartBase<SatelliteData> {
+public class SatellitePositionChart extends PieRadarChartBase<SatelliteData> {
 
     /**
      * width of the main web lines
@@ -59,15 +59,15 @@ public class SatelliteRadialPlotChart extends PieRadarChartBase<SatelliteData> {
     protected SatelliteRadialPlotYAxisRenderer mYAxisRenderer;
     protected SatelliteRadialPlotXAxisRenderer mXAxisRenderer;
 
-    public SatelliteRadialPlotChart(Context context) {
+    public SatellitePositionChart(Context context) {
         super(context);
     }
 
-    public SatelliteRadialPlotChart(Context context, AttributeSet attrs) {
+    public SatellitePositionChart(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SatelliteRadialPlotChart(Context context, AttributeSet attrs, int defStyle) {
+    public SatellitePositionChart(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -80,7 +80,7 @@ public class SatelliteRadialPlotChart extends PieRadarChartBase<SatelliteData> {
         mWebLineWidth = Utils.convertDpToPixel(1.5f);
         mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
 
-        mRenderer = new SatelliteRadialPlotRenderer(this, mAnimator, mViewPortHandler);
+        mRenderer = new SatellitePositionRenderer(this, mAnimator, mViewPortHandler);
         mYAxisRenderer = new SatelliteRadialPlotYAxisRenderer(mViewPortHandler, mYAxis, this);
         mXAxisRenderer = new SatelliteRadialPlotXAxisRenderer(mViewPortHandler, mXAxis, this);
 

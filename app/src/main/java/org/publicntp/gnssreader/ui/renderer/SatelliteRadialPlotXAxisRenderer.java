@@ -8,16 +8,16 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart;
+import org.publicntp.gnssreader.ui.chart.SatellitePositionChart;
 
 
 public class SatelliteRadialPlotXAxisRenderer extends XAxisRenderer {
 
-    private SatelliteRadialPlotChart mChart;
+    private SatellitePositionChart mChart;
 
     public SatelliteRadialPlotXAxisRenderer(
             ViewPortHandler viewPortHandler,
-            XAxis xAxis, SatelliteRadialPlotChart chart) {
+            XAxis xAxis, SatellitePositionChart chart) {
 
         super(viewPortHandler, xAxis, null);
 

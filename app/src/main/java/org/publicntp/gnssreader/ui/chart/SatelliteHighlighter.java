@@ -10,9 +10,9 @@ import com.github.mikephil.charting.utils.Utils;
 import java.util.List;
 
 
-public class SatelliteHighlighter extends PieRadarHighlighter<SatelliteRadialPlotChart> {
+public class SatelliteHighlighter extends PieRadarHighlighter<SatellitePositionChart> {
 
-    public SatelliteHighlighter(SatelliteRadialPlotChart chart) {
+    public SatelliteHighlighter(SatellitePositionChart chart) {
         super(chart);
     }
 

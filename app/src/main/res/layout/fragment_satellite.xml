@@ -29,7 +29,7 @@
 
     </RelativeLayout>
 
-    <org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart
+    <org.publicntp.gnssreader.ui.chart.SatellitePositionChart
         android:id="@+id/satellite_position_radial_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"

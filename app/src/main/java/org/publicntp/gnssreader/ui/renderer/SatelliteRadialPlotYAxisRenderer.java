@@ -10,17 +10,17 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart;
+import org.publicntp.gnssreader.ui.chart.SatellitePositionChart;
 
 import java.util.List;
 
 public class SatelliteRadialPlotYAxisRenderer extends YAxisRenderer {
 
-    private SatelliteRadialPlotChart mChart;
+    private SatellitePositionChart mChart;
 
     public SatelliteRadialPlotYAxisRenderer(
             ViewPortHandler viewPortHandler,
-            YAxis yAxis, SatelliteRadialPlotChart chart) {
+            YAxis yAxis, SatellitePositionChart chart) {
 
         super(viewPortHandler, yAxis, null);
 
