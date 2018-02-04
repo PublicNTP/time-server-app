@@ -1,61 +1,31 @@
 package org.publicntp.gnssreader.ui;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.ui.chart.ISatalliteDataSet;
+import org.publicntp.gnssreader.ui.chart.ISatelliteDataSet;
 import org.publicntp.gnssreader.ui.chart.SatelliteData;
 import org.publicntp.gnssreader.ui.chart.SatelliteDataSet;
 import org.publicntp.gnssreader.ui.chart.SatelliteEntry;
 import org.publicntp.gnssreader.ui.chart.SatelliteMarkerView;
+import org.publicntp.gnssreader.ui.chart.SatellitePointValueFormatter;
 import org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart;
-
-//public class SatelliteFragment extends Fragment {
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
-//
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_satellite, container, false);
-//    }
-//
-//    public static SatelliteFragment newInstance() {
-//        return new SatelliteFragment();
-//    }
-//}
-
-
-
 
 
 import android.graphics.Color;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 
 import java.util.ArrayList;
 
@@ -81,9 +51,9 @@ public class SatelliteFragment extends Fragment {
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        MarkerView mv = new SatelliteMarkerView(this.getContext(), R.layout.markerview_satellite);
-        mv.setChartView(mChart); // For bounds control
-        mChart.setMarker(mv); // Set the marker to the chart
+//        MarkerView mv = new SatelliteMarkerView(this.getContext(), R.layout.markerview_satellite);
+//        mv.setChartView(mChart); // For bounds control
+//        mChart.setMarker(mv); // Set the marker to the chart
 
         setData();
 
@@ -93,30 +63,23 @@ public class SatelliteFragment extends Fragment {
 //                Easing.EasingOption.EaseInOutQuad);
 
         XAxis xAxis = mChart.getXAxis();
-        xAxis.setTextSize(9f);
-        xAxis.setYOffset(0f);
-        xAxis.setXOffset(0f);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-
-            private String[] mActivities = new String[]{"0", "45", "90", "135", "180", "225", "270", "315"};
-
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return mActivities[(int) value % mActivities.length];
-            }
-        });
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawLabels(false);
+//        xAxis.setValueFormatter(new IAxisValueFormatter() {
+//
+//            private String[] mActivities = new String[] {
+//                    "0", "45", "90", "135", "180", "225", "270", "315"};
+//
+//            @Override
+//            public String getFormattedValue(float value, AxisBase axis) {
+//                return mActivities[(int) value % mActivities.length];
+//            }
+//        });
 
         YAxis yAxis = mChart.getYAxis();
-        yAxis.setLabelCount(8, false);
-        yAxis.setTextSize(9f);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
         yAxis.setDrawLabels(false);
 
-
-        mChart.getLegend().setEnabled(false);
-
+        Legend l = mChart.getLegend();
+        l.setEnabled(false);
 //        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
 //        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
 //        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
@@ -130,38 +93,66 @@ public class SatelliteFragment extends Fragment {
 
     public void setData() {
 
-        float mult = 80;
-        float min = 20;
-        int cnt = 5;
+        float min = 1;
+        int count = 10;
 
-        ArrayList<SatelliteEntry> entries1 = new ArrayList<>();
+        ArrayList<SatelliteEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for (int i = 0; i < cnt; i++) {
-            float val1 = (float) (Math.random() * mult) + min;
-            entries1.add(new SatelliteEntry(val1));
+        for (int i = 0; i < count; i++) {
+            int prnNumber = (int) (Math.random() * 99) + 1;
+            float azimuth = (float) (Math.random() * 359) + min;
+            float elevation = (float) (Math.random() * 90) + min;
+            short signalQuality = (short) (Math.random() * 99);
+            boolean usedInFix = (((int) (Math.random() * 10) % 2) == 0);
+
+            SatelliteEntry entry = new SatelliteEntry(prnNumber,elevation,azimuth,signalQuality,usedInFix);
+            entry.setIcon(getEntryShape(entry.getIsUsedInFix(), entry.getSignalQuality()));
+            entries.add(entry);
         }
 
-        SatelliteDataSet set1 = new SatelliteDataSet(entries1, "Last Week");
-        set1.setColor(Color.rgb(103, 110, 129));
-        set1.setFillColor(Color.rgb(103, 110, 129));
-        set1.setDrawFilled(false);
-        set1.setFillAlpha(180);
-        set1.setLineWidth(0f);
-        set1.setDrawHighlightCircleEnabled(true);
-        set1.setDrawHighlightIndicators(true);
+        SatelliteDataSet set = new SatelliteDataSet(entries, "");
+        set.setColor(Color.rgb(103, 110, 129));
+        set.setFillColor(Color.rgb(103, 110, 129));
+        set.setFillAlpha(180);
+        set.setLineWidth(0f);
+        set.setDrawIcons(true);
 
-        ArrayList<ISatalliteDataSet> sets = new ArrayList<>();
-        sets.add(set1);
+        set.setDrawFilled(false);
+        set.setDrawHighlightCircleEnabled(false);
+        set.setDrawHighlightIndicators(false);
+        //set.setValueFormatter(new SatellitePointValueFormatter(0));
+
+        ArrayList<ISatelliteDataSet> sets = new ArrayList<>();
+        sets.add(set);
 
         SatelliteData data = new SatelliteData(sets);
         data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
+        data.setDrawValues(true);
+        data.setValueTextColor(Color.BLACK);
 
+        mChart.setRotationEnabled(false);
         mChart.setData(data);
         mChart.invalidate();
+    }
+
+    private Drawable getEntryShape(boolean usedInFix, short signalQuality) {
+
+        final int UNTRACKED_ALPHA = 50;
+
+        Drawable shape;
+
+        if (usedInFix) {
+            shape = getResources().getDrawable(R.drawable.ic_fixed_black_24dp, null);
+            shape.setAlpha((signalQuality * 2) + UNTRACKED_ALPHA);
+        }
+        else {
+            shape = getResources().getDrawable(R.drawable.ic_unfixed_black_24dp, null);
+            shape.setAlpha(UNTRACKED_ALPHA);
+        }
+
+        return shape;
     }
 
     public static SatelliteFragment newInstance() {

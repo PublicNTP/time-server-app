@@ -5,6 +5,9 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
+
+        <item name="android:colorButtonNormal">@color/primary_dark</item>
+
     </style>
 
     <style name="AppTheme.Button.Colored.Large" parent="Widget.AppCompat.Button">
@@ -13,6 +16,12 @@
             causes the button to have square corners in API version < v21.
         -->
         <item name="android:background">@color/primary_dark</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:minHeight">64dip</item>
+        <item name="android:minWidth">64dip</item>
+    </style>
+
+    <style name="AppTheme.Button.Large" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:minHeight">64dip</item>
         <item name="android:minWidth">64dip</item>

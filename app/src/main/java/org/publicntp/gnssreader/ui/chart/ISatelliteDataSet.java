@@ -2,7 +2,7 @@ package org.publicntp.gnssreader.ui.chart;
 
 import com.github.mikephil.charting.interfaces.datasets.ILineRadarDataSet;
 
-public interface ISatalliteDataSet extends ILineRadarDataSet<SatelliteEntry> {
+public interface ISatelliteDataSet extends ILineRadarDataSet<SatelliteEntry> {
 
     /// flag indicating whether highlight circle should be drawn or not
     boolean isDrawHighlightCircleEnabled();

@@ -9,7 +9,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SatelliteDataSet extends LineRadarDataSet<SatelliteEntry> implements ISatalliteDataSet {
+public class SatelliteDataSet extends LineRadarDataSet<SatelliteEntry> implements ISatelliteDataSet {
 
     /// flag indicating whether highlight circle should be drawn or not
     protected boolean mDrawHighlightCircleEnabled = false;

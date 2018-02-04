@@ -10,6 +10,9 @@ import com.github.mikephil.charting.charts.PieRadarChartBase;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.utils.Utils;
 
+import org.publicntp.gnssreader.ui.renderer.SatelliteRadialPlotXAxisRenderer;
+import org.publicntp.gnssreader.ui.renderer.SatelliteRadialPlotYAxisRenderer;
+
 
 public class SatelliteRadialPlotChart extends PieRadarChartBase<SatelliteData> {
 
@@ -348,3 +351,4 @@ public class SatelliteRadialPlotChart extends PieRadarChartBase<SatelliteData> {
         return mYAxis.mAxisRange;
     }
 }
+

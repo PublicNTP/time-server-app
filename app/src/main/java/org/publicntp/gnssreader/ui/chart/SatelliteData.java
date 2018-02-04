@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SatelliteData extends ChartData<ISatalliteDataSet> {
+public class SatelliteData extends ChartData<ISatelliteDataSet> {
 
     private List<String> mLabels;
 
@@ -16,11 +16,11 @@ public class SatelliteData extends ChartData<ISatalliteDataSet> {
         super();
     }
 
-    public SatelliteData(List<ISatalliteDataSet> dataSets) {
+    public SatelliteData(List<ISatelliteDataSet> dataSets) {
         super(dataSets);
     }
 
-    public SatelliteData(ISatalliteDataSet... dataSets) {
+    public SatelliteData(ISatelliteDataSet... dataSets) {
         super(dataSets);
     }
 

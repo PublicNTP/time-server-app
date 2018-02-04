@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.chart;
+package org.publicntp.gnssreader.ui.renderer;
 
 import android.graphics.Canvas;
 
@@ -7,6 +7,8 @@ import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+
+import org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart;
 
 
 public class SatelliteRadialPlotXAxisRenderer extends XAxisRenderer {
