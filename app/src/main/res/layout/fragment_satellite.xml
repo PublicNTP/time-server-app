@@ -30,7 +30,7 @@
     </RelativeLayout>
 
     <org.publicntp.gnssreader.ui.chart.SatelliteRadialPlotChart
-        android:id="@+id/satellite_radial_plot"
+        android:id="@+id/satellite_position_radial_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="0dp"
@@ -42,8 +42,8 @@
         app:layout_constraintTop_toBottomOf="@id/satellite_layout_count"/>
 
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/satellite_snr_bar"
+    <org.publicntp.gnssreader.ui.chart.SatelliteSignalChart
+        android:id="@+id/satellite_signal_bar_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="0dp"
@@ -52,6 +52,6 @@
         app:layout_constraintDimensionRatio="H,3:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/satellite_radial_plot" />
+        app:layout_constraintTop_toBottomOf="@id/satellite_position_radial_chart" />
 
 </android.support.constraint.ConstraintLayout>
