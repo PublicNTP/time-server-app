@@ -21,7 +21,7 @@ public class TimeStorage {
 
     public static long getDateDifference() throws Exception {
         if(nmeaDate == null) throw new Exception("No NMEA Date acquired.");
-        return Math.abs(nmeaDate.getTime() - nmeaAcquiredDate.getTime());
+        return Math.abs(nmeaDate.getTime() - nmeaAcquiredDate.getTime()); // This is the difference between system and Nmea time
     }
 
     public static Date getAdjustedDate() {

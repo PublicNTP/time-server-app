@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
+import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 import org.publicntp.gnssreader.repository.TimeStorageConsumer;
 
 import java.util.Timer;
@@ -59,7 +60,8 @@ public class TimeFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_time, container, false);
-        viewBinding.setTimestorageservice(new TimeStorageConsumer());
+        viewBinding.setTimestorage(new TimeStorageConsumer());
+        viewBinding.setLocationstorage(new LocationStorageConsumer());
         ButterKnife.bind(this, viewBinding.getRoot());
         return viewBinding.getRoot();
     }

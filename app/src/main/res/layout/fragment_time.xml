@@ -6,8 +6,11 @@
     <data>
 
         <variable
-            name="timestorageservice"
+            name="timestorage"
             type="org.publicntp.gnssreader.repository.TimeStorageConsumer" />
+        <variable
+            name="locationstorage"
+            type="org.publicntp.gnssreader.repository.LocationStorageConsumer" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -62,7 +65,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 android:fontFamily="@font/roboto"
-                android:text="@{timestorageservice.getAdjustedDateString(context)}"
+                android:text="@{timestorage.getAdjustedDateString(context)}"
                 android:textColor="@color/primary_dark"
                 android:textSize="45sp"
                 tools:text="00:00:00" />
@@ -102,7 +105,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="@{timestorageservice.getDateDifference()}"
+                android:text="@{timestorage.getDateDifference()}"
                 android:textColor="@color/primary"
                 android:textSize="34sp"
                 tools:text="±0.000" />
@@ -143,7 +146,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 android:fontFamily="@font/roboto"
-                android:text="12.3456° N"
+                android:text="@{locationstorage.stringLatitude}"
                 android:textColor="@color/primary_dark"
                 android:textSize="45sp"
                 tools:text="00.0000° N" />
@@ -168,7 +171,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 android:fontFamily="@font/roboto"
-                android:text="123.1234° W"
+                android:text="@{locationstorage.stringLongitude}"
                 android:textColor="@color/primary_dark"
                 android:textSize="45sp"
                 tools:text="000.0000° W" />
@@ -193,7 +196,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:fontFamily="@font/roboto_light"
-                android:text="±2.93"
+                android:text="@{locationstorage.stringError}"
                 android:textColor="@color/primary"
                 android:textSize="34sp"
                 tools:text="±0.00" />
