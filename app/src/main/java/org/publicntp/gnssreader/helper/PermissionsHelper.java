@@ -10,7 +10,7 @@ import org.publicntp.gnssreader.model.Permission;
 public class PermissionsHelper {
 
     public static boolean permissionIsGranted(Activity activity, Permission permission) {
-        return ContextCompat.checkSelfPermission(activity, permission.getAndroidPermissionName()) != PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(activity, permission.getAndroidPermissionName()) == PackageManager.PERMISSION_GRANTED;
     }
 
     public static Permission requestPermission(Activity activity, Permission permission) {
@@ -31,9 +31,9 @@ public class PermissionsHelper {
                                              @NonNull int[] grantResults) {
         boolean granted = grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-        Permission p = Permission.fromKey(requestCode);
-        p.setPermissionStatus(granted ? Permission.PermissionStatus.GRANTED : Permission.PermissionStatus.DENIED);
-        return p;
+        Permission permission = Permission.fromKey(requestCode);
+        permission.setPermissionStatus(granted ? Permission.PermissionStatus.GRANTED : Permission.PermissionStatus.DENIED);
+        return permission;
     }
 }
 

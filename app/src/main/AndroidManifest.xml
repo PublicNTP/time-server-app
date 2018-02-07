@@ -31,7 +31,6 @@
 
         <service android:name=".service.GNSSMessageService" android:process=":publicntp_gnssservice" />
         <service android:name=".service.NTPServerService" android:process=":publicntp_ntpservice" />
-
     </application>
 
 </manifest>

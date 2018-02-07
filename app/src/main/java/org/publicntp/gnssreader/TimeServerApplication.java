@@ -15,7 +15,6 @@ public class TimeServerApplication extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-
         } else {
             Timber.plant(new CrashReportingTree());
         }

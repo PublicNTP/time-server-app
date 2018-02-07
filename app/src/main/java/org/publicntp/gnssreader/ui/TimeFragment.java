@@ -1,29 +1,35 @@
 package org.publicntp.gnssreader.ui;
 
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
-import org.w3c.dom.Text;
+import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
+import org.publicntp.gnssreader.repository.TimeStorageConsumer;
 
-import javax.inject.Inject;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
-
 
 public class TimeFragment extends BaseFragment {
 
     private TimeViewModel viewModel;
+
+    FragmentTimeBinding viewBinding;
+    Timer invalidationTimer;
+    final int invalidationFrequency = 1;
+
+    @BindView(R.id.time_text_time_display) TextView TimeTextDisplay;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class TimeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel.class);
+
 
 //        TextView textLatitude = getView().findViewById(R.id.time_text_latitude_display);
 //        TextView textLongitude = getView().findViewById(R.id.time_text_longitude_display);
@@ -51,12 +58,29 @@ public class TimeFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_time, container, false);
+        viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_time, container, false);
+        viewBinding.setTimestorageservice(new TimeStorageConsumer());
+        ButterKnife.bind(this, viewBinding.getRoot());
+        return viewBinding.getRoot();
     }
 
     @Override
     public void onResume() {
+        invalidationTimer = new Timer();
+        invalidationTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                viewBinding.invalidateAll();
+            }
+        }, invalidationFrequency, invalidationFrequency);
+
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        invalidationTimer.cancel();
+        super.onPause();
     }
 
     public static TimeFragment newInstance() {

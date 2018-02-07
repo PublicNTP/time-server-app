@@ -1,22 +1,22 @@
 package org.publicntp.gnssreader.listener;
 
+import android.content.Context;
 import android.location.OnNmeaMessageListener;
 
 
-import org.publicntp.gnssreader.ui.MainActivity;
+import org.publicntp.gnssreader.repository.TimeStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
 public class NmeaMsgListener implements OnNmeaMessageListener {
 
-    MainActivity mMainActivity;
     List<String> mNmeaCmdsSeen;
 
-    public NmeaMsgListener(MainActivity activity) {
-        mMainActivity = activity;
+    public NmeaMsgListener(Context context) {
         mNmeaCmdsSeen = new ArrayList<String>();
     }
 
@@ -26,6 +26,8 @@ public class NmeaMsgListener implements OnNmeaMessageListener {
 
         // Parse NMEA message
         NmeaMsg nmeaMsg = new NmeaMsg(message);
+
+        TimeStorage.setNmeaDate(new Date(timestamp));
 
         boolean cmdSeen = false;
         for (int i = 0; i < mNmeaCmdsSeen.size(); ++i) {

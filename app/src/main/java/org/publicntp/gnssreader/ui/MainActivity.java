@@ -2,6 +2,7 @@ package org.publicntp.gnssreader.ui;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -9,13 +10,18 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.PermissionsHelper;
+import org.publicntp.gnssreader.listener.LocationHelper;
 import org.publicntp.gnssreader.listener.LocationListenerImpl;
+import org.publicntp.gnssreader.listener.NmeaMsgListener;
+import org.publicntp.gnssreader.model.Permission;
 
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final long LOCATION_RATE_GPS_MS = TimeUnit.SECONDS.toMillis(10);
@@ -46,9 +52,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initializeBottomNavigation();
 
-        //mLocationListener = new LocationListenerImpl(this);
+        if(PermissionsHelper.permissionIsGranted(this, Permission.FINE_LOCATION)) {
+            LocationHelper.registerNmeaListenerAndStartGettingFixes(this);
+        } else {
+            PermissionsHelper.requestPermission(this, Permission.FINE_LOCATION);
+        }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -58,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Timber.i("response for permissions check contains: granted");
+                    LocationHelper.registerNmeaListenerAndStartGettingFixes(this);
                 } else {
                     Timber.i("response for permissions check contains: denied");
                 }
