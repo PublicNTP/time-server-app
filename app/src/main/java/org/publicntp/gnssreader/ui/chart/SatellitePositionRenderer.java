@@ -8,13 +8,13 @@ import android.graphics.drawable.Drawable;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.renderer.LineRadarRenderer;
+import com.github.mikephil.charting.renderer.DataRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public class SatellitePositionRenderer extends LineRadarRenderer {
+public class SatellitePositionRenderer extends DataRenderer {
 
     private SatellitePositionChart mChart;
 
@@ -181,8 +181,8 @@ public class SatellitePositionRenderer extends LineRadarRenderer {
 
             SatelliteEntry e = set.getEntryForIndex((int) high.getX());
 
-            if (!isInBoundsX(e, set))
-                continue;
+//            if (!isInBoundsX(e, set))
+//                continue;
 
             float y = (e.getY() - mChart.getYChartMin());
 
@@ -193,31 +193,31 @@ public class SatellitePositionRenderer extends LineRadarRenderer {
 
             high.setDraw(pOut.x, pOut.y);
 
-            // draw the lines
-            drawHighlightLines(c, pOut.x, pOut.y, set);
-
-            if (set.isDrawHighlightCircleEnabled()) {
-
-                if (!Float.isNaN(pOut.x) && !Float.isNaN(pOut.y)) {
-
-                    int strokeColor = set.getHighlightCircleStrokeColor();
-                    if (strokeColor == ColorTemplate.COLOR_NONE) {
-                        strokeColor = set.getColor(0);
-                    }
-
-                    if (set.getHighlightCircleStrokeAlpha() < 255) {
-                        strokeColor = ColorTemplate.colorWithAlpha(strokeColor, set.getHighlightCircleStrokeAlpha());
-                    }
-
-                    drawHighlightCircle(c,
-                            pOut,
-                            set.getHighlightCircleInnerRadius(),
-                            set.getHighlightCircleOuterRadius(),
-                            set.getHighlightCircleFillColor(),
-                            strokeColor,
-                            set.getHighlightCircleStrokeWidth());
-                }
-            }
+//            // draw the lines
+//            drawHighlightLines(c, pOut.x, pOut.y, set);
+//
+//            if (set.isDrawHighlightCircleEnabled()) {
+//
+//                if (!Float.isNaN(pOut.x) && !Float.isNaN(pOut.y)) {
+//
+//                    int strokeColor = set.getHighlightCircleStrokeColor();
+//                    if (strokeColor == ColorTemplate.COLOR_NONE) {
+//                        strokeColor = set.getColor(0);
+//                    }
+//
+//                    if (set.getHighlightCircleStrokeAlpha() < 255) {
+//                        strokeColor = ColorTemplate.colorWithAlpha(strokeColor, set.getHighlightCircleStrokeAlpha());
+//                    }
+//
+//                    drawHighlightCircle(c,
+//                            pOut,
+//                            set.getHighlightCircleInnerRadius(),
+//                            set.getHighlightCircleOuterRadius(),
+//                            set.getHighlightCircleFillColor(),
+//                            strokeColor,
+//                            set.getHighlightCircleStrokeWidth());
+//                }
+//            }
         }
 
         MPPointF.recycleInstance(center);
@@ -272,12 +272,12 @@ public class SatellitePositionRenderer extends LineRadarRenderer {
 
 
 
-        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
         mRenderPaint.setStyle(Paint.Style.STROKE);
-
-        // draw the line (only if filled is disabled or alpha is below 255)
-        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
-            c.drawPath(surface, mRenderPaint);
+//        mRenderPaint.setStrokeWidth(dataSet.getLineWidth());
+//
+//        // draw the line (only if filled is disabled or alpha is below 255)
+//        if (!dataSet.isDrawFilledEnabled() || dataSet.getFillAlpha() < 255)
+//            c.drawPath(surface, mRenderPaint);
 
         MPPointF.recycleInstance(center);
         MPPointF.recycleInstance(pOut);

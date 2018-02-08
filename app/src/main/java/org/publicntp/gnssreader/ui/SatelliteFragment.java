@@ -25,11 +25,6 @@ import android.graphics.Color;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
@@ -51,6 +46,7 @@ public class SatelliteFragment extends Fragment {
 
         setupSatellitePositionView();
         setupSatelliteSignalView();
+        setPositionData();
 
         return view;
     }
@@ -61,14 +57,13 @@ public class SatelliteFragment extends Fragment {
     }
 
     private void setupSatellitePositionView() {
+
         mPositionChart.setBackgroundColor(Color.WHITE);
-
         mPositionChart.getDescription().setEnabled(false);
-
-        mPositionChart.setWebLineWidth(1f);
+        mPositionChart.setWebColorInner(Color.LTGRAY);
         mPositionChart.setWebColor(Color.LTGRAY);
         mPositionChart.setWebLineWidthInner(1f);
-        mPositionChart.setWebColorInner(Color.LTGRAY);
+        mPositionChart.setWebLineWidth(1f);
         mPositionChart.setWebAlpha(100);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
@@ -77,7 +72,7 @@ public class SatelliteFragment extends Fragment {
 //        mv.setChartView(mChart); // For bounds control
 //        mChart.setMarker(mv); // Set the marker to the chart
 
-        setPositionData();
+
 
 //        mChart.animateXY(
 //                1400, 1400,
@@ -112,9 +107,9 @@ public class SatelliteFragment extends Fragment {
     }
 
     private void setupSatelliteSignalView() {
+
         mSignalChart.setDrawBarShadow(false);
         mSignalChart.setDrawValueAboveBar(true);
-
         mSignalChart.getDescription().setEnabled(false);
 
         // if more than 60 entries are displayed in the chart, no values will be
@@ -125,32 +120,36 @@ public class SatelliteFragment extends Fragment {
         mSignalChart.setPinchZoom(false);
 
         mSignalChart.setDrawGridBackground(false);
-        // mChart.setDrawYLabels(false);
+        mSignalChart.setDrawValueAboveBar(false);
+        //mSignalChart.setDrawYLabels(false);
 
         //IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
 
         XAxis xAxisSig = mSignalChart.getXAxis();
-        xAxisSig.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxisSig.setDrawGridLines(false);
-        xAxisSig.setGranularity(1f); // only intervals of 1 day
-        xAxisSig.setLabelCount(7);
-        //xAxis.setValueFormatter(xAxisFormatter);
+        xAxisSig.setEnabled(false);
+//        xAxisSig.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxisSig.setDrawGridLines(false);
+//        xAxisSig.setGranularity(1f); // only intervals of 1 day
+//        xAxisSig.setLabelCount(7);
+//        xAxis.setValueFormatter(xAxisFormatter);
 
         //IAxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mSignalChart.getAxisLeft();
-        leftAxis.setLabelCount(8, false);
-        //leftAxis.setValueFormatter(custom);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        leftAxis.setEnabled(false);
+//        leftAxis.setLabelCount(8, false);
+//        leftAxis.setValueFormatter(custom);
+//        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+//        leftAxis.setSpaceTop(15f);
+//        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         YAxis rightAxis = mSignalChart.getAxisRight();
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setLabelCount(8, false);
-        //rightAxis.setValueFormatter(custom);
-        rightAxis.setSpaceTop(15f);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        rightAxis.setEnabled(false);
+//        rightAxis.setDrawGridLines(false);
+//        rightAxis.setLabelCount(8, false);
+//        rightAxis.setValueFormatter(custom);
+//        rightAxis.setSpaceTop(15f);
+//        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
         Legend legend = mSignalChart.getLegend();
         legend.setEnabled(false);
@@ -170,13 +169,11 @@ public class SatelliteFragment extends Fragment {
 //        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
 //        mv.setChartView(mSignalChart); // For bounds control
 //        mSignalChart.setMarker(mv); // Set the marker to the chart
-
-        setSignalData(12, 50);
     }
 
     private void setPositionData() {
 
-        float min = 1;
+        float min = 0;
         int count = 10;
 
         ArrayList<SatelliteEntry> entries = new ArrayList<>();
@@ -184,7 +181,7 @@ public class SatelliteFragment extends Fragment {
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (int i = 0; i < count; i++) {
-            int prnNumber = (int) (Math.random() * 99) + 1;
+            int prnNumber = (int) (Math.random() * 99);
             float azimuth = (float) (Math.random() * 359) + min;
             float elevation = (float) (Math.random() * 90) + min;
             short signalQuality = (short) (Math.random() * 99);
@@ -196,26 +193,19 @@ public class SatelliteFragment extends Fragment {
         }
 
         SatelliteDataSet set = new SatelliteDataSet(entries, "");
-        set.setColor(Color.rgb(103, 110, 129));
-        set.setFillColor(Color.rgb(103, 110, 129));
-        set.setFillAlpha(180);
-        set.setLineWidth(0f);
-        set.setDrawIcons(true);
-
-        set.setDrawFilled(false);
-        set.setDrawHighlightCircleEnabled(false);
-        set.setDrawHighlightIndicators(false);
         set.setValueFormatter(new SatellitePointValueFormatter(0));
+        set.setColor(Color.rgb(103, 110, 129));
+        set.setDrawIcons(true);
 
         ArrayList<ISatelliteDataSet> sets = new ArrayList<>();
         sets.add(set);
 
         SatelliteData data = new SatelliteData(sets);
+        data.setValueTextColor(Color.BLACK);
         data.setValueTextSize(8f);
         data.setDrawValues(true);
-        data.setValueTextColor(Color.BLACK);
 
-        mPositionChart.setRotationEnabled(false);
+        mSignalChart.setData(data);
         mPositionChart.setData(data);
         mPositionChart.invalidate();
     }
@@ -236,49 +226,6 @@ public class SatelliteFragment extends Fragment {
         }
 
         return shape;
-    }
-
-    private void setSignalData(int count, float range) {
-
-        float start = 1f;
-
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
-
-        for (int i = (int) start; i < start + count + 1; i++) {
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult);
-
-//            if (Math.random() * 100 < 25) {
-//                yVals1.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.star)));
-//            } else {
-                yVals1.add(new BarEntry(i, val));
-//            }
-        }
-
-        BarDataSet set1;
-
-        if (mSignalChart.getData() != null &&
-                mSignalChart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) mSignalChart.getData().getDataSetByIndex(0);
-            set1.setValues(yVals1);
-            mSignalChart.getData().notifyDataChanged();
-            mSignalChart.notifyDataSetChanged();
-        } else {
-            set1 = new BarDataSet(yVals1, "The year 2017");
-
-            set1.setDrawIcons(false);
-
-            set1.setColors(ColorTemplate.MATERIAL_COLORS);
-
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(set1);
-
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
-            data.setBarWidth(0.9f);
-
-            mSignalChart.setData(data);
-        }
     }
 
     public static SatelliteFragment newInstance() {
