@@ -16,6 +16,9 @@ public class LocationHelper {
     public static void registerNmeaListenerAndStartGettingFixes(Context context) {
         LocationManager locationManager = context.getSystemService(LocationManager.class);
         locationManager.addNmeaListener(new NmeaMsgListener(context));
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, new LocationListenerImpl());
+
+        LocationListenerImpl locationListener = new LocationListenerImpl();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, locationListener);
+        locationManager.registerGnssStatusCallback(locationListener);
     }
 }

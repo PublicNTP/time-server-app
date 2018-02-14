@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.model.SatelliteModel;
+import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.ui.chart.ISatelliteDataSet;
 import org.publicntp.gnssreader.ui.chart.SatelliteData;
 import org.publicntp.gnssreader.ui.chart.SatelliteDataSet;
@@ -26,7 +28,12 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class SatelliteFragment extends Fragment {
 
@@ -34,6 +41,9 @@ public class SatelliteFragment extends Fragment {
 
     private SatellitePositionChart mPositionChart;
     private SatelliteSignalChart mSignalChart;
+
+    private Timer refreshTimer = new Timer();
+    private final int REFRESH_DELAY = 500;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +64,30 @@ public class SatelliteFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+
+    /*
+    * The timer here vvv is only until we figure out how to data bind this.
+    * */
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setPositionData();
+            }
+        }, REFRESH_DELAY, REFRESH_DELAY);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        refreshTimer.cancel();
     }
 
     private void setupSatellitePositionView() {
@@ -172,24 +206,14 @@ public class SatelliteFragment extends Fragment {
     }
 
     private void setPositionData() {
-
-        float min = 0;
-        int count = 10;
-
-        ArrayList<SatelliteEntry> entries = new ArrayList<>();
+        // TODO maybe combine SatelliteModel and SatelliteEntry?
+        List<SatelliteModel> satellites = LocationStorage.getSatelliteList();
+        List<SatelliteEntry> entries = satellites.parallelStream().map(s -> new SatelliteEntry(s.prn, s.elevationDegrees, s.azimuthDegrees)).collect(Collectors.toList());
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for (int i = 0; i < count; i++) {
-            int prnNumber = (int) (Math.random() * 99);
-            float azimuth = (float) (Math.random() * 359) + min;
-            float elevation = (float) (Math.random() * 90) + min;
-            short signalQuality = (short) (Math.random() * 99);
-            boolean usedInFix = (((int) (Math.random() * 10) % 2) == 0);
-
-            SatelliteEntry entry = new SatelliteEntry(prnNumber,elevation,azimuth,signalQuality,usedInFix);
+        for(SatelliteEntry entry : entries) {
             entry.setIcon(getEntryShape(entry.getIsUsedInFix(), entry.getSignalQuality()));
-            entries.add(entry);
         }
 
         SatelliteDataSet set = new SatelliteDataSet(entries, "");
