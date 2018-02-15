@@ -28,7 +28,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -43,7 +42,7 @@ public class SatelliteFragment extends Fragment {
     private SatelliteSignalChart mSignalChart;
 
     private Timer refreshTimer = new Timer();
-    private final int REFRESH_DELAY = 500;
+    private final int REFRESH_DELAY = 1000;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class SatelliteFragment extends Fragment {
 
         setupSatellitePositionView();
         setupSatelliteSignalView();
-        setPositionData();
+        retrievePositionData();
 
         return view;
     }
@@ -75,10 +74,11 @@ public class SatelliteFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        refreshTimer = new Timer();
         refreshTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                setPositionData();
+                retrievePositionData();
             }
         }, REFRESH_DELAY, REFRESH_DELAY);
     }
@@ -205,10 +205,10 @@ public class SatelliteFragment extends Fragment {
 //        mSignalChart.setMarker(mv); // Set the marker to the chart
     }
 
-    private void setPositionData() {
+    private void retrievePositionData() {
         // TODO maybe combine SatelliteModel and SatelliteEntry?
         List<SatelliteModel> satellites = LocationStorage.getSatelliteList();
-        List<SatelliteEntry> entries = satellites.parallelStream().map(s -> new SatelliteEntry(s.prn, s.elevationDegrees, s.azimuthDegrees)).collect(Collectors.toList());
+        List<SatelliteEntry> entries = satellites.parallelStream().map(s -> new SatelliteEntry(s.prn, s.elevationDegrees, s.azimuthDegrees, (short) s.Cn0DbHz, s.usedInFix)).collect(Collectors.toList());
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.

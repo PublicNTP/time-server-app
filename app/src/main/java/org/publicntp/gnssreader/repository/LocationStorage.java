@@ -41,6 +41,6 @@ public class LocationStorage {
     }
 
     public static List<SatelliteModel> getSatelliteList() {
-        return satelliteList;
+        return new ArrayList<>(satelliteList);
     }
 }
