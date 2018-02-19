@@ -14,8 +14,7 @@ public class PermissionsHelper {
     }
 
     public static Permission requestPermission(Activity activity, Permission permission) {
-        if (ContextCompat.checkSelfPermission(activity, permission.getAndroidPermissionName())
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(activity, permission.getAndroidPermissionName()) != PackageManager.PERMISSION_GRANTED) {
             activity.requestPermissions(new String[]{permission.getAndroidPermissionName()}, permission.getKey());
         } else {
             permission.setPermissionStatus(Permission.PermissionStatus.GRANTED);
