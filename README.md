@@ -7,10 +7,8 @@ With this app, you can:
 - See satellites your device is connected to
 - Turn your android device into a SNTP time server
 
-## Copyright
-Copyright 2018 PublicNTP, Inc.
-
 ## [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+Copyright 2018 PublicNTP, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
