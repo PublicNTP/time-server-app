@@ -8,8 +8,8 @@ With this app, you can:
 - Turn your android device into a SNTP time server
 
 ## Authors
-- Zachary Neubert
-- Richard Macdonald
+- Zachary Neubert, https://github.com/ZacNeubert
+- Richard Macdonald, https://github.com/thewidgetsmith
 
 ## [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 Copyright 2018 PublicNTP, Inc.
