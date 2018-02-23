@@ -9,7 +9,7 @@ With this app, you can:
 
 ## Authors
 - [Zachary Neubert](https://github.com/ZacNeubert)
-- Richard Macdonald, https://github.com/thewidgetsmith
+- [Richard Macdonald](https://github.com/thewidgetsmith)
 
 ## [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 Copyright 2018 PublicNTP, Inc.
