@@ -4,6 +4,8 @@ import android.content.Context;
 
 import org.publicntp.gnssreader.repository.TimeStorage;
 
+import java.sql.Time;
+
 /**
  * Created by zac on 2/7/18.
  */
@@ -22,5 +24,9 @@ public class TimeStorageConsumer {
         } catch (Exception e) {
             return String.format(e.getMessage());
         }
+    }
+
+    public long getTime() {
+        return TimeStorage.getTime();
     }
 }

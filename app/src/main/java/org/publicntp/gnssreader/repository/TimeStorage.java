@@ -24,13 +24,23 @@ public class TimeStorage {
         return Math.abs(nmeaDate.getTime() - nmeaAcquiredDate.getTime()); // This is the difference between system and Nmea time
     }
 
+    public static long getAdjustedMillis() {
+        if(nmeaDate == null) return System.currentTimeMillis();
+
+        return nmeaDate.getTime() + (new Date().getTime() - nmeaAcquiredDate.getTime());
+    }
+
     public static Date getAdjustedDate() {
         if(nmeaDate == null) return new Date();
 
-        return new Date(nmeaDate.getTime() + (new Date().getTime() - nmeaAcquiredDate.getTime()));
+        return new Date(getAdjustedMillis());
     }
 
     public static String getAdjustedDateString(Context context) {
         return DateFormatter.timeString(context, getAdjustedDate());
+    }
+
+    public static long getTime() {
+        return getAdjustedMillis();
     }
 }

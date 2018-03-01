@@ -71,6 +71,8 @@ dependencies {
     implementation "com.jakewharton:butterknife:${butterknifeVersion}"
     implementation "com.jakewharton.timber:timber:4.6.0"
 
+    compile 'commons-net:commons-net:3.6'
+
     androidTestImplementation "com.android.support.test:runner:1.0.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
     testImplementation "junit:junit:4.12"

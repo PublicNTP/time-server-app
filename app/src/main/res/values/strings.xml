@@ -28,5 +28,6 @@
     <!-- Error Strings -->
     <string name="error_email_client_not_found">There are no email clients installed.</string>
     <string name="error_web_browser_not_found">There are no web browsers installed.</string>
+    <string name="no_root_warning">This feature is only available with a rooted device.</string>
 
 </resources>
