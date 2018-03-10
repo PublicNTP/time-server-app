@@ -12,6 +12,7 @@ With this app, you can:
 - [Zachary Neubert](https://github.com/ZacNeubert)
 - [Richard Macdonald](https://github.com/thewidgetsmith)
 - [PublicNTP, Inc.](https://publicntp.org)
+- [Rooster Glue, Inc.](https://roosterglue.com)
 - [GPSTest Project](https://github.com/barbeau/gpstest/wiki)
 
 ## MIT License
