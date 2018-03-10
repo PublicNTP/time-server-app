@@ -8,9 +8,10 @@ With this app, you can:
 - See satellites your device is connected to
 - Turn your android device into a SNTP time server
 
-## Authors
+## Credit
 - [Zachary Neubert](https://github.com/ZacNeubert)
 - [Richard Macdonald](https://github.com/thewidgetsmith)
+- [GPSTest Project] (https://github.com/barbeau/gpstest)
 
 ## MIT License
 Copyright 2018 PublicNTP, Inc.
