@@ -11,7 +11,8 @@ With this app, you can:
 ## Credit
 - [Zachary Neubert](https://github.com/ZacNeubert)
 - [Richard Macdonald](https://github.com/thewidgetsmith)
-- [GPSTest Project](https://github.com/barbeau/gpstest)
+- [PublicNTP, Inc.] (https://publicntp.org)
+- [GPSTest Project](https://github.com/barbeau/gpstest/wiki)
 
 ## MIT License
 Copyright 2018 PublicNTP, Inc.
