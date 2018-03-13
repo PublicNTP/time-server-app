@@ -37,7 +37,7 @@ public class TimeStorage {
     }
 
     public static String getAdjustedDateString(Context context) {
-        return DateFormatter.timeString(context, getAdjustedDate());
+        return DateFormatter.utcTimeString(context, getAdjustedDate());
     }
 
     public static long getTime() {

@@ -6,12 +6,19 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by zac on 2/7/18.
  */
 
 public class DateFormatter {
+    private static final DateFormat hhmmss = new SimpleDateFormat("HH:mm:ss");
+    private static final DateFormat hhmmssUtc = new SimpleDateFormat("HH:mm:ss");
+    static {
+        hhmmssUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
     public static String dateString(Context context, Date date) {
         if (date == null) return "";
         return dateString(LocaleHelper.getUserLocale(context), date);
@@ -39,10 +46,19 @@ public class DateFormatter {
         return timeString(LocaleHelper.getUserLocale(context), date);
     }
 
+    public static String utcTimeString(Context context, Date date) {
+        if (date == null) return "";
+        return utcTimeString(LocaleHelper.getUserLocale(context), date);
+    }
+
     public static String timeString(Locale locale, Date date) {
         if (date == null) return "";
-        DateFormat dateTimeFormat = new SimpleDateFormat("HH:mm:ss");
-        return dateTimeFormat.format(date);
+        return hhmmss.format(date);
+    }
+
+    public static String utcTimeString(Locale locale, Date date) {
+        if (date == null) return "";
+        return hhmmssUtc.format(date);
     }
 }
 

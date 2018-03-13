@@ -3,6 +3,7 @@ package org.publicntp.gnssreader.ui;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,32 +25,45 @@ import org.publicntp.gnssreader.ui.chart.SatelliteSignalChart;
 
 import android.graphics.Color;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SatelliteFragment extends Fragment {
 
     private SatelliteViewModel mSatelliteViewModel;
 
-    private SatellitePositionChart mPositionChart;
-    private SatelliteSignalChart mSignalChart;
+    @BindView(R.id.satellite_position_radial_chart)
+    SatellitePositionChart mPositionChart;
+    @BindView(R.id.satellite_signal_bar_chart)
+    BarChart mSignalChart;
 
     private Timer refreshTimer = new Timer();
+    private Handler handler = new Handler();
     private final int REFRESH_DELAY = 1000;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_satellite, container, false);
-        mPositionChart = view.findViewById(R.id.satellite_position_radial_chart);
-        mSignalChart = view.findViewById(R.id.satellite_signal_bar_chart);
+        ButterKnife.bind(this, view);
 
         mSatelliteViewModel = ViewModelProviders.of(this).get(SatelliteViewModel.class);
 
@@ -78,7 +92,7 @@ public class SatelliteFragment extends Fragment {
         refreshTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                retrievePositionData();
+                handler.post(() -> retrievePositionData());
             }
         }, REFRESH_DELAY, REFRESH_DELAY);
     }
@@ -105,7 +119,6 @@ public class SatelliteFragment extends Fragment {
 //        MarkerView mv = new SatelliteMarkerView(this.getContext(), R.layout.markerview_satellite);
 //        mv.setChartView(mChart); // For bounds control
 //        mChart.setMarker(mv); // Set the marker to the chart
-
 
 
 //        mChart.animateXY(
@@ -157,17 +170,14 @@ public class SatelliteFragment extends Fragment {
         mSignalChart.setDrawValueAboveBar(false);
         //mSignalChart.setDrawYLabels(false);
 
-        //IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
 
         XAxis xAxisSig = mSignalChart.getXAxis();
-        xAxisSig.setEnabled(false);
-//        xAxisSig.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxisSig.setDrawGridLines(false);
-//        xAxisSig.setGranularity(1f); // only intervals of 1 day
+        xAxisSig.setEnabled(true);
+        xAxisSig.setPosition(XAxis.XAxisPosition.TOP);
+        xAxisSig.setDrawGridLines(false);
+        xAxisSig.setGranularity(1f);
+        xAxisSig.setLabelRotationAngle(30f);
 //        xAxisSig.setLabelCount(7);
-//        xAxis.setValueFormatter(xAxisFormatter);
-
-        //IAxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = mSignalChart.getAxisLeft();
         leftAxis.setEnabled(false);
@@ -206,13 +216,48 @@ public class SatelliteFragment extends Fragment {
     }
 
     private void retrievePositionData() {
-        // TODO maybe combine SatelliteModel and SatelliteEntry?
         List<SatelliteModel> satellites = LocationStorage.getSatelliteList();
+        satellites.sort((s1, s2) -> s1.prn > s2.prn ? 1 : -1);
+        setRadialData(satellites);
+        setSignalData(satellites);
+    }
+
+    private void setSignalData(List<SatelliteModel> satellites) {
+        int i = 0;
+        List<BarEntry> satelliteBars = new ArrayList<>();
+        for(SatelliteModel satellite : satellites) {
+            satelliteBars.add(new BarEntry(i++, satellite.Cn0DbHz));
+        }
+        BarDataSet barDataSet = new BarDataSet(satelliteBars, "BarDataSet");
+        String[] labelArray = satellites.stream().map(s -> ""+s.prn).collect(Collectors.toList()).toArray(new String[satellites.size()]);
+        barDataSet.setStackLabels(labelArray);
+
+        BarData signalData = new BarData(barDataSet);
+        signalData.setBarWidth(.8f);
+        signalData.setDrawValues(false);
+
+        mSignalChart.setData(signalData);
+        mSignalChart.setFitBars(true);
+        mSignalChart.getXAxis().setLabelCount(satelliteBars.size(), true);
+        mSignalChart.getXAxis().setValueFormatter((value, axis) -> {
+            try {
+                String label = "" + satellites.get((int) value).prn;
+                int j=0;
+                j++;
+                return label;
+            } catch(Exception e) {
+                return "";
+            }
+        });
+        mSignalChart.invalidate();
+    }
+
+    private void setRadialData(List<SatelliteModel> satellites) {
         List<SatelliteEntry> entries = satellites.parallelStream().map(s -> new SatelliteEntry(s.prn, s.elevationDegrees, s.azimuthDegrees, (short) s.Cn0DbHz, s.usedInFix)).collect(Collectors.toList());
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for(SatelliteEntry entry : entries) {
+        for (SatelliteEntry entry : entries) {
             entry.setIcon(getEntryShape(entry.getIsUsedInFix(), entry.getSignalQuality()));
         }
 
@@ -224,13 +269,12 @@ public class SatelliteFragment extends Fragment {
         ArrayList<ISatelliteDataSet> sets = new ArrayList<>();
         sets.add(set);
 
-        SatelliteData data = new SatelliteData(sets);
-        data.setValueTextColor(Color.BLACK);
-        data.setValueTextSize(8f);
-        data.setDrawValues(true);
+        SatelliteData radialData = new SatelliteData(sets);
+        radialData.setValueTextColor(Color.BLACK);
+        radialData.setValueTextSize(8f);
+        radialData.setDrawValues(true);
 
-        mSignalChart.setData(data);
-        mPositionChart.setData(data);
+        mPositionChart.setData(radialData);
         mPositionChart.invalidate();
     }
 
@@ -243,8 +287,7 @@ public class SatelliteFragment extends Fragment {
         if (usedInFix) {
             shape = getResources().getDrawable(R.drawable.ic_fixed_black_24dp, null);
             shape.setAlpha((signalQuality * 2) + UNTRACKED_ALPHA);
-        }
-        else {
+        } else {
             shape = getResources().getDrawable(R.drawable.ic_unfixed_black_24dp, null);
             shape.setAlpha(UNTRACKED_ALPHA);
         }

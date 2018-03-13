@@ -66,6 +66,12 @@ public class SimpleNTPServer implements Runnable {
      */
     public SimpleNTPServer(int port)
     {
+        try {
+            Runtime.getRuntime().exec("su");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (port < 0) {
             throw new IllegalArgumentException();
         }

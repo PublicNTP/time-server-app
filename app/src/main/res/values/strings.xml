@@ -29,5 +29,13 @@
     <string name="error_email_client_not_found">There are no email clients installed.</string>
     <string name="error_web_browser_not_found">There are no web browsers installed.</string>
     <string name="no_root_warning">This feature is only available with a rooted device.</string>
+    <string name="kill_ntp_service">Stop NTP Server</string>
+
+    <string name="test_html">
+        <b>Well Hiya Fren</b>
+        <i>Having a day?</i>
+        <u>Aww what a day it is</u>
+        <p>Thing 1</p><p>Thing 2</p>
+    </string>
 
 </resources>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="org.publicntp.gnssreader.ui.SatelliteFragment">
 
@@ -20,11 +19,10 @@
         app:layout_constraintTop_toBottomOf="parent">
 
 
-
         <!--<TextView-->
-            <!--android:id="@+id/"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:id="@+id/"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
 
     </RelativeLayout>
@@ -39,10 +37,20 @@
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/satellite_layout_count"/>
+        app:layout_constraintTop_toBottomOf="@id/satellite_layout_count" />
 
 
-    <org.publicntp.gnssreader.ui.chart.SatelliteSignalChart
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/satellite_signal_bar_chart"
+        android:layout_width="369dp"
+        android:layout_height="155dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/satellite_position_radial_chart" />
+    <!--<org.publicntp.gnssreader.ui.chart.SatelliteSignalChart
         android:id="@+id/satellite_signal_bar_chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -52,6 +60,6 @@
         app:layout_constraintDimensionRatio="H,3:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/satellite_position_radial_chart" />
+        app:layout_constraintTop_toBottomOf="@id/satellite_position_radial_chart" />-->
 
 </android.support.constraint.ConstraintLayout>

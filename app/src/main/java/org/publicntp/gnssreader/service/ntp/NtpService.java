@@ -3,6 +3,7 @@ package org.publicntp.gnssreader.service.ntp;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.ui.MainActivity;
 
 import java.io.IOException;
 
@@ -57,11 +59,19 @@ public class NtpService extends Service {
             notificationManager.createNotificationChannel(chan1);
         }
 
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Intent killServiceIntent = KillServiceReceiver.getAddressedIntent();
+        PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
+
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_publicntp_logo)
+                .setSmallIcon(R.mipmap.ic_launcher_foreground)
                 .setContentTitle("NTP Server Running")
                 .setContentText("Running on port " + simpleNTPServer.getPort())
                 .setPriority(PRIORITY_MIN)
+                .setContentIntent(pendingIntent)
+                .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent)
                 .build();
     }
 
@@ -69,12 +79,13 @@ public class NtpService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         ntpService = this;
 
-        simpleNTPServer = new SimpleNTPServer(8765);
+        simpleNTPServer = new SimpleNTPServer(1234);
         try {
             simpleNTPServer.start();
             Toast.makeText(this, "Started server on port " + simpleNTPServer.getPort(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            this.stopSelf();
         }
 
         startForeground(SERVICE_ID, buildNotification());
