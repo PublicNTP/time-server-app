@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
@@ -21,6 +22,8 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 public class TimeFragment extends BaseFragment {
 
@@ -31,6 +34,10 @@ public class TimeFragment extends BaseFragment {
     final int invalidationFrequency = 1;
 
     @BindView(R.id.time_text_time_display) TextView TimeTextDisplay;
+    @BindView(R.id.time_image_logo) GifImageView spinningLogo;
+
+    private MediaController logoSpinController;
+    private GifDrawable spinningDrawable;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -42,7 +49,6 @@ public class TimeFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(TimeViewModel.class);
-
 
 //        TextView textLatitude = getView().findViewById(R.id.time_text_latitude_display);
 //        TextView textLongitude = getView().findViewById(R.id.time_text_longitude_display);
@@ -63,7 +69,25 @@ public class TimeFragment extends BaseFragment {
         viewBinding.setTimestorage(new TimeStorageConsumer());
         viewBinding.setLocationstorage(new LocationStorageConsumer());
         ButterKnife.bind(this, viewBinding.getRoot());
+
+        initializeSpinningLogo();
+
         return viewBinding.getRoot();
+    }
+
+    private void initializeSpinningLogo() {
+        spinningDrawable = (GifDrawable) spinningLogo.getDrawable();
+        playLogoOnce();
+        spinningLogo.setOnClickListener(v -> {
+            playLogoOnce();
+        });
+    }
+
+    private void playLogoOnce() {
+        spinningDrawable.stop();
+        spinningDrawable.setLoopCount(1);
+        spinningDrawable.seekTo(400);
+        spinningDrawable.start();
     }
 
     @Override

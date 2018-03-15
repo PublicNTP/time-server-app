@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App Info Strings -->
-    <string name="app_name">GNSSReader</string>
+    <string name="app_name">PublicNTP Time Server</string>
 
     <!-- Time Fragment Strings -->
     <string name="time_image_logo_desc">PublicNTP Logo</string>
