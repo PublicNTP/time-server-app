@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
@@ -22,6 +23,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -36,7 +38,6 @@ public class TimeFragment extends BaseFragment {
     @BindView(R.id.time_text_time_display) TextView TimeTextDisplay;
     @BindView(R.id.time_image_logo) GifImageView spinningLogo;
 
-    private MediaController logoSpinController;
     private GifDrawable spinningDrawable;
 
     @Override
@@ -75,12 +76,14 @@ public class TimeFragment extends BaseFragment {
         return viewBinding.getRoot();
     }
 
+    @OnClick(R.id.time_layout_logo)
+    public void timeLayoutLogoOnClick() {
+        playLogoOnce();
+    }
+
     private void initializeSpinningLogo() {
         spinningDrawable = (GifDrawable) spinningLogo.getDrawable();
         playLogoOnce();
-        spinningLogo.setOnClickListener(v -> {
-            playLogoOnce();
-        });
     }
 
     private void playLogoOnce() {
