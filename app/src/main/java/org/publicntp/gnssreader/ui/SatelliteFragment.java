@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,33 +21,29 @@ import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.ui.chart.radialchart.SatelliteRadialChart;
 
-
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lecho.lib.hellocharts.formatter.AxisValueFormatter;
+import lecho.lib.hellocharts.formatter.ColumnChartValueFormatter;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Column;
+import lecho.lib.hellocharts.model.ColumnChartData;
+import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.view.ColumnChartView;
 
 public class SatelliteFragment extends Fragment implements SensorEventListener {
-
-    private SatelliteViewModel mSatelliteViewModel;
-
-    //@BindView(R.id.satellite_position_radial_chart) SatellitePositionChart mPositionChart;
-    @BindView(R.id.satellite_radial_chart)
-    SatelliteRadialChart radialChart;
-    @BindView(R.id.satellite_signal_bar_chart)
-    BarChart mSignalChart;
+    @BindView(R.id.satellite_radial_chart) SatelliteRadialChart radialChart;
+    @BindView(R.id.satellite_bar_chart) ColumnChartView barChart;
 
     private Timer refreshTimer = new Timer();
     private Handler handler = new Handler();
@@ -61,19 +58,13 @@ public class SatelliteFragment extends Fragment implements SensorEventListener {
         View view = inflater.inflate(R.layout.fragment_satellite, container, false);
         ButterKnife.bind(this, view);
 
-        mSatelliteViewModel = ViewModelProviders.of(this).get(SatelliteViewModel.class);
-
-        setupSatelliteSignalView();
+        setupBarChart();
         distributePositionData();
-
-        mSensorManager = (SensorManager) view.getContext().getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        compass = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        mSensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI);
-        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        registerSensors(view.getContext());
 
         return view;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -105,106 +96,65 @@ public class SatelliteFragment extends Fragment implements SensorEventListener {
         mSensorManager.unregisterListener(this);
     }
 
+    private void setupBarChart() {
+        barChart.setInteractive(true);
+    }
+
+    private void registerSensors(Context context) {
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        compass = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        mSensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
     private void distributePositionData() {
         List<SatelliteModel> satellites = LocationStorage.getSatelliteList();
         satellites.sort((s1, s2) -> s1.prn > s2.prn ? 1 : -1);
         radialChart.setSatelliteModels(satellites);
-        setSignalData(satellites);
+        setBarChartData(satellites);
     }
 
-    private void setupSatelliteSignalView() {
+    private void setBarChartData(List<SatelliteModel> satellites) {
+        List<Column> satelliteSignalValues = new ArrayList<>();
+        List<AxisValue> axisValues = new ArrayList<>();
+        satellites.forEach(s -> {
+            SubcolumnValue subcolumnValue = new SubcolumnValue(s.Cn0DbHz).setColor(GreyLevelHelper.asColor(getContext(), s.Cn0DbHz));
+            List<SubcolumnValue> subcolumnValues = new ArrayList<>();
+            subcolumnValues.add(subcolumnValue);
 
-        mSignalChart.setDrawBarShadow(false);
-        mSignalChart.setDrawValueAboveBar(true);
-        mSignalChart.getDescription().setEnabled(false);
+            Column column = new Column().setValues(subcolumnValues);
+            AxisValue axisValue = new AxisValue(s.prn).setLabel(s.prn + "");
 
-        // if more than 60 entries are displayed in the chart, no values will be
-        // drawn
-        mSignalChart.setMaxVisibleValueCount(60);
+            satelliteSignalValues.add(column);
+            axisValues.add(axisValue);
+        });
 
-        // scaling can now only be done on x- and y-axis separately
-        mSignalChart.setPinchZoom(false);
+        ColumnChartData columnChartData = new ColumnChartData(satelliteSignalValues);
 
-        mSignalChart.setDrawGridBackground(false);
-        mSignalChart.setDrawValueAboveBar(false);
-        //mSignalChart.setDrawYLabels(false);
+        Axis xAxis = new Axis();
+        xAxis.setValues(axisValues);
+        xAxis.setFormatter(new AxisValueFormatter() {
+            @Override
+            public int formatValueForManualAxis(char[] formattedValue, AxisValue axisValue) {
+                int i = formattedValue.length - 1;
+                char[] label = axisValue.getLabelAsChars();
+                for(char c: label) {
+                    if(i < 0) break;
+                    formattedValue[i] = c;
+                    i--;
+                }
+                return label.length;
+            }
 
-
-        XAxis xAxisSig = mSignalChart.getXAxis();
-        xAxisSig.setEnabled(true);
-        xAxisSig.setPosition(XAxis.XAxisPosition.TOP);
-        xAxisSig.setDrawGridLines(false);
-        xAxisSig.setGranularity(1f);
-        xAxisSig.setLabelRotationAngle(30f);
-//        xAxisSig.setLabelCount(7);
-
-        YAxis leftAxis = mSignalChart.getAxisLeft();
-        leftAxis.setEnabled(false);
-//        leftAxis.setLabelCount(8, false);
-//        leftAxis.setValueFormatter(custom);
-//        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-//        leftAxis.setSpaceTop(15f);
-//        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis rightAxis = mSignalChart.getAxisRight();
-        rightAxis.setEnabled(false);
-//        rightAxis.setDrawGridLines(false);
-//        rightAxis.setLabelCount(8, false);
-//        rightAxis.setValueFormatter(custom);
-//        rightAxis.setSpaceTop(15f);
-//        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        Legend legend = mSignalChart.getLegend();
-        legend.setEnabled(false);
-//        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-//        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-//        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-//        legend.setDrawInside(false);
-//        legend.setForm(Legend.LegendForm.SQUARE);
-//        legend.setFormSize(9f);
-//        legend.setTextSize(11f);
-//        legend.setXEntrySpace(4f);
-        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-
-//        XYMarkerView mv = new XYMarkerView(this, xAxisFormatter);
-//        mv.setChartView(mSignalChart); // For bounds control
-//        mSignalChart.setMarker(mv); // Set the marker to the chart
-    }
-
-
-    private void setSignalData(List<SatelliteModel> satellites) {
-        int i = 0;
-        List<BarEntry> satelliteBars = new ArrayList<>();
-        for (SatelliteModel satellite : satellites) {
-            satelliteBars.add(new BarEntry(i++, satellite.Cn0DbHz));
-        }
-        BarDataSet barDataSet = new BarDataSet(satelliteBars, "BarDataSet");
-        String[] labelArray = satellites.stream().map(s -> "" + s.prn).collect(Collectors.toList()).toArray(new String[satellites.size()]);
-        barDataSet.setStackLabels(labelArray);
-
-        BarData signalData = new BarData(barDataSet);
-        signalData.setBarWidth(.8f);
-        signalData.setDrawValues(false);
-
-        mSignalChart.setData(signalData);
-        mSignalChart.setFitBars(true);
-        mSignalChart.getXAxis().setLabelCount(satelliteBars.size(), true);
-        mSignalChart.getXAxis().setValueFormatter((value, axis) -> {
-            try {
-                String label = "" + satellites.get((int) value).prn;
-                int j = 0;
-                j++;
-                return label;
-            } catch (Exception e) {
-                return "";
+            @Override
+            public int formatValueForAutoGeneratedAxis(char[] formattedValue, float value, int autoDecimalDigits) {
+                return 0;
             }
         });
-        mSignalChart.invalidate();
+        columnChartData.setAxisXBottom(xAxis);
+        barChart.setColumnChartData(columnChartData);
     }
-
 
     public static SatelliteFragment newInstance() {
         return new SatelliteFragment();
@@ -213,6 +163,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener {
     float[] mGravity;
     float[] mGeomagnetic;
     Integer accuracy;
+
     @Override
     public void onSensorChanged(SensorEvent event) {
         switch (event.sensor.getType()) {
@@ -233,7 +184,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener {
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float degrees = (float) Math.toDegrees(orientation[0]);
-                if(accuracy != null && accuracy > SensorManager.SENSOR_STATUS_ACCURACY_LOW) {
+                if (accuracy != null && accuracy > SensorManager.SENSOR_STATUS_ACCURACY_LOW) {
                     radialChart.setCompassReading(degrees);
                 }
             }

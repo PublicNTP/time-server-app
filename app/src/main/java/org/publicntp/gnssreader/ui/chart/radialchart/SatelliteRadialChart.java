@@ -10,12 +10,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
+import org.publicntp.gnssreader.ui.GreyLevelHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class SatelliteRadialChart extends View {
@@ -25,10 +29,10 @@ public class SatelliteRadialChart extends View {
     private Paint textFill;
     private Paint cardinalTextFill;
     private Paint whiteFill;
-    private Paint greyFill;
-    private Paint lightGreyFill;
-    private Paint darkGreyFill;
+    private Paint lightGrey;
     private Paint greyStroke;
+
+    boolean compassEnabled = false;
 
     public SatelliteRadialChart(Context context) {
         super(context);
@@ -70,19 +74,24 @@ public class SatelliteRadialChart extends View {
         blackFill = new Paint(Paint.ANTI_ALIAS_FLAG);
         blackFill.setColor(ContextCompat.getColor(this.getContext(), R.color.black));
 
-        greyFill = new Paint(Paint.ANTI_ALIAS_FLAG);
-        greyFill.setColor(ContextCompat.getColor(this.getContext(), R.color.grey));
-
-        lightGreyFill = new Paint(Paint.ANTI_ALIAS_FLAG);
-        lightGreyFill.setColor(ContextCompat.getColor(this.getContext(), R.color.greylight));
-
-        darkGreyFill = new Paint(Paint.ANTI_ALIAS_FLAG);
-        darkGreyFill.setColor(ContextCompat.getColor(this.getContext(), R.color.greydark));
+        lightGrey = new Paint(Paint.ANTI_ALIAS_FLAG);
+        lightGrey.setColor(ContextCompat.getColor(this.getContext(), R.color.greylight));
 
         greyStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
         greyStroke.setColor(ContextCompat.getColor(this.getContext(), R.color.greylight));
         greyStroke.setStyle(Paint.Style.STROKE);
         greyStroke.setStrokeWidth(6f);
+
+        this.setOnTouchListener((v, event) -> {
+            compassEnabled = !compassEnabled;
+            if(!compassEnabled) {
+                Toast.makeText(getContext(), "Compass Disabled.", Toast.LENGTH_SHORT).show();
+                resetRotation();
+            } else {
+                Toast.makeText(getContext(), "Compass Enabled.", Toast.LENGTH_SHORT).show();
+            }
+            return false;
+        });
     }
 
     public void setSatelliteModels(List<SatelliteModel> satelliteModels) {
@@ -94,25 +103,35 @@ public class SatelliteRadialChart extends View {
 
     float azimuth = 0f;
     Long lastSet;
+    public void resetRotation() {
+        rotateToNDegrees(0f);
+    }
+
+    public void rotateToNDegrees(float degrees) {
+        RotateAnimation rotateAnimation = new RotateAnimation(-azimuth, -degrees, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+        lastSet = System.currentTimeMillis();
+        azimuth = degrees;
+        rotateAnimation.setDuration(200);
+        rotateAnimation.setRepeatCount(0);
+        rotateAnimation.setFillAfter(true);
+        this.startAnimation(rotateAnimation);
+    }
+
     public void setCompassReading(float degrees) {
-        //float endRotation = 360f - degrees;
-        //float startRotation = this.getRotation();
-        if(degrees < 0) {
+        if(!compassEnabled) {
+            return;
+        }
+
+        if (degrees < 0) {
             degrees = 360f - degrees;
         }
 
-        if(degrees > 360) {
+        if (degrees > 360) {
             degrees = degrees % 360;
         }
 
-        if(lastSet == null || System.currentTimeMillis() - lastSet > 300 || Math.abs(azimuth - degrees) > 15f) {
-            RotateAnimation rotateAnimation = new RotateAnimation(-azimuth, -degrees, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
-            lastSet = System.currentTimeMillis();
-            azimuth = degrees;
-            rotateAnimation.setDuration(200);
-            rotateAnimation.setRepeatCount(0);
-            rotateAnimation.setFillAfter(true);
-            this.startAnimation(rotateAnimation);
+        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || Math.abs(azimuth - degrees) > 15f) {
+            rotateToNDegrees(degrees);
         }
     }
 
@@ -159,7 +178,7 @@ public class SatelliteRadialChart extends View {
         canvas.drawLine(bounds.centerX() + legLength, bounds.centerY() - legLength, bounds.centerX() - legLength, bounds.centerY() + legLength, greyStroke); //top-right to bottom-left
         canvas.drawLine(bounds.centerX() - legLength, bounds.centerY() - legLength, bounds.centerX() + legLength, bounds.centerY() + legLength, greyStroke); //top-left to bottom-right
 
-        canvas.drawText("N", bounds.centerX(), bounds.top + bounds.height()*.05f, cardinalTextFill);
+        canvas.drawText("N", bounds.centerX(), bounds.top + bounds.height() * .05f, cardinalTextFill);
     }
 
     private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas) {
@@ -177,20 +196,15 @@ public class SatelliteRadialChart extends View {
 
         float shapeRadius = 30f * satelliteScale();
         if (satelliteModel.usedInFix) {
-            canvas.drawRect(new Rect((int) (x - shapeRadius), (int) (y - shapeRadius), (int) (x + shapeRadius), (int) (y + shapeRadius)), greyLevel(satelliteModel.Cn0DbHz));
+            canvas.drawRect(new Rect(
+                            (int) (x - shapeRadius),
+                            (int) (y - shapeRadius),
+                            (int) (x + shapeRadius),
+                            (int) (y + shapeRadius)),
+                    GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz));
         } else {
-            canvas.drawCircle(x, y, shapeRadius, greyLevel(satelliteModel.Cn0DbHz));
+            canvas.drawCircle(x, y, shapeRadius, GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz));
         }
         canvas.drawText(satelliteModel.prn + "", x + shapeRadius * 1.2f, y + shapeRadius / 2, textFill);
-    }
-
-    private Paint greyLevel(float cnodbhz) {
-        if (cnodbhz < 1) {
-            return lightGreyFill;
-        }
-        if (cnodbhz < 5) {
-            return greyFill;
-        }
-        return darkGreyFill;
     }
 }

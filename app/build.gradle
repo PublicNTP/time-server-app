@@ -73,6 +73,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:4.6.0"
 
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     androidTestImplementation "com.android.support.test:runner:1.0.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
