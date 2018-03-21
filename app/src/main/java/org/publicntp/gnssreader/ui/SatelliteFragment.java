@@ -140,6 +140,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener {
         xAxis.setInside(true);
         columnChartData.setAxisXBottom(xAxis);
         barChart.setColumnChartData(columnChartData);
+        barChart.setZoomEnabled(false);
     }
 
     public static SatelliteFragment newInstance() {

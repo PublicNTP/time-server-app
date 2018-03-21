@@ -137,7 +137,7 @@ public class SatelliteRadialChart extends View {
         float rotatedDegrees = degrees - 360f;
         // sometimes, we go from 359 degrees to 1 degree, and the difference rotated should not be 358 degrees, it should be 2 degrees
         float rotationalDifference = Math.min(Math.abs(azimuth - degrees), Math.abs(azimuth - rotatedDegrees));
-        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || rotationalDifference > 15f) {
+        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || rotationalDifference > 25f) {
             rotateToNDegrees(degrees);
         }
     }
