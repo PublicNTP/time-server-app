@@ -31,5 +31,7 @@
     <string name="no_root_warning">This feature is only available with a rooted device.</string>
     <string name="kill_ntp_service">Stop NTP Server</string>
     <string name="test_string">Number of Satellites: idk, 6?</string>
+    <string name="in_view">in view</string>
+    <string name="in_use">in use</string>
 
 </resources>

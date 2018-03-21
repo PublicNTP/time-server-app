@@ -1,5 +1,6 @@
-package org.publicntp.gnssreader.ui.chart.radialchart;
+package org.publicntp.gnssreader.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -18,8 +19,6 @@ import org.publicntp.gnssreader.ui.GreyLevelHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class SatelliteRadialChart extends View {
@@ -108,9 +107,14 @@ public class SatelliteRadialChart extends View {
     }
 
     public void rotateToNDegrees(float degrees) {
-        RotateAnimation rotateAnimation = new RotateAnimation(-azimuth, -degrees, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
-        lastSet = System.currentTimeMillis();
+        RotateAnimation rotateAnimation;
+        if(Math.abs(degrees - azimuth) < 180) { //Always rotate less than halfway around
+            rotateAnimation = new RotateAnimation(-azimuth, -degrees, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+        } else {
+            rotateAnimation = new RotateAnimation(-azimuth, degrees-360f, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+        }
         azimuth = degrees;
+        lastSet = System.currentTimeMillis();
         rotateAnimation.setDuration(200);
         rotateAnimation.setRepeatCount(0);
         rotateAnimation.setFillAfter(true);
@@ -123,14 +127,17 @@ public class SatelliteRadialChart extends View {
         }
 
         if (degrees < 0) {
-            degrees = 360f - degrees;
+            degrees = 360f + degrees;
         }
 
         if (degrees > 360) {
             degrees = degrees % 360;
         }
 
-        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || Math.abs(azimuth - degrees) > 15f) {
+        float rotatedDegrees = degrees - 360f;
+        // sometimes, we go from 359 degrees to 1 degree, and the difference rotated should not be 358 degrees, it should be 2 degrees
+        float rotationalDifference = Math.min(Math.abs(azimuth - degrees), Math.abs(azimuth - rotatedDegrees));
+        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || rotationalDifference > 15f) {
             rotateToNDegrees(degrees);
         }
     }
@@ -168,8 +175,10 @@ public class SatelliteRadialChart extends View {
     private void drawRadarGuides(Canvas canvas) {
         Rect bounds = getChartBounds(canvas);
 
-        canvas.drawCircle(bounds.centerX(), bounds.centerY(), bounds.height() / 4, greyStroke);
-        canvas.drawCircle(bounds.centerX(), bounds.centerY(), bounds.height() / 2, greyStroke);
+        int circleRadius = bounds.height() / 2;
+        canvas.drawCircle(bounds.centerX(), bounds.centerY(), circleRadius, greyStroke);
+        canvas.drawCircle(bounds.centerX(), bounds.centerY(), circleRadius * 2 / 3, greyStroke);
+        canvas.drawCircle(bounds.centerX(), bounds.centerY(), circleRadius / 3, greyStroke);
 
         canvas.drawLine(bounds.left, bounds.centerY(), bounds.right, bounds.centerY(), greyStroke); //horizontal
         canvas.drawLine(bounds.centerX(), bounds.top, bounds.centerX(), bounds.bottom, greyStroke); //vertical

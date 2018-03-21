@@ -68,7 +68,6 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
     implementation "com.google.guava:guava:23.6-android"
 
-    implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
     implementation "com.jakewharton:butterknife:${butterknifeVersion}"
     implementation "com.jakewharton.timber:timber:4.6.0"
 

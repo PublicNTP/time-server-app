@@ -6,21 +6,61 @@
     android:orientation="vertical"
     tools:context="org.publicntp.gnssreader.ui.SatelliteFragment">
 
-    <!--<RelativeLayout
+    <RelativeLayout
         android:id="@+id/satellite_layout_count"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:layout_weight="3.5">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/test_string"
-            android:textSize="18sp" />
-    </RelativeLayout>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
 
-    <org.publicntp.gnssreader.ui.chart.radialchart.SatelliteRadialChart
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/in_view"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/satellites_in_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/in_use"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/satellites_in_use"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="textEnd"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <org.publicntp.gnssreader.ui.SatelliteRadialChart
         android:id="@+id/satellite_radial_chart"
         android:layout_width="match_parent"
+        android:layout_marginTop="-25dp"
         android:layout_height="0dp"
         android:layout_weight="16" />
 
@@ -31,10 +71,5 @@
         android:layout_height="0dp"
         android:layout_weight="8" />
 
-    <!--<com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/satellite_signal_bar_chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8" />-->
 
 </LinearLayout>
