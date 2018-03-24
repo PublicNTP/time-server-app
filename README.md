@@ -11,6 +11,7 @@ With this app, you can:
 ## Credit
 - [Zachary Neubert](https://github.com/ZacNeubert)
 - [Richard Macdonald](https://github.com/thewidgetsmith)
+- [Kempt Design]
 - [PublicNTP, Inc.](https://publicntp.org)
 - [PXP](https://pxp200.com)
 - [Rooster Glue, Inc.](https://roosterglue.com)
