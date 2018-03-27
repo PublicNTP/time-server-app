@@ -1,21 +1,20 @@
 package org.publicntp.gnssreader.listener;
 
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.OnNmeaMessageListener;
 import android.os.Bundle;
 
 import org.publicntp.gnssreader.repository.LocationStorage;
-import org.publicntp.gnssreader.ui.MainActivity;
+import org.publicntp.gnssreader.repository.TimeStorage;
+
+import java.util.Date;
 
 
-public class LocationListenerImpl extends GnssStatus.Callback implements LocationListener {
+public class SatelliteLocationListener extends GnssStatus.Callback implements android.location.LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        TimeStorage.setMillis(location.getTime());
         LocationStorage.setLocation(location);
     }
 

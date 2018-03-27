@@ -27,7 +27,7 @@ public class NmeaMsgListener implements OnNmeaMessageListener {
         // Parse NMEA message
         NmeaMsg nmeaMsg = new NmeaMsg(message);
 
-        TimeStorage.setNmeaDate(new Date(timestamp));
+        TimeStorage.setDate(new Date(timestamp));
 
         boolean cmdSeen = false;
         for (int i = 0; i < mNmeaCmdsSeen.size(); ++i) {

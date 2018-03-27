@@ -11,27 +11,33 @@ import java.util.Date;
  */
 
 public class TimeStorage {
-    private static Date nmeaDate;
-    private static Date nmeaAcquiredDate;
+    private static Date satelliteDate;
+    private static Date acquiredDate;
 
-    public static void setNmeaDate(Date nmeaDate) {
-        nmeaAcquiredDate = new Date();
-        TimeStorage.nmeaDate = nmeaDate;
+    public static void setMillis(Long millis) {
+        long currentTime = System.currentTimeMillis();
+        satelliteDate = new Date(millis);
+        acquiredDate = new Date(currentTime);
+    }
+
+    public static void setDate(Date nmeaDate) {
+        acquiredDate = new Date();
+        TimeStorage.satelliteDate = nmeaDate;
     }
 
     public static long getDateDifference() throws Exception {
-        if(nmeaDate == null) throw new Exception("No NMEA Date acquired.");
-        return Math.abs(nmeaDate.getTime() - nmeaAcquiredDate.getTime()); // This is the difference between system and Nmea time
+        if(satelliteDate == null) throw new Exception("No Satellite Date acquired.");
+        return Math.abs(satelliteDate.getTime() - acquiredDate.getTime()); // This is the difference between system and satellite time
     }
 
     public static long getAdjustedMillis() {
-        if(nmeaDate == null) return System.currentTimeMillis();
+        if(satelliteDate == null) return System.currentTimeMillis();
 
-        return nmeaDate.getTime() + (new Date().getTime() - nmeaAcquiredDate.getTime());
+        return satelliteDate.getTime() + (new Date().getTime() - acquiredDate.getTime());
     }
 
     public static Date getAdjustedDate() {
-        if(nmeaDate == null) return new Date();
+        if(satelliteDate == null) return new Date();
 
         return new Date(getAdjustedMillis());
     }

@@ -42,7 +42,7 @@ public class GNSSMessageService extends Service {
         Location location;
 
         public LocationListenerImpl(String provider) {
-            //Log.e(TAG, "LocationListener " + provider);
+            //Log.e(TAG, "SatelliteLocationListener " + provider);
             location = new Location(provider);
         }
 

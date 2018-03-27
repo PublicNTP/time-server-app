@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="org.publicntp.gnssreader.ui.ServerFragment">
 
-    <com.github.mikephil.charting.charts.ScatterChart
-        android:id="@+id/server_graph_activity"
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/server_line_graph"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="16dp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/server_layout_net_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/server_graph_activity">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/server_display_net_activity"
@@ -39,7 +30,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginStart="0dp"
             android:fontFamily="@font/roboto"
-            android:text="1,234"
+            android:text="@string/placeholder_server_traffic"
             android:textColor="@color/primary_dark"
             android:textSize="45sp"
             tools:text="0,000" />
@@ -59,27 +50,21 @@
             android:textSize="20sp"
             tools:text="units" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/server_layout_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/server_layout_net_activity">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/server_display_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="0dp"
             android:fontFamily="@font/roboto"
             android:text="23:45:43"
             android:textColor="@color/primary_dark"
@@ -90,29 +75,22 @@
             android:id="@+id/server_display_time_zone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/server_display_time"
-            android:layout_alignBottom="@+id/server_display_time"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/server_display_time"
             android:fontFamily="@font/roboto_medium"
-            android:text="UTC"
+            android:text="@string/default_timezone"
             android:textColor="@color/primary_dark"
             android:textSize="20sp"
             tools:text="TZONE" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/server_layout_offset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/server_layout_time">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/server_text_offset"
@@ -130,17 +108,14 @@
             android:id="@+id/time_text_offset_units"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/server_text_offset"
-            android:layout_alignBottom="@+id/server_text_offset"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/server_text_offset"
             android:fontFamily="@font/roboto_light"
-            android:text="seconds"
+            android:text="@string/time_accuracy_units"
             android:textColor="@color/primary"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/server_btn_toggle"
@@ -151,14 +126,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="Server On"
+        android:text="@string/server_status"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/server_layout_offset"
         tools:text="server toggle" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
