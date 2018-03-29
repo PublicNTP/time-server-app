@@ -16,35 +16,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:orientation="vertical"
         tools:context="org.publicntp.gnssreader.ui.TimeFragment">
 
-        <LinearLayout
-            android:id="@+id/time_layout_logo"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="10dp" />
 
-            <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/time_image_logo"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:contentDescription="@string/time_image_logo_desc"
-                android:src="@drawable/logo_spin_finite" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/time_layout_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/time_image_logo"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:contentDescription="@string/time_image_logo_desc"
+                    android:src="@drawable/logo_spin_finite" />
+
+                <TextView
+                    android:id="@+id/time_logo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/roboto"
+                    android:text="PublicNTP"
+                    android:textColor="@color/black"
+                    android:textSize="26sp" />
+
+
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/time_options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/roboto"
-                android:text="PublicNTP"
-                android:textColor="@color/black"
-                android:textSize="40sp" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:textSize="18sp"
+                android:text="@string/time_options_text"
+                android:textColor="@color/blue" />
+        </RelativeLayout>
 
-        </LinearLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,8 +86,9 @@
                 android:fontFamily="@font/roboto"
                 android:text="@{timestorage.getAdjustedDateString(context)}"
                 android:textColor="@color/primary_dark"
-                android:textSize="45sp"
-                tools:text="00:00:00" />
+                android:textSize="@dimen/large_detail_text_size"
+                android:textStyle="bold"
+                tools:text="00:00:00.00" />
 
             <TextView
                 android:id="@+id/time_text_time_zone"
@@ -90,7 +117,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="@{timestorage.getDateDifference()}"
                 android:textColor="@color/primary"
-                android:textSize="34sp"
+                android:textSize="@dimen/detail_text_size"
                 tools:text="±0.000" />
 
             <TextView
@@ -100,14 +127,14 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/roboto_light"
-                android:text="seconds"
+                android:text="@string/time_accuracy_units"
                 android:textColor="@color/primary"
-                android:textSize="20sp" />
+                android:textSize="@dimen/unit_text_size" />
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="30dp" />
 
         <TextView
             android:id="@+id/time_text_latitude_display"
@@ -118,7 +145,8 @@
             android:fontFamily="@font/roboto"
             android:text="@{locationstorage.stringLatitude}"
             android:textColor="@color/primary_dark"
-            android:textSize="45sp"
+            android:textSize="@dimen/large_detail_text_size"
+            android:textStyle="bold"
             tools:text="000.0000° N" />
 
         <TextView
@@ -130,7 +158,8 @@
             android:fontFamily="@font/roboto"
             android:text="@{locationstorage.stringLongitude}"
             android:textColor="@color/primary_dark"
-            android:textSize="45sp"
+            android:textSize="@dimen/large_detail_text_size"
+            android:textStyle="bold"
             tools:text="000.0000° W" />
 
         <LinearLayout
@@ -145,7 +174,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="@{locationstorage.stringError}"
                 android:textColor="@color/primary"
-                android:textSize="34sp"
+                android:textSize="@dimen/detail_text_size"
                 tools:text="±0.00" />
 
             <TextView
@@ -157,7 +186,7 @@
                 android:fontFamily="@font/roboto_light"
                 android:text="@string/distance_accuracy_units"
                 android:textColor="@color/primary"
-                android:textSize="20sp"
+                android:textSize="@dimen/unit_text_size"
                 tools:text="units" />
         </LinearLayout>
 

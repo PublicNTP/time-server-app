@@ -18,6 +18,7 @@ import android.widget.TextView;
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.repository.LocationStorage;
+import org.publicntp.gnssreader.ui.custom.SatelliteRadialChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,8 @@ import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 public class SatelliteFragment extends Fragment implements SensorEventListener {
-    @BindView(R.id.satellite_radial_chart) SatelliteRadialChart radialChart;
+    @BindView(R.id.satellite_radial_chart)
+    SatelliteRadialChart radialChart;
     @BindView(R.id.satellite_bar_chart) ColumnChartView barChart;
     @BindView(R.id.satellites_in_view) TextView satellitesInView;
     @BindView(R.id.satellites_in_use) TextView satellitesInUse;

@@ -31,7 +31,7 @@ public class LocationStorageConsumer {
             double longitude = LocationStorage.getLongitude();
             return String.format("%.4f° %s", (float) longitude, getLongitudeDirection(longitude));
         } catch(NullPointerException e) {
-            return "Waiting for GPS...";
+            return "One moment...";
         }
     }
 

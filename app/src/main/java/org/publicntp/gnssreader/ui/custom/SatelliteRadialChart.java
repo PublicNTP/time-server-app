@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.ui.custom;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

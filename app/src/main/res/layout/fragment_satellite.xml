@@ -57,7 +57,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <org.publicntp.gnssreader.ui.SatelliteRadialChart
+    <org.publicntp.gnssreader.ui.custom.SatelliteRadialChart
         android:id="@+id/satellite_radial_chart"
         android:layout_width="match_parent"
         android:layout_marginTop="-25dp"

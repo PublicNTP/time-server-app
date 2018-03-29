@@ -34,9 +34,11 @@
     <string name="in_view">in view</string>
     <string name="in_use">in use</string>
     <string name="distance_accuracy_units">ft</string>
-    <string name="time_accuracy_units">seconds</string>
+    <string name="time_accuracy_units">sec</string>
     <string name="server_status">Server Off</string>
     <string name="default_timezone">UTC</string>
     <string name="placeholder_server_traffic">1,234</string>
+    <string name="time_options_text">OPTIONS</string>
+    <string name="placeholder_time_offset">±1.234</string>
 
 </resources>
