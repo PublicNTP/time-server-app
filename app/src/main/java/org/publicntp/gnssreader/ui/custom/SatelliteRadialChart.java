@@ -1,17 +1,16 @@
 package org.publicntp.gnssreader.ui.custom;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
@@ -84,10 +83,10 @@ public class SatelliteRadialChart extends View {
         this.setOnTouchListener((v, event) -> {
             compassEnabled = !compassEnabled;
             if(!compassEnabled) {
-                Toast.makeText(getContext(), "Compass Disabled.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
                 resetRotation();
             } else {
-                Toast.makeText(getContext(), "Compass Enabled.", Toast.LENGTH_SHORT).show();
+                Snackbar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
             }
             return false;
         });

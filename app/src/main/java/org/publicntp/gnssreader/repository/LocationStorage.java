@@ -21,15 +21,15 @@ public class LocationStorage {
         LocationStorage.location = location;
     }
 
-    public static double getLatitude() throws NullPointerException {
+    public static double getLatitude() {
         return location.getLatitude();
     }
 
-    public static double getLongitude() throws NullPointerException {
+    public static double getLongitude() {
         return location.getLongitude();
     }
 
-    public static float getError() throws NullPointerException {
+    public static float getAccuracy() {
         return location.getAccuracy();
     }
 
@@ -42,5 +42,9 @@ public class LocationStorage {
 
     public static List<SatelliteModel> getSatelliteList() {
         return new ArrayList<>(satelliteList);
+    }
+
+    public static boolean isPopulated() {
+        return location != null;
     }
 }

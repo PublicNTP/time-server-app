@@ -8,4 +8,7 @@
     <dimen name="large_detail_text_size">55sp</dimen>
     <dimen name="detail_text_size">34sp</dimen>
     <dimen name="unit_text_size">20sp</dimen>
+    <dimen name="option_text_size">20sp</dimen>
+    <dimen name="option_spacing">20dp</dimen>
+    <dimen name="option_icon_width">30dp</dimen>
 </resources>

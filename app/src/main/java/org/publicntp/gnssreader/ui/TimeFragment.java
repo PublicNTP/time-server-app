@@ -1,8 +1,6 @@
 package org.publicntp.gnssreader.ui;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +17,7 @@ import org.publicntp.gnssreader.helper.LocaleHelper;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 import org.publicntp.gnssreader.repository.TimeStorageConsumer;
+import org.publicntp.gnssreader.ui.custom.SettingsDialogFragment;
 
 import java.util.Locale;
 import java.util.TimeZone;
@@ -73,15 +72,17 @@ public class TimeFragment extends BaseFragment {
 
     @OnClick(R.id.time_options)
     public void timeOptionsOnClick() {
-        String[] items = new String[]{"UTC", "Local"};
-        new AlertDialog.Builder(getContext()).setTitle("Select Timezone:").setItems(items, new DialogInterface.OnClickListener() {
+        SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
+        settingsDialogFragment.setOnOptionPicked(new SettingsDialogFragment.OnOptionPicked() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String zone = items[which];
-                new TimezoneStore().set(getContext(), zone);
-                setTimezoneDisplayText(zone);
+            public void onTimezonePicked(String timezone) {
+                setTimezoneDisplayText(timezone);
             }
-        }).show();
+
+            @Override
+            public void onLocationPicked(String units) {}
+        });
+        settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }
 
     private void setTimezoneDisplayText(String zone) {

@@ -13,7 +13,7 @@ import java.util.Date;
  * ignores the key ID and message digest fields.
  * 
  * For convenience, this class exposes message values as native Java types, not
- * the NTP-specified data formats.  For example, timestamps are
+ * the NTP-specified serverLogData formats.  For example, timestamps are
  * stored as doubles (as opposed to the NTP unsigned 64-bit fixed point
  * format).
  * 
@@ -273,7 +273,7 @@ public class NtpMessage
 	
 	
 	/**
-	 * This method constructs the data bytes of a raw NTP packet.
+	 * This method constructs the serverLogData bytes of a raw NTP packet.
 	 */
 	public byte[] toByteArray()
 	{

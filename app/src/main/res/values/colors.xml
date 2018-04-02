@@ -9,6 +9,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <color name="greyreallydark">#333333</color>
     <color name="greydark">#555555</color>
     <color name="grey">#999999</color>
     <color name="greylight">#CCCCCC</color>

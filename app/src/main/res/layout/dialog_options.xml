@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_zone"
+        android:textSize="@dimen/option_text_size"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/options_timezone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/option_spacing" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_units"
+        android:textSize="@dimen/option_text_size"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/options_location_units"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/option_spacing" />
+
+    <LinearLayout
+        android:id="@+id/options_share_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="@dimen/option_icon_width"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/share" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/option_spacing"
+            android:text="@string/share_location"
+            android:textStyle="bold"
+            android:textSize="@dimen/option_text_size" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/option_spacing" />
+
+    <LinearLayout
+        android:id="@+id/options_copy_to_clipboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="@dimen/option_icon_width"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/copy_to_clipboard" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/option_spacing"
+            android:text="@string/copy_to_clipboard"
+            android:textStyle="bold"
+            android:textSize="@dimen/option_text_size" />
+    </LinearLayout>
+</LinearLayout>

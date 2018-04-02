@@ -59,8 +59,4 @@ public class BaseFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
-    protected void showToastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
 }

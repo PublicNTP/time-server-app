@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="org.publicntp.gnssreader.ui.SatelliteFragment">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/satellite_layout_count"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="10dp"
-        android:layout_weight="3.5">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="org.publicntp.gnssreader.ui.SatelliteFragment">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/satellite_layout_count"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="3.5">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/in_view"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/satellites_in_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="36sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_view"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/satellites_in_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="36sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:orientation="vertical">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/in_use"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/satellites_in_use"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textAlignment="textEnd"
-                android:textSize="36sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/in_use"
+                    android:textSize="18sp" />
 
-        </LinearLayout>
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/satellites_in_use"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAlignment="textEnd"
+                    android:textSize="36sp" />
 
-    <org.publicntp.gnssreader.ui.custom.SatelliteRadialChart
-        android:id="@+id/satellite_radial_chart"
-        android:layout_width="match_parent"
-        android:layout_marginTop="-25dp"
-        android:layout_height="0dp"
-        android:layout_weight="16" />
+            </LinearLayout>
+        </RelativeLayout>
 
-
-    <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/satellite_bar_chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8" />
+        <org.publicntp.gnssreader.ui.custom.SatelliteRadialChart
+            android:id="@+id/satellite_radial_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="-25dp"
+            android:layout_weight="16" />
 
 
-</LinearLayout>
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:id="@+id/satellite_bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8" />
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

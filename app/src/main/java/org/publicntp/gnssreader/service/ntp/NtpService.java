@@ -7,10 +7,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -18,6 +18,9 @@ import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.ui.MainActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_MIN;
 
@@ -35,6 +38,7 @@ public class NtpService extends Service {
     public static NtpService getNtpService() {
         return ntpService;
     }
+
 
     public static Intent ignitionIntent(Context context) {
         return new Intent(context, NtpService.class);
@@ -66,7 +70,7 @@ public class NtpService extends Service {
         PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.icon_large_w_transparency)
                 .setContentTitle("NTP Server Running")
                 .setContentText("Running on port " + simpleNTPServer.getPort())
                 .setPriority(PRIORITY_MIN)
@@ -82,7 +86,6 @@ public class NtpService extends Service {
         simpleNTPServer = new SimpleNTPServer(1234);
         try {
             simpleNTPServer.start();
-            Toast.makeText(this, "Started server on port " + simpleNTPServer.getPort(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             this.stopSelf();
@@ -101,5 +104,51 @@ public class NtpService extends Service {
             simpleNTPServer = null;
         }
         ntpService = null;
+    }
+
+    public ServerLogDataPoint getDataPoint(int seed) {
+        return getDataPoint(System.currentTimeMillis(), seed);
+    }
+
+    public ServerLogDataPoint getDataPoint(long i, int seed) {
+        Random random = new Random();
+        seed += random.nextInt() % 10;
+        if(seed < 0) seed = 0;
+        return new ServerLogDataPoint(i, seed);
+    }
+
+    public List<ServerLogDataPoint> createServerLogData() {
+        serverLogData = new ArrayList<>();
+        int current = 100;
+        long end = System.currentTimeMillis();
+        for (long i = end - 60000; i < end; i += 1000) {
+            ServerLogDataPoint point = getDataPoint(i, current);
+            current = point.numberReceived;
+            serverLogData.add(point);
+        }
+        return serverLogData;
+    }
+
+    List<ServerLogDataPoint> serverLogData;
+    public List<ServerLogDataPoint> getServerLogData() {
+        if(serverLogData == null) {
+            serverLogData = createServerLogData();
+        }
+        return serverLogData;
+    }
+
+    public void incrementMockData() {
+        if(serverLogData != null && serverLogData.size() != 0) {
+            serverLogData.remove(0);
+            serverLogData.add(getDataPoint(mostRecentData().numberReceived));
+        }
+    }
+
+    public ServerLogDataPoint mostRecentData() {
+        List<ServerLogDataPoint> serverLogDataPoints = getServerLogData();
+        if(serverLogDataPoints == null || serverLogDataPoints.size() == 0) {
+            return null;
+        }
+        return serverLogDataPoints.get(serverLogDataPoints.size()-1);
     }
 }
