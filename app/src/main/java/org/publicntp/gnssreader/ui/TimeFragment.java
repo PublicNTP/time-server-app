@@ -76,22 +76,13 @@ public class TimeFragment extends BaseFragment {
         settingsDialogFragment.setOnOptionPicked(new SettingsDialogFragment.OnOptionPicked() {
             @Override
             public void onTimezonePicked(String timezone) {
-                setTimezoneDisplayText(timezone);
+                timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
             }
 
             @Override
             public void onLocationPicked(String units) {}
         });
         settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
-    }
-
-    private void setTimezoneDisplayText(String zone) {
-        if(zone.equals("UTC")) {
-            timezoneDisplay.setText(zone);
-        } else {
-            Locale locale = LocaleHelper.getUserLocale(getContext());
-            timezoneDisplay.setText(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT, locale));
-        }
     }
 
     private void initializeSpinningLogo() {
@@ -116,7 +107,8 @@ public class TimeFragment extends BaseFragment {
             }
         }, invalidationFrequency, invalidationFrequency);
 
-        setTimezoneDisplayText(new TimezoneStore().get(getContext()));
+        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
+
         super.onResume();
     }
 

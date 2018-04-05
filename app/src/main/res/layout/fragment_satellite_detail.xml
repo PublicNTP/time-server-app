@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/satellite_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:hint="@string/satellite_title_example"
+            android:textColor="@color/blue"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/satellite_detail_close"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/close" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/satellite_detail_label_margin"
+                android:text="SVN: "
+                android:textSize="@dimen/satellite_detail_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/satellite_svn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="66"
+                android:textSize="@dimen/satellite_detail_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/satellite_detail_label_margin"
+                android:text="@string/constellation"
+                android:textSize="@dimen/satellite_detail_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/satellite_constellation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Galileo"
+                android:textSize="@dimen/satellite_detail_text_size" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/satellite_detail_label_margin"
+            android:text="@string/signal_to_noise_ratio"
+            android:textSize="@dimen/satellite_detail_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/satellite_signal_to_noise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="26.1 to 1"
+            android:textSize="@dimen/satellite_detail_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/satellite_detail_label_margin"
+            android:text="@string/altitude_angle"
+            android:textSize="@dimen/satellite_detail_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/satellite_altitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/satellite_altitude_example"
+            android:textSize="@dimen/satellite_detail_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/satellite_detail_label_margin"
+            android:text="@string/heading"
+            android:textSize="@dimen/satellite_detail_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/satellite_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/satellite_heading_example"
+            android:textSize="@dimen/satellite_detail_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -38,6 +39,7 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 
@@ -57,6 +59,10 @@ public class ServerFragment extends Fragment {
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
+
+    @BindColor(R.color.packet_outgoing_green) int outgoing_green;
+    @BindColor(R.color.packet_incoming_purple) int incoming_purple;
+    @BindColor(R.color.black) int black;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,9 +85,11 @@ public class ServerFragment extends Fragment {
         long startTime = System.currentTimeMillis();
         int counter = 0; //Hello-charts prefers to have incremental x values with calculated x labels
         for (ServerLogDataPoint serverLogDataPoint : data) {
-            SubcolumnValue subcolumnValue = new SubcolumnValue(serverLogDataPoint.numberReceived);//.setLabel(key + "");
+            SubcolumnValue receivedValue = new SubcolumnValue(serverLogDataPoint.numberReceived).setColor(incoming_purple);
+            SubcolumnValue sentValue = new SubcolumnValue(serverLogDataPoint.numberSent).setColor(outgoing_green);
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
-            subcolumnValues.add(subcolumnValue);
+            subcolumnValues.add(receivedValue);
+            subcolumnValues.add(sentValue);
 
             Column column = new Column().setValues(subcolumnValues);
             AxisValue axisValue = new AxisValue(counter).setLabel("" + (serverLogDataPoint.timeReceived - startTime) / 1000);
@@ -91,29 +99,23 @@ public class ServerFragment extends Fragment {
             counter++;
         }
         ColumnChartData columnChartData = new ColumnChartData(columns);
+        columnChartData.setStacked(true);
 
         Axis xAxis = new Axis();
         xAxis.setValues(axisValues);
         xAxis.setHasLines(true);
         xAxis.setName("Seconds Ago");
+        xAxis.setTextColor(black);
 
         Axis yAxis = new Axis();
         yAxis.setHasLines(true);
+        yAxis.setTextColor(black);
 
         columnChartData.setAxisXBottom(xAxis);
         columnChartData.setAxisYLeft(yAxis);
 
         barChartView.setColumnChartData(columnChartData);
         barChartView.setZoomEnabled(false);
-    }
-
-    private void setTimezoneDisplayText(String zone) {
-        if (zone.equals("UTC")) {
-            timezoneDisplay.setText(zone);
-        } else {
-            Locale locale = LocaleHelper.getUserLocale(getContext());
-            timezoneDisplay.setText(TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT, locale));
-        }
     }
 
     @Override
@@ -134,14 +136,14 @@ public class ServerFragment extends Fragment {
             public void run() {
                 viewBinding.invalidateAll();
                 uiHandler.post(() -> {
-                    if(NtpService.getNtpService() != null) {
+                    if (NtpService.getNtpService() != null) {
                         List<ServerLogDataPoint> logData = NtpService.getNtpService().getServerLogData();
                         ServerLogDataPoint mostRecentData = NtpService.getNtpService().mostRecentData();
                         if (mostRecentData != null) {
-                            activityDisplay.setText("" + mostRecentData.numberReceived);
+                            activityDisplay.setText("" + (mostRecentData.numberReceived + mostRecentData.numberSent));
                         }
 
-                        if(lastIncrementedAt == null || System.currentTimeMillis() - lastIncrementedAt > incrementEvery) {
+                        if (lastIncrementedAt == null || System.currentTimeMillis() - lastIncrementedAt > incrementEvery) {
                             NtpService.getNtpService().incrementMockData();
                             lastIncrementedAt = System.currentTimeMillis();
                         }
@@ -154,7 +156,7 @@ public class ServerFragment extends Fragment {
             }
         }, graphRefreshFrequency, graphRefreshFrequency);
 
-        setTimezoneDisplayText(new TimezoneStore().get(getContext()));
+        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         toggleServerButton.setChecked(NtpService.getNtpService() != null);
         super.onResume();
     }
@@ -179,13 +181,13 @@ public class ServerFragment extends Fragment {
         }
 
         NtpService ntpService = NtpService.getNtpService();
-        if(toggleServerButton.isChecked()) {
+        if (toggleServerButton.isChecked()) {
             if (ntpService == null) {
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
                 toggleServerButton.setText("Server On");
             }
         } else {
-            if(ntpService != null) {
+            if (ntpService != null) {
                 ntpService.stopSelf();
                 toggleServerButton.setText("Server Off");
             }
@@ -198,11 +200,12 @@ public class ServerFragment extends Fragment {
         settingsDialogFragment.setOnOptionPicked(new SettingsDialogFragment.OnOptionPicked() {
             @Override
             public void onTimezonePicked(String timezone) {
-                setTimezoneDisplayText(timezone);
+                timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
             }
 
             @Override
-            public void onLocationPicked(String units) {}
+            public void onLocationPicked(String units) {
+            }
         });
         settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }

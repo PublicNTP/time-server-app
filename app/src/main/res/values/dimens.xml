@@ -11,4 +11,6 @@
     <dimen name="option_text_size">20sp</dimen>
     <dimen name="option_spacing">20dp</dimen>
     <dimen name="option_icon_width">30dp</dimen>
+    <dimen name="satellite_detail_text_size">20sp</dimen>
+    <dimen name="satellite_detail_label_margin">8dp</dimen>
 </resources>

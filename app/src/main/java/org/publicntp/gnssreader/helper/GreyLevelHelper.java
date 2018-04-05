@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.helper;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -14,8 +14,8 @@ import java.util.TreeMap;
  */
 
 public class GreyLevelHelper {
-    private static Map<Integer, Integer> greyLevels = new TreeMap<>();
-    private static Map<Integer, Paint> greyPaintLevels = new TreeMap<>();
+    private static TreeMap<Integer, Integer> greyLevels = new TreeMap<>();
+    private static TreeMap<Integer, Paint> greyPaintLevels = new TreeMap<>();
 
     static {
         greyLevels.put(Integer.MIN_VALUE, R.color.greylight);

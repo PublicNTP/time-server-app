@@ -8,7 +8,7 @@ import android.location.GnssStatus;
 
 public class SatelliteModel {
     public final int constellationType;
-    public final int prn;
+    public final int svn;
     public final float Cn0DbHz;
     public final float elevationDegrees;
     public final float azimuthDegrees;
@@ -17,7 +17,7 @@ public class SatelliteModel {
     public final boolean usedInFix;
 
     public SatelliteModel(int i, GnssStatus status) {
-        prn = status.getSvid(i);
+        svn = status.getSvid(i);
         constellationType = status.getConstellationType(i);
         Cn0DbHz = status.getCn0DbHz(i);
         elevationDegrees = status.getElevationDegrees(i);
@@ -25,5 +25,26 @@ public class SatelliteModel {
         ephemerisData = status.hasEphemerisData(i);
         almanacData = status.hasAlmanacData(i);
         usedInFix = status.usedInFix(i);
+    }
+
+    public String constellationName() {
+        switch (constellationType) {
+            case GnssStatus.CONSTELLATION_BEIDOU:
+                return "BEIDOU";
+            case GnssStatus.CONSTELLATION_GALILEO:
+                return "GALILEO";
+            case GnssStatus.CONSTELLATION_GLONASS:
+                return "GLONASS";
+            case GnssStatus.CONSTELLATION_GPS:
+                return "GPS";
+            case GnssStatus.CONSTELLATION_QZSS:
+                return "QZSS";
+            case GnssStatus.CONSTELLATION_SBAS:
+                return "SBAS";
+            case GnssStatus.CONSTELLATION_UNKNOWN:
+                return "UNKNOWN";
+            default:
+                return "UNKNOWN";
+        }
     }
 }

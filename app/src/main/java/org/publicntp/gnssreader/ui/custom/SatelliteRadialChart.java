@@ -14,11 +14,11 @@ import android.view.animation.RotateAnimation;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.ui.GreyLevelHelper;
+import org.publicntp.gnssreader.repository.LocationStorage;
+import org.publicntp.gnssreader.helper.GreyLevelHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SatelliteRadialChart extends View {
     private List<SatelliteModel> satelliteModels = new ArrayList<>();
@@ -27,6 +27,7 @@ public class SatelliteRadialChart extends View {
     private Paint textFill;
     private Paint cardinalTextFill;
     private Paint whiteFill;
+    private Paint highlightFill;
     private Paint lightGrey;
     private Paint greyStroke;
 
@@ -53,7 +54,7 @@ public class SatelliteRadialChart extends View {
     }
 
     public float satelliteScale() {
-        return .75f;
+        return .90f;
     }
 
     public void init() {
@@ -72,6 +73,9 @@ public class SatelliteRadialChart extends View {
         blackFill = new Paint(Paint.ANTI_ALIAS_FLAG);
         blackFill.setColor(ContextCompat.getColor(this.getContext(), R.color.black));
 
+        highlightFill = new Paint(Paint.ANTI_ALIAS_FLAG);
+        highlightFill.setColor(ContextCompat.getColor(this.getContext(), R.color.blue));
+
         lightGrey = new Paint(Paint.ANTI_ALIAS_FLAG);
         lightGrey.setColor(ContextCompat.getColor(this.getContext(), R.color.greylight));
 
@@ -82,7 +86,7 @@ public class SatelliteRadialChart extends View {
 
         this.setOnTouchListener((v, event) -> {
             compassEnabled = !compassEnabled;
-            if(!compassEnabled) {
+            if (!compassEnabled) {
                 Snackbar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
                 resetRotation();
             } else {
@@ -95,22 +99,22 @@ public class SatelliteRadialChart extends View {
     public void setSatelliteModels(List<SatelliteModel> satelliteModels) {
         this.satelliteModels.clear();
         this.satelliteModels.addAll(satelliteModels);
-        List<Integer> prns = satelliteModels.stream().map(s -> s.prn).collect(Collectors.toList());
         this.invalidate();
     }
 
     float azimuth = 0f;
     Long lastSet;
+
     public void resetRotation() {
         rotateToNDegrees(0f);
     }
 
     public void rotateToNDegrees(float degrees) {
         RotateAnimation rotateAnimation;
-        if(Math.abs(degrees - azimuth) < 180) { //Always rotate less than halfway around
+        if (Math.abs(degrees - azimuth) < 180) { //Always rotate less than halfway around
             rotateAnimation = new RotateAnimation(-azimuth, -degrees, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
         } else {
-            rotateAnimation = new RotateAnimation(-azimuth, degrees-360f, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
+            rotateAnimation = new RotateAnimation(-azimuth, degrees - 360f, Animation.RELATIVE_TO_SELF, .5f, Animation.RELATIVE_TO_SELF, .5f);
         }
         azimuth = degrees;
         lastSet = System.currentTimeMillis();
@@ -121,7 +125,7 @@ public class SatelliteRadialChart extends View {
     }
 
     public void setCompassReading(float degrees) {
-        if(!compassEnabled) {
+        if (!compassEnabled) {
             return;
         }
 
@@ -191,16 +195,23 @@ public class SatelliteRadialChart extends View {
 
     private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas) {
         Rect bounds = canvas.getClipBounds();
-        float radius = getRadius(canvas) * .80f; // don't let satellites go out of bounds
+        float radius = getRadius(canvas) * .85f; // don't let satellites go out of bounds
 
         // Degrees in this instance are counted clockwise from North (0)
-        float azimuthDegreesRelativeToNorth = 90f - satelliteModel.azimuthDegrees;
+        float azimuthDegreesRelativeToNorth = satelliteModel.azimuthDegrees - 90f;
 
         int magnitude = (int) (radius * Math.cos(Math.toRadians(satelliteModel.elevationDegrees)));
         int x = (int) (magnitude * Math.cos(Math.toRadians(azimuthDegreesRelativeToNorth)));
         int y = (int) (magnitude * Math.sin(Math.toRadians(azimuthDegreesRelativeToNorth)));
         x = bounds.centerX() + x;
         y = bounds.centerY() + y;
+
+        Paint paint;
+        if(LocationStorage.isSelected(satelliteModel)) {
+            paint = highlightFill;
+        } else {
+            paint = GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz);
+        }
 
         float shapeRadius = 30f * satelliteScale();
         if (satelliteModel.usedInFix) {
@@ -209,10 +220,11 @@ public class SatelliteRadialChart extends View {
                             (int) (y - shapeRadius),
                             (int) (x + shapeRadius),
                             (int) (y + shapeRadius)),
-                    GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz));
+                    paint);
         } else {
-            canvas.drawCircle(x, y, shapeRadius, GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz));
+            canvas.drawCircle(x, y, shapeRadius, paint);
         }
-        canvas.drawText(satelliteModel.prn + "", x + shapeRadius * 1.2f, y + shapeRadius / 2, textFill);
+
+        canvas.drawText(satelliteModel.svn + "", x + shapeRadius * 1.3f, y + shapeRadius / 1.6f, textFill);
     }
 }

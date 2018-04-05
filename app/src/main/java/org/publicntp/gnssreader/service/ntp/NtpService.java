@@ -123,7 +123,7 @@ public class NtpService extends Service {
         long end = System.currentTimeMillis();
         for (long i = end - 60000; i < end; i += 1000) {
             ServerLogDataPoint point = getDataPoint(i, current);
-            current = point.numberReceived;
+            current = point.numberReceived + point.numberSent;
             serverLogData.add(point);
         }
         return serverLogData;
@@ -140,7 +140,7 @@ public class NtpService extends Service {
     public void incrementMockData() {
         if(serverLogData != null && serverLogData.size() != 0) {
             serverLogData.remove(0);
-            serverLogData.add(getDataPoint(mostRecentData().numberReceived));
+            serverLogData.add(getDataPoint(mostRecentData().numberReceived + mostRecentData().numberSent));
         }
     }
 

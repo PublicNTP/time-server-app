@@ -81,15 +81,11 @@ public class SettingsDialogFragment extends DialogFragment {
         timezoneChoices = getResources().getStringArray(R.array.timezone_choices);
         locationChoices = getResources().getStringArray(R.array.location_choices);
 
-        timezoneSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.timezone_choices, android.R.layout.simple_spinner_item));
-        locationSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.location_choices, android.R.layout.simple_spinner_item));
+        timezoneSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.timezone_choices, R.layout.spinner_item));
+        locationSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.location_choices, R.layout.spinner_item));
 
         setSpinnerSelection(new TimezoneStore().get(activity), timezoneChoices, timezoneSpinner);
         //TODO set selection for location spinner
-        //setSpinnerSelection(new TimezoneStore().get(activity), timezoneChoices, timezoneSpinner);
-
-        //builder.setPositiveButton("Done", (dialog, which) -> {
-        //})
         builder.setView(rootView);
         return builder.create();
     }

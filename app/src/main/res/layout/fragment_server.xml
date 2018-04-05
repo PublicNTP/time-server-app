@@ -17,15 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_margin="10dp"
             tools:context="org.publicntp.gnssreader.ui.ServerFragment">
 
             <lecho.lib.hellocharts.view.ColumnChartView
                 android:id="@+id/server_bar_graph"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp" />
+                android:layout_height="210dp" />
 
             <LinearLayout
                 android:id="@+id/server_layout_net_activity"
