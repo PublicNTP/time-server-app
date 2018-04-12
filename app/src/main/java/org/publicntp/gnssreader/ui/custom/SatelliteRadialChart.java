@@ -3,6 +3,7 @@ package org.publicntp.gnssreader.ui.custom;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.helper.GreyLevelHelper;
@@ -87,10 +89,10 @@ public class SatelliteRadialChart extends View {
         this.setOnTouchListener((v, event) -> {
             compassEnabled = !compassEnabled;
             if (!compassEnabled) {
-                Snackbar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
+                Winebar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
                 resetRotation();
             } else {
-                Snackbar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
+                Winebar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
             }
             return false;
         });
@@ -193,6 +195,19 @@ public class SatelliteRadialChart extends View {
         canvas.drawText("N", bounds.centerX(), bounds.top + bounds.height() * .05f, cardinalTextFill);
     }
 
+    private void drawTriangle(Canvas canvas, float x, float y, float radius, Paint paint) {
+        radius *= 1.4;
+        Path triangle = new Path();
+        triangle.setFillType(Path.FillType.EVEN_ODD);
+        triangle.moveTo(x, y - radius);
+        float yOffset = radius / 2;
+        float xOffset = (float) (yOffset * Math.sqrt(3));
+        triangle.lineTo(x - xOffset, y + yOffset);
+        triangle.lineTo(x + xOffset, y + yOffset);
+        triangle.close();
+        canvas.drawPath(triangle, paint);
+    }
+
     private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas) {
         Rect bounds = canvas.getClipBounds();
         float radius = getRadius(canvas) * .85f; // don't let satellites go out of bounds
@@ -207,7 +222,7 @@ public class SatelliteRadialChart extends View {
         y = bounds.centerY() + y;
 
         Paint paint;
-        if(LocationStorage.isSelected(satelliteModel)) {
+        if (LocationStorage.isSelected(satelliteModel)) {
             paint = highlightFill;
         } else {
             paint = GreyLevelHelper.asPaint(getContext(), satelliteModel.Cn0DbHz);
@@ -215,14 +230,14 @@ public class SatelliteRadialChart extends View {
 
         float shapeRadius = 30f * satelliteScale();
         if (satelliteModel.usedInFix) {
+            drawTriangle(canvas, x, y, shapeRadius, paint);
+        } else {
             canvas.drawRect(new Rect(
                             (int) (x - shapeRadius),
                             (int) (y - shapeRadius),
                             (int) (x + shapeRadius),
                             (int) (y + shapeRadius)),
                     paint);
-        } else {
-            canvas.drawCircle(x, y, shapeRadius, paint);
         }
 
         canvas.drawText(satelliteModel.svn + "", x + shapeRadius * 1.3f, y + shapeRadius / 1.6f, textFill);

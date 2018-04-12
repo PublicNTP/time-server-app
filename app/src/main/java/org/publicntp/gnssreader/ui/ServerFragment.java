@@ -1,12 +1,13 @@
 package org.publicntp.gnssreader.ui;
 
 import android.databinding.DataBindingUtil;
-import android.icu.util.TimeZone;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,19 @@ import android.widget.ToggleButton;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentServerBinding;
-import org.publicntp.gnssreader.helper.LocaleHelper;
 import org.publicntp.gnssreader.helper.RootChecker;
+import org.publicntp.gnssreader.helper.TimeMillis;
+import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.TimeStorageConsumer;
-import org.publicntp.gnssreader.service.ntp.ServerLogDataPoint;
 import org.publicntp.gnssreader.service.ntp.NtpService;
+import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
+import org.publicntp.gnssreader.service.ntp.log.ServerLogMinuteSummary;
 import org.publicntp.gnssreader.ui.custom.SettingsDialogFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +42,6 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ColumnChartView;
 
 
@@ -51,9 +53,9 @@ public class ServerFragment extends Fragment {
     final int invalidationFrequency = 1;
 
     Timer graphRefreshTimer;
-    final int graphRefreshFrequency = 50;
-    final int incrementEvery = 1000;
-    Long lastIncrementedAt;
+    final int graphRefreshFrequency = (int) (5 * TimeMillis.SECOND);
+    RefreshGraphTask refreshGraphTask;
+    private boolean graphHasBeenInit = false;
 
     @BindView(R.id.server_btn_toggle) ToggleButton toggleServerButton;
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
@@ -79,20 +81,20 @@ public class ServerFragment extends Fragment {
     }
 
 
-    private void initBarChart(List<ServerLogDataPoint> data) {
+    private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
         List<AxisValue> axisValues = new ArrayList<>();
         long startTime = System.currentTimeMillis();
         int counter = 0; //Hello-charts prefers to have incremental x values with calculated x labels
-        for (ServerLogDataPoint serverLogDataPoint : data) {
-            SubcolumnValue receivedValue = new SubcolumnValue(serverLogDataPoint.numberReceived).setColor(incoming_purple);
-            SubcolumnValue sentValue = new SubcolumnValue(serverLogDataPoint.numberSent).setColor(outgoing_green);
+        for (ServerLogMinuteSummary minuteSummary : data) {
+            SubcolumnValue receivedValue = new SubcolumnValue(minuteSummary.inbound).setColor(incoming_purple);
+            SubcolumnValue sentValue = new SubcolumnValue(minuteSummary.outbound).setColor(outgoing_green);
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
             subcolumnValues.add(receivedValue);
             subcolumnValues.add(sentValue);
 
             Column column = new Column().setValues(subcolumnValues);
-            AxisValue axisValue = new AxisValue(counter).setLabel("" + (serverLogDataPoint.timeReceived - startTime) / 1000);
+            AxisValue axisValue = new AxisValue(counter).setLabel("" + ((minuteSummary.timeReceived - startTime) / TimeMillis.MINUTE));
 
             columns.add(column);
             axisValues.add(axisValue);
@@ -104,7 +106,7 @@ public class ServerFragment extends Fragment {
         Axis xAxis = new Axis();
         xAxis.setValues(axisValues);
         xAxis.setHasLines(true);
-        xAxis.setName("Seconds Ago");
+        xAxis.setName("Minutes Ago");
         xAxis.setTextColor(black);
 
         Axis yAxis = new Axis();
@@ -127,6 +129,13 @@ public class ServerFragment extends Fragment {
             @Override
             public void run() {
                 viewBinding.invalidateAll();
+                uiHandler.post(() -> {
+                    ServerLogMinuteSummary currentMinute = ServerLogMinuteSummary.fromGrouper(System.currentTimeMillis());
+                    activityDisplay.setText("" + currentMinute.getTotal());
+                    boolean serviceExists = NtpService.getNtpService() != null;
+                    toggleServerButton.setChecked(serviceExists);
+                    toggleServerButton.setText(serviceExists ? "Server On" : "Server Off");
+                });
             }
         }, invalidationFrequency, invalidationFrequency);
 
@@ -135,24 +144,8 @@ public class ServerFragment extends Fragment {
             @Override
             public void run() {
                 viewBinding.invalidateAll();
-                uiHandler.post(() -> {
-                    if (NtpService.getNtpService() != null) {
-                        List<ServerLogDataPoint> logData = NtpService.getNtpService().getServerLogData();
-                        ServerLogDataPoint mostRecentData = NtpService.getNtpService().mostRecentData();
-                        if (mostRecentData != null) {
-                            activityDisplay.setText("" + (mostRecentData.numberReceived + mostRecentData.numberSent));
-                        }
-
-                        if (lastIncrementedAt == null || System.currentTimeMillis() - lastIncrementedAt > incrementEvery) {
-                            NtpService.getNtpService().incrementMockData();
-                            lastIncrementedAt = System.currentTimeMillis();
-                        }
-
-                        initBarChart(logData);
-                    } else {
-                        initBarChart(new ArrayList<>());
-                    }
-                });
+                refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
+                refreshGraphTask.execute();
             }
         }, graphRefreshFrequency, graphRefreshFrequency);
 
@@ -175,21 +168,23 @@ public class ServerFragment extends Fragment {
 
     @OnCheckedChanged(R.id.server_btn_toggle)
     public void toggleServer() {
-        if (!RootChecker.isRootGiven()) {
-            Snackbar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_SHORT).show();
-            //return;
-        }
-
         NtpService ntpService = NtpService.getNtpService();
         if (toggleServerButton.isChecked()) {
             if (ntpService == null) {
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
-                toggleServerButton.setText("Server On");
+                graphHasBeenInit = true;
+                if (!RootChecker.isRootGiven()) {
+                    Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).setActionTextColor(ContextCompat.getColor(getContext(), R.color.white)).show();
+                }
             }
         } else {
             if (ntpService != null) {
                 ntpService.stopSelf();
-                toggleServerButton.setText("Server Off");
             }
         }
     }
@@ -208,5 +203,32 @@ public class ServerFragment extends Fragment {
             }
         });
         settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
+    }
+
+    private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {
+        private WeakReference<ServerFragment> fragmentReference;
+
+        RefreshGraphTask(ServerFragment fragment) {
+            super();
+            fragmentReference = new WeakReference<>(fragment);
+        }
+
+        @Override
+        protected List<ServerLogMinuteSummary> doInBackground(Void... voids) {
+            List<ServerLogMinuteSummary> logData = new ArrayList<>();
+            long minutes = 60;
+            for (long l = System.currentTimeMillis() - (minutes * TimeMillis.MINUTE); l < System.currentTimeMillis(); l += TimeMillis.MINUTE) {
+                logData.add(ServerLogMinuteSummary.fromGrouper(l));
+            }
+            return logData;
+        }
+
+        @Override
+        protected void onPostExecute(List<ServerLogMinuteSummary> logData) {
+            if (fragmentReference.get().graphHasBeenInit || logData.stream().anyMatch(summmary -> summmary.getTotal() > 0)) {
+                fragmentReference.get().uiHandler.post(() -> fragmentReference.get().initBarChart(logData));
+                fragmentReference.get().graphHasBeenInit = true;
+            }
+        }
     }
 }

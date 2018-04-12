@@ -6,13 +6,11 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.repository.LocationStorageConsumer;
@@ -28,7 +27,6 @@ import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import butterknife.OnItemSelected;
 
 /**
@@ -111,7 +109,7 @@ public class SettingsDialogFragment extends DialogFragment {
             shareIntent.putExtra(Intent.EXTRA_TEXT, new LocationStorageConsumer().getSharableLocation());
             startActivity(shareIntent);
         } else {
-            Snackbar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
+            Winebar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -121,9 +119,9 @@ public class SettingsDialogFragment extends DialogFragment {
             String location = new LocationStorageConsumer().getHumanReadableLocation();
             ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(ClipData.newPlainText("Location", location));
-            Snackbar.make(shareLocationButton, "Copied.", Snackbar.LENGTH_SHORT).show();
+            Winebar.make(shareLocationButton, "Copied.", Snackbar.LENGTH_SHORT).show();
         } else {
-            Snackbar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
+            Winebar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
         }
     }
 }

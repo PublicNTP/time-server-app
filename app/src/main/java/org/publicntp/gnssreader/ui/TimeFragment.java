@@ -2,6 +2,8 @@ package org.publicntp.gnssreader.ui;
 
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +41,7 @@ public class TimeFragment extends BaseFragment {
     @BindView(R.id.time_text_time_display) TextView TimeTextDisplay;
     @BindView(R.id.time_image_logo) GifImageView spinningLogo;
     @BindView(R.id.time_text_time_zone) TextView timezoneDisplay;
+    @BindView(R.id.time_logo_text) TextView timeLogoText;
 
     private GifDrawable spinningDrawable;
 
@@ -87,6 +90,7 @@ public class TimeFragment extends BaseFragment {
 
     private void initializeSpinningLogo() {
         spinningDrawable = (GifDrawable) spinningLogo.getDrawable();
+        //spinningDrawable.setColorFilter(timeLogoText.getCurrentTextColor(), PorterDuff.Mode.ADD);
         playLogoOnce();
     }
 

@@ -53,10 +53,10 @@
                     android:layout_marginBottom="0dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="packets/sec"
+                    android:text="packets/min"
                     android:textColor="@color/primary_dark"
                     android:textSize="@dimen/unit_text_size"
-                    tools:text="packets/sec" />
+                    tools:text="packets/min" />
 
             </LinearLayout>
 
@@ -147,7 +147,6 @@
                 android:textOff="@string/server_off"
                 android:textOn="@string/server_on"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 android:theme="@style/AppTheme.ToggleButton"
                 tools:text="Server On" />
 
