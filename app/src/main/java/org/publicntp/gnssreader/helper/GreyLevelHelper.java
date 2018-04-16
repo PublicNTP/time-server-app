@@ -19,9 +19,16 @@ public class GreyLevelHelper {
 
     static {
         greyLevels.put(Integer.MIN_VALUE, R.color.greylight);
-        greyLevels.put(5, R.color.grey);
-        greyLevels.put(15, R.color.greydark);
-        greyLevels.put(20, R.color.black);
+        greyLevels.put(5, R.color.grey9);
+        greyLevels.put(8, R.color.grey8);
+        greyLevels.put(11, R.color.grey7);
+        greyLevels.put(14, R.color.grey6);
+        greyLevels.put(16, R.color.grey5);
+        greyLevels.put(19, R.color.grey4);
+        greyLevels.put(22, R.color.grey3);
+        greyLevels.put(25, R.color.grey2);
+        greyLevels.put(28, R.color.grey1);
+        greyLevels.put(31, R.color.grey0);
     }
 
     private static Integer matchingKey(float f) {

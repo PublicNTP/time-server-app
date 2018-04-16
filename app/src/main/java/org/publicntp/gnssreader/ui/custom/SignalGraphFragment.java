@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.GreyLevelHelper;
 import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.ui.BaseFragment;
-import org.publicntp.gnssreader.helper.GreyLevelHelper;
 
 import java.util.ArrayList;
 import java.util.List;

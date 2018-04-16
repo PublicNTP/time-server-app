@@ -19,4 +19,15 @@
     <color name="packet_incoming_purple">#A17DB7</color>
     <color name="packet_outgoing_green">#7DBB8F</color>
 
+    <color name="grey9">#999999</color>
+    <color name="grey8">#888888</color>
+    <color name="grey7">#777777</color>
+    <color name="grey6">#666666</color>
+    <color name="grey5">#555555</color>
+    <color name="grey4">#444444</color>
+    <color name="grey3">#333333</color>
+    <color name="grey2">#222222</color>
+    <color name="grey1">#111111</color>
+    <color name="grey0">#000000</color>
+
 </resources>
