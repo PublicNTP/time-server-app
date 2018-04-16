@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -33,6 +35,7 @@ public class SignalGraphFragment extends BaseFragment {
     private OnSatelliteSelectedListener onSatelliteSelectedListener;
 
     @BindView(R.id.satellite_bar_chart) ColumnChartView signalGraph;
+    @BindView(R.id.signal_graph_scroll_container) HorizontalScrollView horizontalScrollView;
 
 
     public static SignalGraphFragment newInstance(List<SatelliteModel> satelliteModelList, @NonNull OnSatelliteSelectedListener onSatelliteSelectedListener) {
@@ -89,6 +92,7 @@ public class SignalGraphFragment extends BaseFragment {
         signalGraph.setColumnChartData(columnChartData);
         signalGraph.setZoomEnabled(false);
         signalGraph.setInteractive(true);
+        signalGraph.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
 
         signalGraph.setOnValueTouchListener(new ColumnChartOnValueSelectListener() {
             @Override
@@ -102,6 +106,11 @@ public class SignalGraphFragment extends BaseFragment {
 
             }
         });
+
+        ViewGroup.LayoutParams layoutParams = signalGraph.getLayoutParams();
+        layoutParams.width = Math.max(satelliteSignalValues.size() * 200, horizontalScrollView.getMeasuredWidth());
+        layoutParams.height = horizontalScrollView.getMeasuredHeight();
+        signalGraph.setLayoutParams(layoutParams);
     }
 
     public void setOnSatelliteSelectedListener(OnSatelliteSelectedListener onSatelliteSelectedListener) {
@@ -109,6 +118,6 @@ public class SignalGraphFragment extends BaseFragment {
     }
 
     public interface OnSatelliteSelectedListener {
-        public void onSatelliteSelected(SatelliteModel satelliteModel);
+        void onSatelliteSelected(SatelliteModel satelliteModel);
     }
 }

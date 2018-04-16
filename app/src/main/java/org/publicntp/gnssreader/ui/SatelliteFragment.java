@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.ui.custom.SatelliteDetailFragment;
@@ -42,7 +43,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
 
     private Timer refreshTimer = new Timer();
     private Handler handler = new Handler();
-    private final int REFRESH_DELAY = 1000;
+    private final int REFRESH_DELAY = (int) (TimeMillis.SECOND * 3);
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -89,7 +90,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
                     satellitesInViewLabel.bringToFront();
                 });
             }
-        }, REFRESH_DELAY, REFRESH_DELAY);
+        }, 0, REFRESH_DELAY);
 
         mSensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
@@ -185,5 +186,6 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
     public void onDetailClose() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.satellite_details_container, signalGraphFragment).commit();
+        signalGraphFragment.setSatelliteModels(LocationStorage.usedSatellites());
     }
 }

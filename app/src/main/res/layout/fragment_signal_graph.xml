@@ -1,9 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signal_graph_scroll_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:fillViewport="true">
 
-    <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/satellite_bar_chart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:id="@+id/satellite_bar_chart"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+</HorizontalScrollView>
