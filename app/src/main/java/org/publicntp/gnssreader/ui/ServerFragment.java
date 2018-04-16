@@ -24,7 +24,7 @@ import org.publicntp.gnssreader.repository.TimeStorageConsumer;
 import org.publicntp.gnssreader.service.ntp.NtpService;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogMinuteSummary;
-import org.publicntp.gnssreader.ui.custom.SettingsDialogFragment;
+import org.publicntp.gnssreader.ui.custom.OptionsDialogFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -52,8 +52,11 @@ public class ServerFragment extends Fragment {
     Handler uiHandler;
     final int invalidationFrequency = 1;
 
+    Timer updatePacketsTimer;
+    final int updatePacketsFrequency = (int) (.5f * TimeMillis.SECOND);
+
     Timer graphRefreshTimer;
-    final int graphRefreshFrequency = (int) (5 * TimeMillis.SECOND);
+    final int graphRefreshFrequency = (int) (3 * TimeMillis.SECOND);
     RefreshGraphTask refreshGraphTask;
     private boolean graphHasBeenInit = false;
 
@@ -130,14 +133,27 @@ public class ServerFragment extends Fragment {
             public void run() {
                 viewBinding.invalidateAll();
                 uiHandler.post(() -> {
-                    ServerLogMinuteSummary currentMinute = ServerLogMinuteSummary.fromGrouper(System.currentTimeMillis());
-                    activityDisplay.setText("" + currentMinute.getTotal());
-                    boolean serviceExists = NtpService.getNtpService() != null;
+                    boolean serviceExists = NtpService.exists();
                     toggleServerButton.setChecked(serviceExists);
                     toggleServerButton.setText(serviceExists ? "Server On" : "Server Off");
                 });
             }
-        }, invalidationFrequency, invalidationFrequency);
+        }, 0, invalidationFrequency);
+
+        updatePacketsTimer = new Timer();
+        updatePacketsTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                uiHandler.post(() -> {
+                    if (NtpService.exists()) {
+                        ServerLogMinuteSummary currentMinute = ServerLogDataPointGrouper.mostRecent();
+                        activityDisplay.setText("" + currentMinute.getTotal());
+                    } else {
+                        activityDisplay.setText("-");
+                    }
+                });
+            }
+        }, 0, updatePacketsFrequency);
 
         graphRefreshTimer = new Timer();
         graphRefreshTimer.schedule(new TimerTask() {
@@ -147,7 +163,7 @@ public class ServerFragment extends Fragment {
                 refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
                 refreshGraphTask.execute();
             }
-        }, graphRefreshFrequency, graphRefreshFrequency);
+        }, 0, graphRefreshFrequency);
 
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         toggleServerButton.setChecked(NtpService.getNtpService() != null);
@@ -160,6 +176,7 @@ public class ServerFragment extends Fragment {
 
         invalidationTimer.cancel();
         graphRefreshTimer.cancel();
+        updatePacketsTimer.cancel();
     }
 
     public static ServerFragment newInstance() {
@@ -174,11 +191,8 @@ public class ServerFragment extends Fragment {
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
                 graphHasBeenInit = true;
                 if (!RootChecker.isRootGiven()) {
-                    Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
 
-                        }
                     }).setActionTextColor(ContextCompat.getColor(getContext(), R.color.white)).show();
                 }
             }
@@ -191,8 +205,8 @@ public class ServerFragment extends Fragment {
 
     @OnClick(R.id.server_layout_time)
     public void timeOptionsOnClick() {
-        SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
-        settingsDialogFragment.setOnOptionPicked(new SettingsDialogFragment.OnOptionPicked() {
+        OptionsDialogFragment optionsDialogFragment = new OptionsDialogFragment();
+        optionsDialogFragment.setOnOptionPicked(new OptionsDialogFragment.OnOptionPicked() {
             @Override
             public void onTimezonePicked(String timezone) {
                 timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
@@ -202,7 +216,7 @@ public class ServerFragment extends Fragment {
             public void onLocationPicked(String units) {
             }
         });
-        settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
+        optionsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }
 
     private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {
@@ -215,12 +229,7 @@ public class ServerFragment extends Fragment {
 
         @Override
         protected List<ServerLogMinuteSummary> doInBackground(Void... voids) {
-            List<ServerLogMinuteSummary> logData = new ArrayList<>();
-            long minutes = 60;
-            for (long l = System.currentTimeMillis() - (minutes * TimeMillis.MINUTE); l < System.currentTimeMillis(); l += TimeMillis.MINUTE) {
-                logData.add(ServerLogMinuteSummary.fromGrouper(l));
-            }
-            return logData;
+            return ServerLogDataPointGrouper.oneHourSummary();
         }
 
         @Override

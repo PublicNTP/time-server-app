@@ -42,7 +42,7 @@
     <string name="placeholder_time_offset">±1.234</string>
     <string name="server_on">Server On</string>
     <string name="open_location_in_maps">Open Location in Maps</string>
-    <string name="share_location">Share Location</string>
+    <string name="share_location">Open in Maps</string>
     <string name="time_zone">Time Zone</string>
     <string name="location_units">Location Units</string>
     <string name="copy_to_clipboard">Copy to Clipboard</string>

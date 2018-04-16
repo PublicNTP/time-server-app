@@ -30,7 +30,7 @@ public class LocationStorageConsumer {
             double latitude = LocationStorage.getLatitude();
             return String.format("%.4f° %s", (float) latitude, getLatitudeDirection(latitude));
         } else {
-            return "";
+            return "--°";
         }
     }
 
@@ -40,13 +40,13 @@ public class LocationStorageConsumer {
             double longitude = LocationStorage.getLongitude();
             return String.format("%.4f° %s", (float) longitude, getLongitudeDirection(longitude));
         } else {
-            return "One moment...";
+            return "--°";
         }
     }
 
     @SuppressLint("DefaultLocale")
     public String getHumanReadableLocation() {
-        return String.format("%.4f %s,%.4f %s", LocationStorage.getLatitude(), getLatitudeDirection(), LocationStorage.getLongitude(), getLongitudeDirection());
+        return String.format("%.4f, %.4f", LocationStorage.getLatitude(), LocationStorage.getLongitude());
     }
 
     @SuppressLint("DefaultLocale")
@@ -60,7 +60,7 @@ public class LocationStorageConsumer {
             float error = LocationStorage.getAccuracy();
             return String.format("±%.2f", error);
         } else {
-            return "±0";
+            return "±--";
         }
     }
 }

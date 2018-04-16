@@ -2,6 +2,8 @@ package org.publicntp.gnssreader;
 
 import org.junit.Test;
 
+import java.util.TreeSet;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,6 +14,15 @@ import static org.junit.Assert.assertEquals;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+        TreeSet<Integer> ints = new TreeSet<>();
+        ints.add(1);
+        ints.add(2);
+        ints.add(3);
+        ints.add(4);
+        ints.add(5);
+        ints.add(6);
+
+        assert ints.tailSet(4, false).contains(5);
+        assert ints.tailSet(4, false).contains(6);
     }
 }

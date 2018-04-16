@@ -30,6 +30,7 @@ import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 /**
@@ -150,7 +151,7 @@ public class SimpleNTPServer implements Runnable {
                 // otherwise socket thrown exception during shutdown
             } catch (Exception e) {
                 // Don't fail for malformed packets
-                Log.e("NTP", e.getMessage(), e);
+                //Log.e("NTP", e.getMessage(), e);
                 Log.i("NTP", "Sent by: " + request.getAddress() + " on port " + request.getPort());
             }
         } while (running);

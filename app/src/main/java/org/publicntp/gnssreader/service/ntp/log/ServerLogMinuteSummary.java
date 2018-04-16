@@ -1,23 +1,20 @@
 package org.publicntp.gnssreader.service.ntp.log;
 
+import java.util.List;
+
 public class ServerLogMinuteSummary {
     public final long timeReceived;
     public final long inbound;
     public final long outbound;
 
-    private ServerLogMinuteSummary(long timeReceived, long inbound, long outbound) {
+    public ServerLogMinuteSummary(long timeReceived, List<ServerLogDataPoint> summaries) {
         this.timeReceived = timeReceived;
-        this.inbound = inbound;
-        this.outbound = outbound;
+        this.inbound = summaries.parallelStream().filter(s -> s.isInbound).count();
+        this.outbound = summaries.parallelStream().filter(s -> !s.isInbound).count();
     }
 
     public long getTotal() {
         return inbound + outbound;
     }
 
-    public static ServerLogMinuteSummary fromGrouper(Long timeReceived) {
-        return new ServerLogMinuteSummary(timeReceived,
-                ServerLogDataPointGrouper.inBoundAtMinute(timeReceived),
-                ServerLogDataPointGrouper.outBoundAtMinute(timeReceived));
-    }
 }

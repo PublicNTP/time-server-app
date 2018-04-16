@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.LocationStorage;
 import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 
+import java.security.cert.PKIXRevocationChecker;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,7 +36,7 @@ import butterknife.OnItemSelected;
  * Created by zac on 3/29/18.
  */
 
-public class SettingsDialogFragment extends DialogFragment {
+public class OptionsDialogFragment extends DialogFragment {
     @BindView(R.id.options_share_location) LinearLayout shareLocationButton;
     @BindView(R.id.options_timezone) Spinner timezoneSpinner;
     @BindView(R.id.options_location_units) Spinner locationSpinner;
@@ -107,7 +110,12 @@ public class SettingsDialogFragment extends DialogFragment {
             Uri coordinateUri = Uri.parse(new LocationStorageConsumer().getSharableLocation());
             Intent shareIntent = new Intent(Intent.ACTION_VIEW, coordinateUri);
             shareIntent.putExtra(Intent.EXTRA_TEXT, new LocationStorageConsumer().getSharableLocation());
-            startActivity(shareIntent);
+            shareIntent.setPackage("com.google.android.apps.maps");
+            if(shareIntent.resolveActivity(shareLocationButton.getContext().getPackageManager()) != null) {
+                startActivity(shareIntent);
+            } else {
+                Winebar.make(shareLocationButton, "Maps is not installed", Snackbar.LENGTH_SHORT).show();
+            }
         } else {
             Winebar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
         }
@@ -123,5 +131,10 @@ public class SettingsDialogFragment extends DialogFragment {
         } else {
             Winebar.make(shareLocationButton, "No Location Found", Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @OnClick(R.id.options_done)
+    public void dismissOptions() {
+        this.dismiss();
     }
 }

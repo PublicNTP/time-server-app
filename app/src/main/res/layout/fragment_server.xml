@@ -40,11 +40,11 @@
                     android:layout_marginBottom="0dp"
                     android:layout_marginStart="0dp"
                     android:fontFamily="@font/roboto"
-                    android:text="@string/placeholder_server_traffic"
+                    android:text="-"
                     android:textColor="@color/primary_dark"
                     android:textSize="@dimen/large_detail_text_size"
                     android:textStyle="bold"
-                    tools:text="1,234" />
+                    tools:text="-" />
 
                 <TextView
                     android:id="@+id/server_display_net_units"

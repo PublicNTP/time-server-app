@@ -137,4 +137,8 @@ public class NtpService extends Service {
             serverThread = null;
         }
     }
+
+    public static boolean exists() {
+        return ntpService != null;
+    }
 }

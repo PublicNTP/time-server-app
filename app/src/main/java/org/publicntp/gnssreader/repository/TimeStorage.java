@@ -26,7 +26,7 @@ public class TimeStorage {
     }
 
     public static long getDateDifference() throws Exception {
-        if(satelliteDate == null) throw new Exception("One moment...");
+        if(satelliteDate == null) throw new Exception("--");
         return Math.abs(satelliteDate.getTime() - acquiredDate.getTime()); // This is the difference between system and satellite time
     }
 
@@ -36,14 +36,20 @@ public class TimeStorage {
         return satelliteDate.getTime() + (new Date().getTime() - acquiredDate.getTime());
     }
 
-    public static Date getAdjustedDate() {
-        if(satelliteDate == null) return new Date();
+    public static Date getAdjustedDate() throws Exception {
+        if(satelliteDate == null) {
+            throw new Exception("No satellite date received.");
+        }
 
         return new Date(getAdjustedMillis());
     }
 
     public static String getAdjustedDateString(Context context) {
-        return DateFormatter.preferredTimeString(context, getAdjustedDate());
+        try {
+            return DateFormatter.preferredTimeString(context, getAdjustedDate());
+        } catch (Exception e) {
+            return "--:--:--.--";
+        }
     }
 
     public static long getTime() {

@@ -1,12 +1,14 @@
 package org.publicntp.gnssreader.service.ntp.log;
 
+import android.support.annotation.NonNull;
+
 import java.net.DatagramPacket;
 
 /**
  * Created by zac on 4/2/18.
  */
 
-public class ServerLogDataPoint {
+public class ServerLogDataPoint implements Comparable<ServerLogDataPoint> {
     public final DatagramPacket packet;
     public final long timeReceived;
     public final boolean isInbound;
@@ -15,5 +17,10 @@ public class ServerLogDataPoint {
         this.timeReceived = timeReceived;
         this.isInbound = isInbound;
         this.packet = packet;
+    }
+
+    @Override
+    public int compareTo(@NonNull ServerLogDataPoint o) {
+        return Long.compare(this.timeReceived, o.timeReceived);
     }
 }

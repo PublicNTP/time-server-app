@@ -2,8 +2,6 @@ package org.publicntp.gnssreader.ui;
 
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,14 +13,11 @@ import android.widget.TextView;
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
 import org.publicntp.gnssreader.helper.DateFormatter;
-import org.publicntp.gnssreader.helper.LocaleHelper;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 import org.publicntp.gnssreader.repository.TimeStorageConsumer;
-import org.publicntp.gnssreader.ui.custom.SettingsDialogFragment;
+import org.publicntp.gnssreader.ui.custom.OptionsDialogFragment;
 
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,8 +70,8 @@ public class TimeFragment extends BaseFragment {
 
     @OnClick(R.id.time_options)
     public void timeOptionsOnClick() {
-        SettingsDialogFragment settingsDialogFragment = new SettingsDialogFragment();
-        settingsDialogFragment.setOnOptionPicked(new SettingsDialogFragment.OnOptionPicked() {
+        OptionsDialogFragment optionsDialogFragment = new OptionsDialogFragment();
+        optionsDialogFragment.setOnOptionPicked(new OptionsDialogFragment.OnOptionPicked() {
             @Override
             public void onTimezonePicked(String timezone) {
                 timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
@@ -85,7 +80,7 @@ public class TimeFragment extends BaseFragment {
             @Override
             public void onLocationPicked(String units) {}
         });
-        settingsDialogFragment.show(getFragmentManager(), "OptionsFragment");
+        optionsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }
 
     private void initializeSpinningLogo() {
