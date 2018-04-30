@@ -1,30 +1,28 @@
 package org.publicntp.gnssreader.ui;
 
 import android.content.pm.PackageManager;
-import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.helper.PermissionsHelper;
 import org.publicntp.gnssreader.listener.LocationHelper;
 import org.publicntp.gnssreader.model.Permission;
-import org.w3c.dom.Text;
+import org.publicntp.gnssreader.ui.about.AboutFragment;
+import org.publicntp.gnssreader.ui.satellite.SatelliteFragment;
+import org.publicntp.gnssreader.ui.server.ServerFragment;
+import org.publicntp.gnssreader.ui.time.TimeFragment;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                 case 2:
                     return ServerFragment.newInstance();
                 case 3:
-                    return InfoFragment.newInstance();
+                    return AboutFragment.newInstance();
                 default:
                     throw new RuntimeException("Bad position in viewpager");
             }

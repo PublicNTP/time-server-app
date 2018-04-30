@@ -13,4 +13,10 @@
     <dimen name="option_icon_width">30dp</dimen>
     <dimen name="satellite_detail_text_size">20sp</dimen>
     <dimen name="satellite_detail_label_margin">8dp</dimen>
+    <dimen name="togglebutton_indicator_top">50dp</dimen>
+    <dimen name="togglebutton_indicator_bottom">10dp</dimen>
+    <dimen name="togglebutton_indicator_width">40dp</dimen>
+    <dimen name="togglebutton_indicator_height">3dp</dimen>
+    <dimen name="togglebutton_indicator_corner_radius">3dp</dimen>
+    <dimen name="togglebutton_radius">10dp</dimen>
 </resources>

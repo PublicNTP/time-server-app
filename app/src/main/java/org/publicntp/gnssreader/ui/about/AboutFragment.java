@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.ui.about;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import org.publicntp.gnssreader.BuildConfig;
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.ui.BaseFragment;
 
 import static org.publicntp.gnssreader.TimeServerUtility.getContactEmailAddr;
 import static org.publicntp.gnssreader.TimeServerUtility.getContactEmailSubj;
@@ -26,7 +27,7 @@ import static org.publicntp.gnssreader.TimeServerUtility.getOwnerName;
  *
  * @author Richard Macdonald <richard@thewidgetsmith.com>
  */
-public class InfoFragment extends BaseFragment {
+public class AboutFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class InfoFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
         view.findViewById(R.id.info_btn_contact).setOnClickListener(v -> composeContactEmail());
         view.findViewById(R.id.info_btn_website).setOnClickListener(v -> launchOwnerWebsiteUrl());
 
@@ -75,7 +76,7 @@ public class InfoFragment extends BaseFragment {
         return BuildConfig.VERSION_NAME;
     }
 
-    public static InfoFragment newInstance() {
-        return new InfoFragment();
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
     }
 }

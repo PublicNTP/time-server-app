@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:padding="15dp"
         android:orientation="vertical"
-        tools:context="org.publicntp.gnssreader.ui.TimeFragment">
+        tools:context="org.publicntp.gnssreader.ui.time.TimeFragment">
 
         <Space
             android:layout_width="match_parent"

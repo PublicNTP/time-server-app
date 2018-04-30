@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.custom;
+package org.publicntp.gnssreader.ui.satellite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

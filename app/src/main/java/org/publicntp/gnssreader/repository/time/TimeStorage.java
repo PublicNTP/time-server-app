@@ -26,29 +26,33 @@ public class TimeStorage {
     }
 
     public static long getDateDifference() throws Exception {
-        if(satelliteDate == null) throw new Exception("--");
+        if (satelliteDate == null) throw new Exception("--");
         return Math.abs(satelliteDate.getTime() - acquiredDate.getTime()); // This is the difference between system and satellite time
     }
 
     public static long getAdjustedMillis() {
-        if(satelliteDate == null) return System.currentTimeMillis();
+        if (satelliteDate == null) return System.currentTimeMillis();
 
         return satelliteDate.getTime() + (new Date().getTime() - acquiredDate.getTime());
     }
 
     public static Date getAdjustedDate() throws Exception {
-        if(satelliteDate == null) {
+        if (satelliteDate == null) {
             throw new Exception("No satellite date received.");
         }
 
         return new Date(getAdjustedMillis());
     }
 
+    public static String getDefaultDateString() {
+        return "--:--:--.--";
+    }
+
     public static String getAdjustedDateString(Context context) {
         try {
             return DateFormatter.preferredTimeString(context, getAdjustedDate());
         } catch (Exception e) {
-            return "--:--:--.--";
+            return getDefaultDateString();
         }
     }
 

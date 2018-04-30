@@ -8,28 +8,24 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.helper.IpAddressHelper;
-import org.publicntp.gnssreader.helper.RootChecker;
+import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
 import org.publicntp.gnssreader.ui.MainActivity;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import eu.chainfire.libsuperuser.Shell;
 
 import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
-import static android.support.v4.app.NotificationCompat.PRIORITY_MIN;
 
 /**
  * Created by zac on 2/22/18.
@@ -43,6 +39,8 @@ public class NtpService extends Service {
     public static final int NTP_USABLE_PORT = 1234;
 
     private static NtpService ntpService;
+
+    private NetworkChangeReceiver networkChangeReceiver;
 
     Thread serverThread;
     SimpleNTPServer simpleNTPServer;
@@ -84,14 +82,34 @@ public class NtpService extends Service {
         Intent killServiceIntent = KillServiceReceiver.getAddressedIntent();
         PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
 
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+        NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
+        String ipAddress;
+        String chosenInterface = "";
+        String ethernetInterfaceName = "eth0";
+        String wifiInterfaceName = "wlan0";
+        if (networkInterfaceHelper.hasConnectivityOn(ethernetInterfaceName)) {
+            ipAddress = networkInterfaceHelper.ipFor(ethernetInterfaceName);
+            chosenInterface = ethernetInterfaceName;
+        } else if (networkInterfaceHelper.hasConnectivityOn(wifiInterfaceName)) {
+            ipAddress = networkInterfaceHelper.ipFor(wifiInterfaceName);
+            chosenInterface = wifiInterfaceName;
+        } else {
+            ipAddress = "0.0.0.0";
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_large_w_transparency)
                 .setContentTitle("NTP Server Running")
-                .setContentText(String.format("Running on %s:%d", IpAddressHelper.ipAddress(this), rootRedirected ? NTP_DEFAULT_PORT : NTP_USABLE_PORT))
                 .setPriority(PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
-                .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent)
-                .build();
+                .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
+
+        if (!chosenInterface.equals("")) {
+            builder = builder.setContentText(String.format("Running on %s, %s:%d", chosenInterface, ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_USABLE_PORT));
+        } else {
+            builder = builder.setContentText(String.format("Running on %s:%d", ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_USABLE_PORT));
+        }
+        return builder.build();
     }
 
     @Override
@@ -120,8 +138,20 @@ public class NtpService extends Service {
         }
 
         startForeground(SERVICE_ID, buildNotification());
+        addConnectivityBroadcastReceiver();
 
         return START_STICKY;
+    }
+
+    private void addConnectivityBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        networkChangeReceiver = new NetworkChangeReceiver(this);
+        registerReceiver(networkChangeReceiver, filter);
+    }
+
+    private void removeConnectivityBroadcastReceiver() {
+        unregisterReceiver(networkChangeReceiver);
     }
 
     @Override
@@ -136,9 +166,14 @@ public class NtpService extends Service {
             if (serverThread.isAlive()) serverThread.interrupt();
             serverThread = null;
         }
+        removeConnectivityBroadcastReceiver();
     }
 
     public static boolean exists() {
         return ntpService != null;
+    }
+
+    public void rebuildNotification() {
+        startForeground(SERVICE_ID, buildNotification());
     }
 }

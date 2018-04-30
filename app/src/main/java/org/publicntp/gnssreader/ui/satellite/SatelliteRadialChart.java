@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.custom;
+package org.publicntp.gnssreader.ui.satellite;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -56,7 +56,7 @@ public class SatelliteRadialChart extends View {
     }
 
     public float satelliteScale() {
-        return .90f;
+        return .27f * getResources().getDisplayMetrics().density;
     }
 
     public void init() {

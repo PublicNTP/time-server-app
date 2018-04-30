@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.ui.time;
 
 
 import android.databinding.DataBindingUtil;
@@ -16,7 +16,7 @@ import org.publicntp.gnssreader.helper.DateFormatter;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.LocationStorageConsumer;
 import org.publicntp.gnssreader.repository.TimeStorageConsumer;
-import org.publicntp.gnssreader.ui.custom.OptionsDialogFragment;
+import org.publicntp.gnssreader.ui.BaseFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;

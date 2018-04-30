@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.custom;
+package org.publicntp.gnssreader.ui.satellite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +13,11 @@ import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.ui.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -37,6 +40,8 @@ public class SignalGraphFragment extends BaseFragment {
     @BindView(R.id.satellite_bar_chart) ColumnChartView signalGraph;
     @BindView(R.id.signal_graph_scroll_container) HorizontalScrollView horizontalScrollView;
 
+    @BindColor(R.color.black) int black;
+    @BindColor(R.color.greyB) int backgroundGrey;
 
     public static SignalGraphFragment newInstance(List<SatelliteModel> satelliteModelList, @NonNull OnSatelliteSelectedListener onSatelliteSelectedListener) {
         SignalGraphFragment signalGraphFragment = new SignalGraphFragment();
@@ -62,17 +67,19 @@ public class SignalGraphFragment extends BaseFragment {
     }
 
     private void setBarChartData(List<SatelliteModel> satellites) {
-        if (getActivity() == null) {
+        if (getActivity() == null || satellites.isEmpty()) {
             return; //Fragment is not visible, and cannot update.
         }
+
+        float max_value = Collections.max(satellites.stream().map(s -> s.Cn0DbHz).collect(Collectors.toList()));
 
         List<Column> satelliteSignalValues = new ArrayList<>();
         List<AxisValue> axisValues = new ArrayList<>();
         int i = 0;
         for (SatelliteModel s : satellites) {
-            SubcolumnValue subcolumnValue = new SubcolumnValue(s.Cn0DbHz).setColor(GreyLevelHelper.asColor(getContext(), s.Cn0DbHz));
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
-            subcolumnValues.add(subcolumnValue);
+            subcolumnValues.add(new SubcolumnValue(s.Cn0DbHz).setColor(GreyLevelHelper.asColor(getContext(), s.Cn0DbHz)));
+            subcolumnValues.add(new SubcolumnValue(max_value - s.Cn0DbHz).setColor(backgroundGrey));
 
             Column column = new Column().setValues(subcolumnValues);
             AxisValue axisValue = new AxisValue(i).setLabel(s.svn + "");
@@ -82,11 +89,14 @@ public class SignalGraphFragment extends BaseFragment {
             axisValues.add(axisValue);
         }
         ColumnChartData columnChartData = new ColumnChartData(satelliteSignalValues);
+        columnChartData.setStacked(true);
 
-        Axis xAxis = new Axis();
-        xAxis.setValues(axisValues);
-        xAxis.setMaxLabelChars(3);
-        xAxis.setInside(true);
+        Axis xAxis = new Axis()
+                .setValues(axisValues)
+                .setMaxLabelChars(3)
+                .setTextColor(black)
+                .setHasLines(false)
+                .setHasSeparationLine(false);
 
         columnChartData.setAxisXBottom(xAxis);
         signalGraph.setColumnChartData(columnChartData);
@@ -107,8 +117,10 @@ public class SignalGraphFragment extends BaseFragment {
             }
         });
 
+        int default_bar_width = (int) (40f * getResources().getDisplayMetrics().density);
+
         ViewGroup.LayoutParams layoutParams = signalGraph.getLayoutParams();
-        layoutParams.width = Math.max(satelliteSignalValues.size() * 200, horizontalScrollView.getMeasuredWidth());
+        layoutParams.width = Math.max(satelliteSignalValues.size() * default_bar_width, horizontalScrollView.getMeasuredWidth());
         layoutParams.height = horizontalScrollView.getMeasuredHeight();
         signalGraph.setLayoutParams(layoutParams);
     }

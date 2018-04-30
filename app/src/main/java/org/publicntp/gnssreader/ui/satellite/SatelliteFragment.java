@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.ui.satellite;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -21,9 +21,6 @@ import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.model.SatelliteModel;
 import org.publicntp.gnssreader.repository.LocationStorage;
-import org.publicntp.gnssreader.ui.custom.SatelliteDetailFragment;
-import org.publicntp.gnssreader.ui.custom.SatelliteRadialChart;
-import org.publicntp.gnssreader.ui.custom.SignalGraphFragment;
 
 import java.util.List;
 import java.util.Timer;

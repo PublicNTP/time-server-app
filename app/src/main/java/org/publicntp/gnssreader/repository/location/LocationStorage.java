@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.repository;
+package org.publicntp.gnssreader.repository.location;
 
 import android.location.GnssStatus;
 import android.location.Location;

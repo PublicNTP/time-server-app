@@ -16,9 +16,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_margin="10dp"
-            tools:context="org.publicntp.gnssreader.ui.ServerFragment">
+            android:orientation="vertical"
+            tools:context="org.publicntp.gnssreader.ui.server.ServerFragment">
 
             <lecho.lib.hellocharts.view.ColumnChartView
                 android:id="@+id/server_bar_graph"
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:fontFamily="@font/roboto"
-                        android:text="@{servertimestorage.getAdjustedDateString(context)}"
+                        android:text="@{servertimestorage.getDateStringIfServiceRunning(context)}"
                         android:textColor="@color/primary_dark"
                         android:textSize="@dimen/large_detail_text_size"
                         android:textStyle="bold"
@@ -134,8 +134,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <ToggleButton
-                android:id="@+id/server_btn_toggle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="24dp"
@@ -143,13 +142,24 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_weight="2.8"
-                android:fontFamily="@font/roboto_medium"
-                android:textOff="@string/server_off"
-                android:textOn="@string/server_on"
-                android:textSize="20sp"
-                android:theme="@style/AppTheme.ToggleButton"
-                tools:text="Server On" />
+                android:orientation="horizontal">
 
+                <ToggleButton
+                    android:id="@+id/server_btn_toggle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:background="@drawable/custom_togglebutton"
+                    android:fontFamily="@font/roboto_medium"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/white"
+                    android:textOff="@string/server_off"
+                    android:textOn="@string/server_on"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Server On" />
+
+            </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

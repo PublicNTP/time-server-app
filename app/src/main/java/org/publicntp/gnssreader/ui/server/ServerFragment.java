@@ -1,5 +1,6 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.gnssreader.ui.server;
 
+import android.database.DataSetObserver;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,11 +12,16 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentServerBinding;
+import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
 import org.publicntp.gnssreader.helper.RootChecker;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.helper.Winebar;
@@ -24,11 +30,15 @@ import org.publicntp.gnssreader.repository.TimeStorageConsumer;
 import org.publicntp.gnssreader.service.ntp.NtpService;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogMinuteSummary;
-import org.publicntp.gnssreader.ui.custom.OptionsDialogFragment;
 
 import java.lang.ref.WeakReference;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,7 +46,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
@@ -82,7 +92,6 @@ public class ServerFragment extends Fragment {
 
         return viewBinding.getRoot();
     }
-
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -188,6 +197,11 @@ public class ServerFragment extends Fragment {
         NtpService ntpService = NtpService.getNtpService();
         if (toggleServerButton.isChecked()) {
             if (ntpService == null) {
+                boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0"));
+                if(!hasReliableConnection) {
+                    Winebar.make(toggleServerButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
+                }
+
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
                 graphHasBeenInit = true;
                 if (!RootChecker.isRootGiven()) {
@@ -201,22 +215,6 @@ public class ServerFragment extends Fragment {
                 ntpService.stopSelf();
             }
         }
-    }
-
-    @OnClick(R.id.server_layout_time)
-    public void timeOptionsOnClick() {
-        OptionsDialogFragment optionsDialogFragment = new OptionsDialogFragment();
-        optionsDialogFragment.setOnOptionPicked(new OptionsDialogFragment.OnOptionPicked() {
-            @Override
-            public void onTimezonePicked(String timezone) {
-                timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
-            }
-
-            @Override
-            public void onLocationPicked(String units) {
-            }
-        });
-        optionsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }
 
     private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {

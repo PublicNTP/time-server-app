@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.custom;
+package org.publicntp.gnssreader.ui.time;
 
 import android.app.Activity;
 import android.app.AlertDialog;

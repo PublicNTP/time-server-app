@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="20dp"
+    android:background="@drawable/dialog_options_background"
     android:orientation="vertical">
 
     <android.support.design.widget.CoordinatorLayout
@@ -83,24 +84,20 @@
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/options_done"
+        style="@style/AppTheme.Button.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/options_done"
-            style="@style/AppTheme.Button.Large"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:text="Done"
-            android:textColor="@color/white" />
-    </LinearLayout>
+        android:layout_gravity="right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_with_rounded_corners"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Done"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 </LinearLayout>

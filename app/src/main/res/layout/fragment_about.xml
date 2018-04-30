@@ -52,6 +52,15 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/info_text_designer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/info_text_designer"
+            android:textColor="@color/primary"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/info_text_developer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,8 +109,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
-        android:fontFamily="@font/roboto_medium"
         android:text="@string/info_btn_contact_label"
+        android:fontFamily="@font/roboto_medium"
         android:textSize="20sp"
         android:background="@drawable/button_with_rounded_corners"
         tools:text="contact" />

@@ -3,6 +3,7 @@ package org.publicntp.gnssreader.repository;
 import android.content.Context;
 
 import org.publicntp.gnssreader.repository.TimeStorage;
+import org.publicntp.gnssreader.service.ntp.NtpService;
 
 import java.sql.Time;
 
@@ -15,6 +16,18 @@ public class TimeStorageConsumer {
 
     public String getAdjustedDateString(Context context) {
         return TimeStorage.getAdjustedDateString(context);
+    }
+
+    public String getDefaultDateString() {
+        return TimeStorage.getDefaultDateString();
+    }
+
+    public String getDateStringIfServiceRunning(Context context) {
+        if(NtpService.exists()) {
+            return getAdjustedDateString(context);
+        } else {
+            return getDefaultDateString();
+        }
     }
 
     public String getDateDifference() {
