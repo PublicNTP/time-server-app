@@ -26,7 +26,7 @@ import org.publicntp.gnssreader.helper.RootChecker;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.TimeStorageConsumer;
+import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
 import org.publicntp.gnssreader.service.ntp.NtpService;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogMinuteSummary;

@@ -2,7 +2,9 @@
 <resources>
     <string-array name="location_choices">
         <item>Lat/Long</item>
+        <item>UTM</item>
         <item>MGRS</item>
+        <item>OLC (Plus Codes)</item>
     </string-array>
 
     <string-array name="timezone_choices">

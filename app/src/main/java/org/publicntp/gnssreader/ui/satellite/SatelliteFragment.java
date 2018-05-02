@@ -20,7 +20,7 @@ import android.widget.TextView;
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.LocationStorage;
+import org.publicntp.gnssreader.repository.location.LocationStorage;
 
 import java.util.List;
 import java.util.Timer;
@@ -40,7 +40,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
 
     private Timer refreshTimer = new Timer();
     private Handler handler = new Handler();
-    private final int REFRESH_DELAY = (int) (TimeMillis.SECOND * 3);
+    private final int REFRESH_DELAY = (int) (TimeMillis.SECOND * 2.5);
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -116,15 +116,15 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
         radialChart.setSatelliteModels(satellites);
 
         List<SatelliteModel> usedSatellites = LocationStorage.usedSatellites();
-        if(signalGraphFragment == null) {
+        if (signalGraphFragment == null) {
         } else {
             signalGraphFragment.setSatelliteModels(usedSatellites);
         }
 
         long in_view = satellites.size();
-        satellitesInView.setText(in_view+"");
+        satellitesInView.setText(in_view + "");
         long in_use = satellites.stream().filter(s -> s.usedInFix).count();
-        satellitesInUse.setText(in_use+"");
+        satellitesInUse.setText(in_use + "");
     }
 
 
@@ -177,6 +177,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
     public void onSatelliteSelected(SatelliteModel satelliteModel) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.satellite_details_container, SatelliteDetailFragment.newInstance(satelliteModel, this)).commit();
+        radialChart.redraw();
     }
 
     @Override
@@ -184,5 +185,6 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.satellite_details_container, signalGraphFragment).commit();
         signalGraphFragment.setSatelliteModels(LocationStorage.usedSatellites());
+        radialChart.redraw();
     }
 }

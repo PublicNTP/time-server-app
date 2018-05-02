@@ -3,61 +3,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="10dp"
-        tools:context="org.publicntp.gnssreader.ui.satellite.SatelliteFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/satellites_in_view_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/in_view"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/satellites_in_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/satellites_in_view_label"
-            android:text="0"
-            android:textSize="36sp" />
-
-
-        <TextView
-            android:id="@+id/satellites_in_use_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="@string/in_use"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/satellites_in_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/satellites_in_use_label"
-            android:text="0"
-            android:textAlignment="textEnd"
-            android:textSize="36sp" />
-
-        <org.publicntp.gnssreader.ui.satellite.SatelliteRadialChart
-            android:id="@+id/satellite_radial_chart"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="420dp"
-            android:layout_alignParentTop="true"/>
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:id="@+id/satellite_inner_container"
+            tools:context="org.publicntp.gnssreader.ui.satellite.SatelliteFragment">
+
+            <TextView
+                android:id="@+id/satellites_in_view_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/in_view"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/satellites_in_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/satellites_in_view_label"
+                android:text="0"
+                android:textSize="36sp" />
+
+
+            <TextView
+                android:id="@+id/satellites_in_use_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/in_use"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/satellites_in_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/satellites_in_use_label"
+                android:text="0"
+                android:textAlignment="textEnd"
+                android:textSize="36sp" />
+
+            <org.publicntp.gnssreader.ui.satellite.SatelliteRadialChart
+                android:id="@+id/satellite_radial_chart"
+                android:layout_width="match_parent"
+                android:layout_height="420dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp" />
+
+        </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/satellite_details_container"
             android:layout_width="match_parent"
             android:layout_height="1090dp"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/satellite_radial_chart" />
+            android:layout_below="@id/satellite_inner_container" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

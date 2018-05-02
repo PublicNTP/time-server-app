@@ -35,5 +35,6 @@
     <color name="grey2">#222222</color>
     <color name="grey1">#111111</color>
     <color name="grey0">#000000</color>
+    <color name="satellite_detail_text">@color/grey9</color>
 
 </resources>

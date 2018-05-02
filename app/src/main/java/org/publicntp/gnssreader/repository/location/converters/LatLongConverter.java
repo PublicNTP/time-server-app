@@ -1,13 +1,19 @@
 package org.publicntp.gnssreader.repository.location.converters;
 
-public class LatLongConverter implements CoordinateConverter {
-    @Override
-    public String getString1(double lat, double lon) {
-        return null;
+import android.annotation.SuppressLint;
+
+public class LatLongConverter extends CoordinateConverter {
+    public String getLatitudeDirection(double latitude) {
+        return latitude > 0 ? "N" : "S";
     }
 
+    public String getLongitudeDirection(double longitude) {
+        return longitude > 0 ? "E" : "W";
+    }
+
+    @SuppressLint("DefaultLocale")
     @Override
-    public String getString2(double lat, double lon) {
-        return null;
+    public String getString(double lat, double lon) {
+        return String.format("%.4f° %s\n%.4f° %s", (float) lat, getLatitudeDirection(lat), (float) lon, getLongitudeDirection(lon));
     }
 }

@@ -4,10 +4,8 @@ import android.location.GnssStatus;
 import android.location.Location;
 import android.os.Bundle;
 
-import org.publicntp.gnssreader.repository.LocationStorage;
-import org.publicntp.gnssreader.repository.TimeStorage;
-
-import java.util.Date;
+import org.publicntp.gnssreader.repository.time.TimeStorage;
+import org.publicntp.gnssreader.repository.location.LocationStorage;
 
 
 public class SatelliteLocationListener extends GnssStatus.Callback implements android.location.LocationListener {

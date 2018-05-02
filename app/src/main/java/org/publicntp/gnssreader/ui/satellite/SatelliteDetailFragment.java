@@ -1,5 +1,6 @@
 package org.publicntp.gnssreader.ui.satellite;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.LocationStorage;
+import org.publicntp.gnssreader.repository.location.LocationStorage;
 import org.publicntp.gnssreader.ui.BaseFragment;
 
 import butterknife.BindView;
@@ -25,8 +26,6 @@ public class SatelliteDetailFragment extends BaseFragment {
     private OnDetailsClosedListener onDetailsClosedListener;
 
     @BindView(R.id.satellite_title) TextView titleView;
-    @BindView(R.id.satellite_svn) TextView svnView;
-    @BindView(R.id.satellite_constellation) TextView constellationView;
     @BindView(R.id.satellite_signal_to_noise) TextView signalToNoiseView;
     @BindView(R.id.satellite_altitude) TextView altitudeAngleView;
     @BindView(R.id.satellite_heading) TextView headingView;
@@ -39,14 +38,13 @@ public class SatelliteDetailFragment extends BaseFragment {
         return satelliteDetailFragment;
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_satellite_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        titleView.setText(String.format("Satellite %s-%d", satelliteModel.constellationName(), satelliteModel.svn));
-        svnView.setText("" + satelliteModel.svn);
-        constellationView.setText(satelliteModel.constellationName());
+        titleView.setText(String.format("%s %d", satelliteModel.constellationName(), satelliteModel.svn));
         altitudeAngleView.setText(String.format("%.0f° upwards", satelliteModel.elevationDegrees));
         headingView.setText(String.format("%.0f° from North", satelliteModel.azimuthDegrees));
         signalToNoiseView.setText(String.format("%.1f to 1", satelliteModel.Cn0DbHz));

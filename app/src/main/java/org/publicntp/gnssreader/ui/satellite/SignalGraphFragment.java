@@ -41,7 +41,7 @@ public class SignalGraphFragment extends BaseFragment {
     @BindView(R.id.signal_graph_scroll_container) HorizontalScrollView horizontalScrollView;
 
     @BindColor(R.color.black) int black;
-    @BindColor(R.color.greyB) int backgroundGrey;
+    @BindColor(R.color.greyC) int backgroundGrey;
 
     public static SignalGraphFragment newInstance(List<SatelliteModel> satelliteModelList, @NonNull OnSatelliteSelectedListener onSatelliteSelectedListener) {
         SignalGraphFragment signalGraphFragment = new SignalGraphFragment();
@@ -96,6 +96,7 @@ public class SignalGraphFragment extends BaseFragment {
                 .setMaxLabelChars(3)
                 .setTextColor(black)
                 .setHasLines(false)
+                .setTextSize(15)
                 .setHasSeparationLine(false);
 
         columnChartData.setAxisXBottom(xAxis);
@@ -118,9 +119,18 @@ public class SignalGraphFragment extends BaseFragment {
         });
 
         int default_bar_width = (int) (40f * getResources().getDisplayMetrics().density);
+        int totalSatelliteWidth = satelliteSignalValues.size() * default_bar_width;
 
-        ViewGroup.LayoutParams layoutParams = signalGraph.getLayoutParams();
-        layoutParams.width = Math.max(satelliteSignalValues.size() * default_bar_width, horizontalScrollView.getMeasuredWidth());
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) signalGraph.getLayoutParams();
+        if(totalSatelliteWidth > horizontalScrollView.getMeasuredWidth()) {
+            layoutParams.width = totalSatelliteWidth;
+            layoutParams.setMarginStart(10);
+            layoutParams.setMarginEnd(0);
+        } else {
+            layoutParams.width = horizontalScrollView.getMeasuredWidth();
+            layoutParams.setMarginStart(10);
+            layoutParams.setMarginEnd(10);
+        }
         layoutParams.height = horizontalScrollView.getMeasuredHeight();
         signalGraph.setLayoutParams(layoutParams);
     }

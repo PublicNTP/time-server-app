@@ -14,10 +14,10 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
 import org.publicntp.gnssreader.R;
+import org.publicntp.gnssreader.helper.GreyLevelHelper;
 import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.LocationStorage;
-import org.publicntp.gnssreader.helper.GreyLevelHelper;
+import org.publicntp.gnssreader.repository.location.LocationStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,8 @@ public class SatelliteRadialChart extends View {
     private Paint highlightFill;
     private Paint lightGrey;
     private Paint greyStroke;
+
+    private Canvas canvas;
 
     boolean compassEnabled = false;
 
@@ -101,6 +103,10 @@ public class SatelliteRadialChart extends View {
     public void setSatelliteModels(List<SatelliteModel> satelliteModels) {
         this.satelliteModels.clear();
         this.satelliteModels.addAll(satelliteModels);
+        this.invalidate();
+    }
+
+    public void redraw() {
         this.invalidate();
     }
 
@@ -209,6 +215,10 @@ public class SatelliteRadialChart extends View {
     }
 
     private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas) {
+        drawSatellite(satelliteModel, canvas, false);
+    }
+
+    private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas, boolean forceHighlight) {
         Rect bounds = canvas.getClipBounds();
         float radius = getRadius(canvas) * .85f; // don't let satellites go out of bounds
 

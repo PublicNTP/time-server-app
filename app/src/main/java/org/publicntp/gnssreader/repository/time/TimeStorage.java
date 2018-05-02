@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.repository;
+package org.publicntp.gnssreader.repository.time;
 
 import android.content.Context;
 

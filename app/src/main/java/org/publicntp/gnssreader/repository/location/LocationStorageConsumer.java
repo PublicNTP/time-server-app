@@ -2,47 +2,46 @@ package org.publicntp.gnssreader.repository.location;
 
 import android.annotation.SuppressLint;
 
+import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
+import org.publicntp.gnssreader.repository.location.converters.LatLongConverter;
+import org.publicntp.gnssreader.repository.location.converters.UTMConverter;
+
 /**
  * Created by zac on 2/7/18.
  */
 
 public class LocationStorageConsumer {
+    private CoordinateConverter coordinateConverter;
+
     public LocationStorageConsumer() {
+        coordinateConverter = new LatLongConverter();
     }
 
-    public String getLatitudeDirection(double latitude) {
-        return latitude > 0 ? "N" : "S";
-    }
-    public String getLatitudeDirection() {
-        return getLatitudeDirection(LocationStorage.getLatitude());
-    }
-
-    public String getLongitudeDirection(double longitude) {
-        return longitude > 0 ? "E" : "W";
-    }
-    public String getLongitudeDirection() {
-        return getLongitudeDirection(LocationStorage.getLongitude());
+    public LocationStorageConsumer(CoordinateConverter coordinateConverter) {
+        this.coordinateConverter = coordinateConverter;
     }
 
     @SuppressLint("DefaultLocale")
-    public String getStringLatitude() {
+    public String getString() {
         if (LocationStorage.isPopulated()) {
             double latitude = LocationStorage.getLatitude();
-            return String.format("%.4f° %s", (float) latitude, getLatitudeDirection(latitude));
+            double longitude = LocationStorage.getLongitude();
+            return coordinateConverter.getString(latitude, longitude);
         } else {
-            return "--°";
+            return "--°\n--°";
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    public String getStringLongitude() {
-        if(LocationStorage.isPopulated()) {
-            double longitude = LocationStorage.getLongitude();
-            return String.format("%.4f° %s", (float) longitude, getLongitudeDirection(longitude));
-        } else {
-            return "--°";
-        }
-    }
+//    @SuppressLint("DefaultLocale")
+//    public String getString2() {
+//        if(LocationStorage.isPopulated()) {
+//            double latitude = LocationStorage.getLatitude();
+//            double longitude = LocationStorage.getLongitude();
+//            return coordinateConverter.getString2(latitude, longitude);
+//        } else {
+//            return "--°";
+//        }
+//    }
 
     @SuppressLint("DefaultLocale")
     public String getHumanReadableLocation() {

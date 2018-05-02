@@ -13,9 +13,11 @@ import android.widget.TextView;
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
 import org.publicntp.gnssreader.helper.DateFormatter;
+import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.LocationStorageConsumer;
-import org.publicntp.gnssreader.repository.TimeStorageConsumer;
+import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
+import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
+import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
 import org.publicntp.gnssreader.ui.BaseFragment;
 
 import java.util.Timer;
@@ -54,7 +56,7 @@ public class TimeFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_time, container, false);
         viewBinding.setTimestorage(new TimeStorageConsumer());
-        viewBinding.setLocationstorage(new LocationStorageConsumer());
+        viewBinding.setLocationstorage(new LocationStorageConsumer(new LocationCoordinateTypeStore().getConverter(getContext())));
         ButterKnife.bind(this, viewBinding.getRoot());
 
         DateFormatter.setTimezonePreference(new TimezoneStore().get(getContext()));
@@ -78,7 +80,9 @@ public class TimeFragment extends BaseFragment {
             }
 
             @Override
-            public void onLocationPicked(String units) {}
+            public void onLocationPicked(String units) {
+                viewBinding.setLocationstorage(new LocationStorageConsumer(CoordinateConverter.byName(units)));
+            }
         });
         optionsDialogFragment.show(getFragmentManager(), "OptionsFragment");
     }

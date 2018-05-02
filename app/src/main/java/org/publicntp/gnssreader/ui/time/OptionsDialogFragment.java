@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +20,10 @@ import android.widget.Spinner;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.helper.Winebar;
+import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.LocationStorage;
-import org.publicntp.gnssreader.repository.LocationStorageConsumer;
-
-import java.security.cert.PKIXRevocationChecker;
+import org.publicntp.gnssreader.repository.location.LocationStorage;
+import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +84,8 @@ public class OptionsDialogFragment extends DialogFragment {
         locationSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.location_choices, R.layout.spinner_item));
 
         setSpinnerSelection(new TimezoneStore().get(activity), timezoneChoices, timezoneSpinner);
-        //TODO set selection for location spinner
+        setSpinnerSelection(new LocationCoordinateTypeStore().get(activity), locationChoices, locationSpinner);
+
         builder.setView(rootView);
         return builder.create();
     }
@@ -94,6 +93,7 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnItemSelected(R.id.options_location_units)
     public void onLocationUnitsClicked(AdapterView<?> parent, View view, int position, long id) {
         String units = locationChoices[position];
+        new LocationCoordinateTypeStore().set(activity, units);
         onOptionPicked.onLocationPicked(units);
     }
 

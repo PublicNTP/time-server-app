@@ -4,7 +4,7 @@ import android.content.Context;
 import android.location.OnNmeaMessageListener;
 
 
-import org.publicntp.gnssreader.repository.TimeStorage;
+import org.publicntp.gnssreader.repository.time.TimeStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;

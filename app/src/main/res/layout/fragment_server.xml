@@ -6,7 +6,7 @@
 
         <variable
             name="servertimestorage"
-            type="org.publicntp.gnssreader.repository.TimeStorageConsumer" />
+            type="org.publicntp.gnssreader.repository.time.TimeStorageConsumer" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout

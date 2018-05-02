@@ -1,8 +1,8 @@
-package org.publicntp.gnssreader.repository;
+package org.publicntp.gnssreader.repository.time;
 
 import android.content.Context;
 
-import org.publicntp.gnssreader.repository.TimeStorage;
+import org.publicntp.gnssreader.repository.time.TimeStorage;
 import org.publicntp.gnssreader.service.ntp.NtpService;
 
 import java.sql.Time;

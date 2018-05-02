@@ -23,15 +23,13 @@ import org.apache.commons.net.ntp.NtpUtils;
 import org.apache.commons.net.ntp.NtpV3Impl;
 import org.apache.commons.net.ntp.NtpV3Packet;
 import org.apache.commons.net.ntp.TimeStamp;
-import org.publicntp.gnssreader.repository.TimeStorageConsumer;
+import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPoint;
 import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketAddress;
-import java.net.SocketException;
 
 /**
  * The SimpleNTPServer class is a UDP implementation of a server for the
