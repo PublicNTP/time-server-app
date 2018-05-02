@@ -33,8 +33,6 @@ public class SatelliteRadialChart extends View {
     private Paint lightGrey;
     private Paint greyStroke;
 
-    private Canvas canvas;
-
     boolean compassEnabled = false;
 
     public SatelliteRadialChart(Context context) {
@@ -165,7 +163,7 @@ public class SatelliteRadialChart extends View {
     private float getRadius(Canvas canvas) {
         Rect canvasBoundary = canvas.getClipBounds();
         float radius = Math.min(canvasBoundary.height(), canvasBoundary.width()) / 2;
-        radius = radius * .97f; // To make room for stroke width
+        radius = radius * .93f; // To make room for North arrow
         return radius;
     }
 
@@ -198,16 +196,20 @@ public class SatelliteRadialChart extends View {
         canvas.drawLine(bounds.centerX() + legLength, bounds.centerY() - legLength, bounds.centerX() - legLength, bounds.centerY() + legLength, greyStroke); //top-right to bottom-left
         canvas.drawLine(bounds.centerX() - legLength, bounds.centerY() - legLength, bounds.centerX() + legLength, bounds.centerY() + legLength, greyStroke); //top-left to bottom-right
 
-        canvas.drawText("N", bounds.centerX(), bounds.top + bounds.height() * .05f, cardinalTextFill);
+        // North pointer
+        drawTriangle(canvas, bounds.centerX(), bounds.top - bounds.height() * .005f, 10f * getResources().getDisplayMetrics().density, .01f, cardinalTextFill);
     }
 
     private void drawTriangle(Canvas canvas, float x, float y, float radius, Paint paint) {
-        radius *= 1.4;
+        drawTriangle(canvas, x, y, radius, 1f, paint);
+    }
+
+    private void drawTriangle(Canvas canvas, float x, float y, float radius, float widthToHeightRatio, Paint paint) {
         Path triangle = new Path();
         triangle.setFillType(Path.FillType.EVEN_ODD);
         triangle.moveTo(x, y - radius);
-        float yOffset = radius / 2;
-        float xOffset = (float) (yOffset * Math.sqrt(3));
+        float yOffset = (radius / 2) * widthToHeightRatio;
+        float xOffset = (float) (yOffset * Math.sqrt(3)) / widthToHeightRatio;
         triangle.lineTo(x - xOffset, y + yOffset);
         triangle.lineTo(x + xOffset, y + yOffset);
         triangle.close();
@@ -240,7 +242,7 @@ public class SatelliteRadialChart extends View {
 
         float shapeRadius = 30f * satelliteScale();
         if (satelliteModel.usedInFix) {
-            drawTriangle(canvas, x, y, shapeRadius, paint);
+            drawTriangle(canvas, x, y, shapeRadius*1.4f, paint);
         } else {
             canvas.drawRect(new Rect(
                             (int) (x - shapeRadius),

@@ -16,4 +16,10 @@ public class LatLongConverter extends CoordinateConverter {
     public String getString(double lat, double lon) {
         return String.format("%.4f° %s\n%.4f° %s", (float) lat, getLatitudeDirection(lat), (float) lon, getLongitudeDirection(lon));
     }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public String clipboardString(double lat, double lon) {
+        return String.format("%.4f, %.4f", lat, lon);
+    }
 }

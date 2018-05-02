@@ -24,6 +24,7 @@ import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.location.LocationStorage;
 import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
+import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -124,7 +125,8 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnClick(R.id.options_copy_to_clipboard)
     public void copyLocation() {
         if(LocationStorage.isPopulated()) {
-            String location = new LocationStorageConsumer().getHumanReadableLocation();
+            CoordinateConverter converter = new LocationCoordinateTypeStore().getConverter(getContext());
+            String location = new LocationStorageConsumer(converter).getHumanReadableLocation();
             ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(ClipData.newPlainText("Location", location));
             Winebar.make(shareLocationButton, "Copied.", Snackbar.LENGTH_SHORT).show();

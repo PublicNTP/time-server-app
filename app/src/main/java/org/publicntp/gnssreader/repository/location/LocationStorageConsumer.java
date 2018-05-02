@@ -32,20 +32,9 @@ public class LocationStorageConsumer {
         }
     }
 
-//    @SuppressLint("DefaultLocale")
-//    public String getString2() {
-//        if(LocationStorage.isPopulated()) {
-//            double latitude = LocationStorage.getLatitude();
-//            double longitude = LocationStorage.getLongitude();
-//            return coordinateConverter.getString2(latitude, longitude);
-//        } else {
-//            return "--°";
-//        }
-//    }
-
     @SuppressLint("DefaultLocale")
     public String getHumanReadableLocation() {
-        return String.format("%.4f, %.4f", LocationStorage.getLatitude(), LocationStorage.getLongitude());
+        return coordinateConverter.clipboardString(LocationStorage.getLatitude(), LocationStorage.getLongitude());
     }
 
     @SuppressLint("DefaultLocale")

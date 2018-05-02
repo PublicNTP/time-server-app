@@ -15,4 +15,10 @@ public class MGRSConverter extends CoordinateConverter {
         MGRSCoord mgrsCoord = MGRSCoord.fromLatLon(latAngle, lonAngle);
         return mgrsCoord.toString().replace(' ', '\n');
     }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public String clipboardString(double lat, double lon) {
+        return getString(lat, lon).replace('\n', ' ');
+    }
 }

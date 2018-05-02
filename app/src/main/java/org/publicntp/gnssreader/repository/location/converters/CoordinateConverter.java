@@ -19,4 +19,8 @@ public class CoordinateConverter {
     public String getString(double lat, double lon) {
         throw new RuntimeException("Unimplemented");
     }
+
+    public String clipboardString(double lat, double lon) {
+        throw new RuntimeException("Unimplemented");
+    }
 }

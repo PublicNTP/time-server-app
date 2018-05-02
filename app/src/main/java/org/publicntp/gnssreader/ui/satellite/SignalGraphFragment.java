@@ -96,7 +96,7 @@ public class SignalGraphFragment extends BaseFragment {
                 .setMaxLabelChars(3)
                 .setTextColor(black)
                 .setHasLines(false)
-                .setTextSize(15)
+                .setTextSize(14)
                 .setHasSeparationLine(false);
 
         columnChartData.setAxisXBottom(xAxis);
@@ -118,7 +118,7 @@ public class SignalGraphFragment extends BaseFragment {
             }
         });
 
-        int default_bar_width = (int) (40f * getResources().getDisplayMetrics().density);
+        int default_bar_width = (int) (39f * getResources().getDisplayMetrics().density);
         int totalSatelliteWidth = satelliteSignalValues.size() * default_bar_width;
 
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) signalGraph.getLayoutParams();

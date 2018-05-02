@@ -10,8 +10,8 @@
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="420dp"
-            android:layout_margin="10dp"
+            android:layout_height="440dp"
+            android:layout_margin="5dp"
             android:orientation="vertical"
             android:id="@+id/satellite_inner_container"
             tools:context="org.publicntp.gnssreader.ui.satellite.SatelliteFragment">
@@ -55,9 +55,8 @@
             <org.publicntp.gnssreader.ui.satellite.SatelliteRadialChart
                 android:id="@+id/satellite_radial_chart"
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="20dp" />
+                android:layout_height="460dp"
+                android:layout_alignParentTop="true" />
 
         </RelativeLayout>
 

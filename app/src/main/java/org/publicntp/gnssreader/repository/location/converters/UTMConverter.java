@@ -18,6 +18,12 @@ public class UTMConverter extends CoordinateConverter {
         Angle lonAngle = Angle.fromDegreesLongitude(lon);
 
         UTMCoord utmCoord = UTMCoord.fromLatLon(latAngle, lonAngle);
-        return String.format("%s %s\n%.2f E\n%.2f N", utmCoord.getZone(), getShortHemisphere(utmCoord.getHemisphere()), utmCoord.getNorthing(), utmCoord.getEasting());
+        return String.format("%s%s\n%.2fE\n%.2fN", utmCoord.getZone(), getShortHemisphere(utmCoord.getHemisphere()), utmCoord.getNorthing(), utmCoord.getEasting());
+    }
+
+    @SuppressLint("DefaultLocale")
+    @Override
+    public String clipboardString(double lat, double lon) {
+        return getString(lat, lon).replace('\n', ' ');
     }
 }
