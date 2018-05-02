@@ -7,13 +7,19 @@
     <string name="time_image_logo_desc">PublicNTP Logo</string>
 
     <!-- Info Fragment Strings -->
-    <string name="info_btn_website_label">Website</string>
-    <string name="info_btn_contact_label">Contact</string>
-    <string name="info_text_title">About</string>
-    <string name="info_text_content">Thanks for using our app. We\'re PublicNTP, a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
-    <string name="info_text_version">Version %1$s</string>
-    <string name="info_text_developer">Built by %1$s</string>
-    <string name="info_text_organization">Owned by %1$s</string>
+    <string name="about_btn_website_label">Website</string>
+    <string name="about_btn_contact_label">Contact</string>
+    <string name="about_text_title">About</string>
+    <string name="about_text_content">Thanks for using our app. We\'re PublicNTP, a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
+    <string name="about_text_version">Version %1$s</string>
+    <string name="about_text_organization">Owned by PublicNTP, Inc.</string>
+    <string name="about_text_designer">Designed by Kempt Design, LLC</string>
+    <string name="about_text_developer">Built by Pony Express Productions, LLC</string>
+
+    <string name="contact_email_address">contact@publicntp.org</string>
+    <string name="contact_email_subject">PublicNTP Inquiry</string>
+    <string name="developer_web_address">https://roosterglue.com</string>
+    <string name="owner_web_address">https://publicntp.org</string>
 
     <!-- Navigation Strings -->
     <string name="title_action_info">Info</string>
@@ -55,7 +61,6 @@
     <string name="satellite_heading_example">60 degrees from North</string>
     <string name="satellite_altitude_example">1000 feet</string>
     <string name="signal_to_noise_ratio">Signal-to-Noise Ratio:</string>
-    <string name="info_text_designer">Designed by Kempt Design, LLC</string>
     <string name="unreliable_connection_warning">No reliable connection - connect to ethernet or wifi</string>
 
 </resources>

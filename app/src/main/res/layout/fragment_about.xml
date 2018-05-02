@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/info_about_title"
+        android:id="@+id/about_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -16,7 +15,7 @@
         android:layout_marginTop="42dp"
         android:layout_marginBottom="32dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/info_text_title"
+        android:text="@string/about_text_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@color/primary_dark"
         android:textSize="54sp" />
@@ -33,46 +32,46 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/info_text_version"
+            android:id="@+id/about_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/info_text_version"
+            android:text="@string/about_text_version"
             android:textColor="@color/primary"
             android:textSize="12sp"
             android:typeface="normal" />
 
         <TextView
-            android:id="@+id/info_text_organization"
+            android:id="@+id/about_text_organization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/info_text_organization"
+            android:text="@string/about_text_organization"
             android:textColor="@color/primary"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/info_text_designer"
+            android:id="@+id/about_text_designer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/info_text_designer"
+            android:text="@string/about_text_designer"
             android:textColor="@color/primary"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/info_text_developer"
+            android:id="@+id/about_text_developer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/info_text_developer"
+            android:text="@string/about_text_developer"
             android:textColor="@color/primary"
             android:textSize="12sp" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/info_about_content"
+        android:id="@+id/about_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -80,12 +79,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/info_text_content"
+        android:text="@string/about_text_content"
         android:textSize="18sp"
         android:textColor="@color/primary_dark" />
 
     <Button
-        android:id="@+id/info_btn_website"
+        android:id="@+id/about_btn_website"
         style="@style/AppTheme.Button.Large"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -94,13 +93,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/info_btn_website_label"
+        android:text="@string/about_btn_website_label"
         android:background="@drawable/button_with_rounded_corners"
         android:textSize="20sp"
         tools:text="website" />
 
     <Button
-        android:id="@+id/info_btn_contact"
+        android:id="@+id/about_btn_contact"
         style="@style/AppTheme.Button.Large"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -109,7 +108,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/info_btn_contact_label"
+        android:text="@string/about_btn_contact_label"
         android:fontFamily="@font/roboto_medium"
         android:textSize="20sp"
         android:background="@drawable/button_with_rounded_corners"

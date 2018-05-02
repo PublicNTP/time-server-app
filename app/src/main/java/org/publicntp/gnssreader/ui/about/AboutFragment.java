@@ -1,33 +1,30 @@
 package org.publicntp.gnssreader.ui.about;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.publicntp.gnssreader.BuildConfig;
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.ui.BaseFragment;
 
-import static org.publicntp.gnssreader.TimeServerUtility.getContactEmailAddr;
-import static org.publicntp.gnssreader.TimeServerUtility.getContactEmailSubj;
-import static org.publicntp.gnssreader.TimeServerUtility.getDeveloperName;
-import static org.publicntp.gnssreader.TimeServerUtility.getOwnerWebAddr;
-import static org.publicntp.gnssreader.TimeServerUtility.getOwnerName;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-/**
- * Simple Fragment to render info view.
- *
- * The info view contains mostly static information with
- * a few dynamic values that contain app related values.
- *
- * The dynamic values should never change during runtime.
- *
- * @author Richard Macdonald <richard@thewidgetsmith.com>
- */
 public class AboutFragment extends BaseFragment {
+    @BindView(R.id.about_version) TextView versionView;
+
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,47 +33,61 @@ public class AboutFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_about, container, false);
-        view.findViewById(R.id.info_btn_contact).setOnClickListener(v -> composeContactEmail());
-        view.findViewById(R.id.info_btn_website).setOnClickListener(v -> launchOwnerWebsiteUrl());
+        ButterKnife.bind(this, view);
 
-        TextView textVersion = view.findViewById(R.id.info_text_version);
-        TextView textDeveloper = view.findViewById(R.id.info_text_developer);
-        TextView textOrganization = view.findViewById(R.id.info_text_organization);
-
-        textVersion.setText(getTextVersion());
-        textDeveloper.setText(getTextDeveloper());
-        textOrganization.setText(getTextOrganization());
+        versionView.setText(String.format(getString(R.string.about_text_version), BuildConfig.VERSION_NAME));
 
         return view;
     }
 
-    private void composeContactEmail() {
-        composeEmail(getContactEmailAddr(), getContactEmailSubj());
+    @OnClick(R.id.about_btn_contact)
+    public void contactClick() {
+        composeEmail(getString(R.string.contact_email_address), getString(R.string.contact_email_subject));
     }
 
-    private void launchOwnerWebsiteUrl() {
-        launchWebUrl(getOwnerWebAddr());
+    @OnClick(R.id.about_btn_website)
+    public void websiteClick() {
+        launchWebUrl(getString(R.string.owner_web_address));
     }
 
-    private String getTextVersion() {
-        return String.format(getString(R.string.info_text_version), getAppVersion());
+    protected void composeEmail(String address, String subject) {
+        composeEmail(new String[]{address}, subject);
     }
 
-    private String getTextDeveloper() {
-        return String.format(getString(R.string.info_text_developer), getDeveloperName());
+    protected void composeEmail(String[] addresses, String subject) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+        try {
+            startActivity(Intent.createChooser(
+                    intent, getString(R.string.chooser_app_email)));
+
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.error_email_client_not_found),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private String getTextOrganization() {
-        return String.format(getString(R.string.info_text_organization), getOwnerName());
-    }
+    protected void launchWebUrl(String webAddress) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(webAddress));
 
-    private String getAppVersion() {
-        return BuildConfig.VERSION_NAME;
-    }
+        try {
+            startActivity(Intent.createChooser(
+                    intent, getString(R.string.chooser_app_weburl)));
 
-    public static AboutFragment newInstance() {
-        return new AboutFragment();
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.error_web_browser_not_found),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
