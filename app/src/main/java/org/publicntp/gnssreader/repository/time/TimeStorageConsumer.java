@@ -22,6 +22,10 @@ public class TimeStorageConsumer {
         return TimeStorage.getDefaultDateString();
     }
 
+    public String getDefaultDateDifferenceString() {
+        return "±--";
+    }
+
     public String getDateStringIfServiceRunning(Context context) {
         if(NtpService.exists()) {
             return getAdjustedDateString(context);
@@ -36,6 +40,14 @@ public class TimeStorageConsumer {
             return String.format("±%.2f", (float) difference / 1000);
         } catch (Exception e) {
             return String.format(e.getMessage());
+        }
+    }
+
+    public String getDateDifferenceIfServiceRunning() {
+        if(NtpService.exists()) {
+            return getDateDifference();
+        } else {
+            return getDefaultDateDifferenceString();
         }
     }
 

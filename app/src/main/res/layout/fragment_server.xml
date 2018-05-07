@@ -113,7 +113,7 @@
                         android:layout_marginBottom="0dp"
                         android:layout_marginStart="0dp"
                         android:fontFamily="@font/roboto_light"
-                        android:text="@{servertimestorage.getDateDifference()}"
+                        android:text="@{servertimestorage.getDateDifferenceIfServiceRunning()}"
                         android:textColor="@color/primary"
                         android:textSize="34sp"
                         tools:text="±0.000" />
