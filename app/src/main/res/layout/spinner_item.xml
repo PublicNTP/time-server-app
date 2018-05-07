@@ -8,4 +8,5 @@
     android:ellipsize="marquee"
     android:singleLine="true"
     android:hint="Local"
+    android:textColor="@color/primary"
     android:textAlignment="inherit" />

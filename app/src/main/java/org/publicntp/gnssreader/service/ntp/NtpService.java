@@ -17,7 +17,6 @@ import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.IpAddressHelper;
 import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
 import org.publicntp.gnssreader.ui.MainActivity;
 

@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time_zone"
+                android:textColor="@color/black"
                 android:textSize="@dimen/option_text_size" />
 
             <Spinner
@@ -37,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/location_units"
+                android:textColor="@color/black"
                 android:textSize="@dimen/option_text_size" />
 
             <Spinner
@@ -58,6 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/share_location"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/option_text_size" />
             </LinearLayout>
 
@@ -75,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/copy_to_clipboard"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/option_text_size" />
             </LinearLayout>
 

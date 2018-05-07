@@ -147,19 +147,6 @@
             android:textSize="@dimen/large_detail_text_size"
             tools:text="000.0000° N" />
 
-        <!--<TextView-->
-        <!--android:id="@+id/time_text_longitude_display"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="0dp"-->
-        <!--android:layout_marginStart="0dp"-->
-        <!--android:fontFamily="@font/roboto"-->
-        <!--android:text="@{locationstorage.string2}"-->
-        <!--android:textColor="@color/primary_dark"-->
-        <!--android:textSize="@dimen/large_detail_text_size"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="000.0000° W" />-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

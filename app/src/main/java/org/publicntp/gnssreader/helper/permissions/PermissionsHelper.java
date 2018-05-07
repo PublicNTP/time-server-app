@@ -1,11 +1,11 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.gnssreader.helper.permissions;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-import org.publicntp.gnssreader.model.Permission;
+import org.publicntp.gnssreader.helper.permissions.Permission;
 
 public class PermissionsHelper {
 

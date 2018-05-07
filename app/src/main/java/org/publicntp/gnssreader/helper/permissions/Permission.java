@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.model;
+package org.publicntp.gnssreader.helper.permissions;
 
 import android.Manifest;
 

@@ -89,7 +89,6 @@ public class TimeFragment extends BaseFragment {
 
     private void initializeSpinningLogo() {
         spinningDrawable = (GifDrawable) spinningLogo.getDrawable();
-        //spinningDrawable.setColorFilter(timeLogoText.getCurrentTextColor(), PorterDuff.Mode.ADD);
         playLogoOnce();
     }
 

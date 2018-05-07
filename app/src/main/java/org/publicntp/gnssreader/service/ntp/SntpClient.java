@@ -33,6 +33,11 @@ import java.text.DecimalFormat;
  *  
  * @author Adam Buckley
  */
+
+/**
+ * Note from Zachary Neubert: This can be run from within Android Studio to test the server.
+ */
+
 public class SntpClient
 {
 	public static void main(String[] args) throws IOException

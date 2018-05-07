@@ -1,6 +1,6 @@
 package org.publicntp.gnssreader.ui.server;
 
-import android.database.DataSetObserver;
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,33 +12,24 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.publicntp.gnssreader.R;
 import org.publicntp.gnssreader.databinding.FragmentServerBinding;
 import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
-import org.publicntp.gnssreader.helper.RootChecker;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.helper.Winebar;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
 import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
 import org.publicntp.gnssreader.service.ntp.NtpService;
-import org.publicntp.gnssreader.service.ntp.log.ServerLogDataPointGrouper;
-import org.publicntp.gnssreader.service.ntp.log.ServerLogMinuteSummary;
+import org.publicntp.gnssreader.service.ntp.logging.ServerLogDataPointGrouper;
+import org.publicntp.gnssreader.service.ntp.logging.ServerLogMinuteSummary;
 
 import java.lang.ref.WeakReference;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,7 +37,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-import butterknife.OnItemSelected;
+import eu.chainfire.libsuperuser.Shell;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
@@ -136,43 +127,9 @@ public class ServerFragment extends Fragment {
     public void onResume() {
         uiHandler = new Handler();
 
-        invalidationTimer = new Timer();
-        invalidationTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                viewBinding.invalidateAll();
-                uiHandler.post(() -> {
-                    boolean serviceExists = NtpService.exists();
-                    toggleServerButton.setChecked(serviceExists);
-                    toggleServerButton.setText(serviceExists ? "Server On" : "Server Off");
-                });
-            }
-        }, 0, invalidationFrequency);
-
-        updatePacketsTimer = new Timer();
-        updatePacketsTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                uiHandler.post(() -> {
-                    if (NtpService.exists()) {
-                        ServerLogMinuteSummary currentMinute = ServerLogDataPointGrouper.mostRecent();
-                        activityDisplay.setText("" + currentMinute.getTotal());
-                    } else {
-                        activityDisplay.setText("-");
-                    }
-                });
-            }
-        }, 0, updatePacketsFrequency);
-
-        graphRefreshTimer = new Timer();
-        graphRefreshTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                viewBinding.invalidateAll();
-                refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
-                refreshGraphTask.execute();
-            }
-        }, 0, graphRefreshFrequency);
+        scheduleUIInvalidation();
+        scheduleUpdatePacketCounter();
+        scheduleGraphRefresh();
 
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         toggleServerButton.setChecked(NtpService.getNtpService() != null);
@@ -192,6 +149,51 @@ public class ServerFragment extends Fragment {
         return new ServerFragment();
     }
 
+    private void scheduleUIInvalidation() {
+        invalidationTimer = new Timer();
+        invalidationTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                viewBinding.invalidateAll();
+                uiHandler.post(() -> {
+                    boolean serviceExists = NtpService.exists();
+                    toggleServerButton.setChecked(serviceExists);
+                    toggleServerButton.setText(serviceExists ? "Server On" : "Server Off");
+                });
+            }
+        }, 0, invalidationFrequency);
+    }
+
+    private void scheduleGraphRefresh() {
+        graphRefreshTimer = new Timer();
+        graphRefreshTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                viewBinding.invalidateAll();
+                refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
+                refreshGraphTask.execute();
+            }
+        }, 0, graphRefreshFrequency);
+    }
+
+    private void scheduleUpdatePacketCounter() {
+        updatePacketsTimer = new Timer();
+        updatePacketsTimer.schedule(new TimerTask() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void run() {
+                uiHandler.post(() -> {
+                    if (NtpService.exists()) {
+                        ServerLogMinuteSummary currentMinute = ServerLogDataPointGrouper.mostRecent();
+                        activityDisplay.setText(String.format("%d", currentMinute.getTotal()));
+                    } else {
+                        activityDisplay.setText("-");
+                    }
+                });
+            }
+        }, 0, updatePacketsFrequency);
+    }
+
     @OnCheckedChanged(R.id.server_btn_toggle)
     public void toggleServer() {
         NtpService ntpService = NtpService.getNtpService();
@@ -204,7 +206,7 @@ public class ServerFragment extends Fragment {
 
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
                 graphHasBeenInit = true;
-                if (!RootChecker.isRootGiven()) {
+                if (!Shell.SU.available()) {
                     Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
 
                     }).setActionTextColor(ContextCompat.getColor(getContext(), R.color.white)).show();

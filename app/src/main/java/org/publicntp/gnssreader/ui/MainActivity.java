@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.PermissionsHelper;
+import org.publicntp.gnssreader.helper.permissions.PermissionsHelper;
 import org.publicntp.gnssreader.listener.LocationHelper;
-import org.publicntp.gnssreader.model.Permission;
+import org.publicntp.gnssreader.helper.permissions.Permission;
 import org.publicntp.gnssreader.ui.about.AboutFragment;
 import org.publicntp.gnssreader.ui.satellite.SatelliteFragment;
 import org.publicntp.gnssreader.ui.server.ServerFragment;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        for(int i=0; i<tabLayout.getTabCount(); i++) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(sectionPagerAdapter.getTabView(i));
             onTabUnselected(tab);
@@ -67,33 +67,25 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
         if (requestCode == Permission.FINE_LOCATION.getKey()) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Timber.i("response for permissions check contains: granted");
                 LocationHelper.registerNmeaListenerAndStartGettingFixes(this);
-            } else {
-                Timber.i("response for permissions check contains: denied");
             }
-        } else {
-            Timber.w("unknown permissions type");
         }
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        View rootView = tab.getCustomView();
-        TextView labelView = (TextView) rootView.findViewById(R.id.tab_label);
-        labelView.setVisibility(View.VISIBLE);
+        TextView tabLabelView = tab.getCustomView().findViewById(R.id.tab_label);
+        tabLabelView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
-        View rootView = tab.getCustomView();
-        TextView labelView = (TextView) rootView.findViewById(R.id.tab_label);
-        labelView.setVisibility(View.GONE);
+        TextView tabLabelView = tab.getCustomView().findViewById(R.id.tab_label);
+        tabLabelView.setVisibility(View.GONE);
     }
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
-
     }
 
     private class SectionPagerAdapter extends FragmentPagerAdapter {

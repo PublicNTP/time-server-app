@@ -156,10 +156,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
                 float degrees = (float) Math.toDegrees(orientation[0]);
-                //TODO CHECK BACK WITH THIS CONSTRAINT
-                //if (accuracy != null && accuracy > SensorManager.SENSOR_STATUS_ACCURACY_LOW) {
                 radialChart.setCompassReading(degrees);
-                //}
             }
         }
     }

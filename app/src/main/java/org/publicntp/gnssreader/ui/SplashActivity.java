@@ -2,14 +2,13 @@ package org.publicntp.gnssreader.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.PermissionsHelper;
+import org.publicntp.gnssreader.helper.permissions.PermissionsHelper;
 import org.publicntp.gnssreader.helper.TimeMillis;
 import org.publicntp.gnssreader.listener.LocationHelper;
-import org.publicntp.gnssreader.model.Permission;
+import org.publicntp.gnssreader.helper.permissions.Permission;
 
 import java.util.Timer;
 import java.util.TimerTask;

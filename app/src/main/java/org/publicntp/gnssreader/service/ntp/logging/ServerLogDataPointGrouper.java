@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp.log;
+package org.publicntp.gnssreader.service.ntp.logging;
 
 import org.publicntp.gnssreader.helper.TimeMillis;
 
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 public class ServerLogDataPointGrouper {
-    private static List<ServerLogDataPoint> allData = new ArrayList<>();
     private static TreeSet<ServerLogDataPoint> setData = new TreeSet<>();
     private static Long lastCleaned = System.currentTimeMillis();
 
@@ -73,7 +72,6 @@ public class ServerLogDataPointGrouper {
     }
 
     public synchronized static List<ServerLogMinuteSummary> oneHourSummary() {
-        long elapsedStartTime = System.currentTimeMillis();
         List<ServerLogMinuteSummary> logData = new ArrayList<>();
         long startTime = System.currentTimeMillis();
         startTime = startTime - (startTime % TimeMillis.MINUTE) + TimeMillis.MINUTE; //The end of the current minute
@@ -81,7 +79,6 @@ public class ServerLogDataPointGrouper {
         for (long l = startTime - TimeMillis.HOUR; l <= startTime; l += TimeMillis.MINUTE) {
             logData.add(fromGrouper(l));
         }
-        long elapsed = System.currentTimeMillis() - elapsedStartTime;
         return logData;
     }
 }

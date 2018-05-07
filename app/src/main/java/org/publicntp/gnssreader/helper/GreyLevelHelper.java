@@ -43,7 +43,7 @@ public class GreyLevelHelper {
         return chosenKey;
     }
 
-    public static int asId(float f) {
+    private static int asId(float f) {
         Integer chosenKey = matchingKey(f);
         if (chosenKey == null) {
             return R.color.greylight;
