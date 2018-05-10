@@ -108,8 +108,10 @@ public class SignalGraphFragment extends BaseFragment {
         signalGraph.setOnValueTouchListener(new ColumnChartOnValueSelectListener() {
             @Override
             public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-                SatelliteModel selectedSatellite = satelliteModelList.get(columnIndex);
-                onSatelliteSelectedListener.onSatelliteSelected(selectedSatellite);
+                if(satelliteModelList.size() > columnIndex) {
+                    SatelliteModel selectedSatellite = satelliteModelList.get(columnIndex);
+                    onSatelliteSelectedListener.onSatelliteSelected(selectedSatellite);
+                }
             }
 
             @Override
