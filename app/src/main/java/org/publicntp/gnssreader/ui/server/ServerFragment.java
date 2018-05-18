@@ -69,6 +69,7 @@ public class ServerFragment extends Fragment {
     @BindColor(R.color.packet_outgoing_green) int outgoing_green;
     @BindColor(R.color.packet_incoming_purple) int incoming_purple;
     @BindColor(R.color.black) int black;
+    @BindColor(R.color.white) int white;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -185,7 +186,7 @@ public class ServerFragment extends Fragment {
                 uiHandler.post(() -> {
                     if (NtpService.exists()) {
                         ServerLogMinuteSummary currentMinute = ServerLogDataPointGrouper.mostRecent();
-                        activityDisplay.setText(String.format("%d", currentMinute.getTotal()));
+                        activityDisplay.setText(String.format("%d", currentMinute.totalCount()));
                     } else {
                         activityDisplay.setText("-");
                     }
@@ -208,8 +209,8 @@ public class ServerFragment extends Fragment {
                 graphHasBeenInit = true;
                 if (!Shell.SU.available()) {
                     Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
-
-                    }).setActionTextColor(ContextCompat.getColor(getContext(), R.color.white)).show();
+                        // TODO redirect to a help page on the PublicNTP Wiki
+                    }).setActionTextColor(white).show();
                 }
             }
         } else {
@@ -234,7 +235,7 @@ public class ServerFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<ServerLogMinuteSummary> logData) {
-            if (fragmentReference.get().graphHasBeenInit || logData.stream().anyMatch(summmary -> summmary.getTotal() > 0)) {
+            if (fragmentReference.get().graphHasBeenInit || logData.stream().anyMatch(summmary -> summmary.totalCount() > 0)) {
                 fragmentReference.get().uiHandler.post(() -> fragmentReference.get().initBarChart(logData));
                 fragmentReference.get().graphHasBeenInit = true;
             }

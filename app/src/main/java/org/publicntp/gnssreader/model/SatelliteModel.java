@@ -42,7 +42,6 @@ public class SatelliteModel {
             case GnssStatus.CONSTELLATION_SBAS:
                 return "SBAS";
             case GnssStatus.CONSTELLATION_UNKNOWN:
-                return "UNKNOWN";
             default:
                 return "UNKNOWN";
         }

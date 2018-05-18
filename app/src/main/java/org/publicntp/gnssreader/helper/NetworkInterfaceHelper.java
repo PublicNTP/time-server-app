@@ -41,13 +41,13 @@ public class NetworkInterfaceHelper {
         return availableInterfaceNames().contains(interfaceName);
     }
 
-    public NetworkInterface byName(String name) {
-        return availableInterfaces.stream().filter(i -> i.getDisplayName().equals(name)).collect(Collectors.toList()).get(0);
+    public NetworkInterface byName(String interfaceName) {
+        return availableInterfaces.stream().filter(i -> i.getDisplayName().equals(interfaceName)).collect(Collectors.toList()).get(0);
     }
 
-    public boolean hasConnectivityOn(String name) {
-        if(hasInterface(name)) {
-            NetworkInterface networkInterface = byName(name);
+    public boolean hasConnectivityOn(String interfaceName) {
+        if(hasInterface(interfaceName)) {
+            NetworkInterface networkInterface = byName(interfaceName);
             boolean hasAddress = networkInterface.getInetAddresses().hasMoreElements();
             return hasAddress;
         } else {

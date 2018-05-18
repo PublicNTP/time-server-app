@@ -35,7 +35,6 @@ public class ServerLogDataPointGrouper {
 
     private static void cleanOld() {
         Long oldestAllowed = System.currentTimeMillis() - TimeMillis.HOUR * 3;
-        //allData = allData.parallelStream().filter(p -> p.timeReceived > oldestAllowed).collect(Collectors.toList());
         for (ServerLogDataPoint point : setData) {
             if (point.timeReceived >= oldestAllowed) {
                 setData.remove(point);
@@ -51,7 +50,6 @@ public class ServerLogDataPointGrouper {
         TreeSet<ServerLogDataPoint> croppedData = (TreeSet<ServerLogDataPoint>) tailData.headSet(firstAfter(tailData, endMillis));
 
         return new ArrayList<>(croppedData);
-        //return allData.parallelStream().filter(l -> l.timeReceived <= endMillis && l.timeReceived >= startMillis).collect(Collectors.toList());
     }
 
     public synchronized static void addPacket(ServerLogDataPoint serverLogDataPoint) {
@@ -59,7 +57,6 @@ public class ServerLogDataPointGrouper {
             cleanOld();
         }
 
-        //allData.add(serverLogDataPoint);
         setData.add(serverLogDataPoint);
     }
 

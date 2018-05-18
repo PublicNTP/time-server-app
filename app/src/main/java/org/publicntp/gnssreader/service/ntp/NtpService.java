@@ -35,7 +35,7 @@ public class NtpService extends Service {
     private static final String CHANNEL_ID = "NTP_SERVICE";
 
     public static final int NTP_DEFAULT_PORT = 123;
-    public static final int NTP_USABLE_PORT = 1234;
+    public static final int NTP_UNRESTRICTED_PORT = 1234;
 
     private static NtpService ntpService;
 
@@ -84,8 +84,8 @@ public class NtpService extends Service {
         NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
         String ipAddress;
         String chosenInterface = "";
-        String ethernetInterfaceName = "eth0";
-        String wifiInterfaceName = "wlan0";
+        final String ethernetInterfaceName = "eth0";
+        final String wifiInterfaceName = "wlan0";
         if (networkInterfaceHelper.hasConnectivityOn(ethernetInterfaceName)) {
             ipAddress = networkInterfaceHelper.ipFor(ethernetInterfaceName);
             chosenInterface = ethernetInterfaceName;
@@ -103,11 +103,12 @@ public class NtpService extends Service {
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
 
-        if (!chosenInterface.equals("")) {
-            builder = builder.setContentText(String.format("Running on %s, %s:%d", chosenInterface, ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_USABLE_PORT));
+        if (chosenInterface.equals("")) {
+            builder = builder.setContentText(String.format("Running on %s:%d", ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
         } else {
-            builder = builder.setContentText(String.format("Running on %s:%d", ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_USABLE_PORT));
+            builder = builder.setContentText(String.format("Running on %s, %s:%d", chosenInterface, ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
         }
+
         return builder.build();
     }
 
@@ -116,7 +117,7 @@ public class NtpService extends Service {
         ntpService = this;
 
         serverThread = new Thread(() -> {
-            simpleNTPServer = new SimpleNTPServer(NTP_USABLE_PORT);
+            simpleNTPServer = new SimpleNTPServer(NTP_UNRESTRICTED_PORT);
             try {
                 simpleNTPServer.start();
             } catch (IOException e) {
@@ -126,20 +127,24 @@ public class NtpService extends Service {
         });
         serverThread.run();
 
+        tryForwardPorts();
+
+        startForeground(SERVICE_ID, buildNotification());
+        addConnectivityBroadcastReceiver();
+
+        return START_STICKY;
+    }
+
+    private void tryForwardPorts() {
         if (Shell.SU.available()) {
             boolean allowed = PortForwardingHelper.allowAllForwarding();
-            boolean forwarded = PortForwardingHelper.forwardUDPPort(NTP_DEFAULT_PORT, NTP_USABLE_PORT);
+            boolean forwarded = PortForwardingHelper.forwardUDPPort(NTP_DEFAULT_PORT, NTP_UNRESTRICTED_PORT);
             if (!allowed || !forwarded) {
                 Toast.makeText(NtpService.this, "Firewall routing failed. Server may not work.", Toast.LENGTH_SHORT).show();
             } else {
                 rootRedirected = true;
             }
         }
-
-        startForeground(SERVICE_ID, buildNotification());
-        addConnectivityBroadcastReceiver();
-
-        return START_STICKY;
     }
 
     private void addConnectivityBroadcastReceiver() {
@@ -156,15 +161,18 @@ public class NtpService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         if (simpleNTPServer != null) {
             simpleNTPServer.stop();
             simpleNTPServer = null;
         }
+
         ntpService = null;
         if (serverThread != null) {
             if (serverThread.isAlive()) serverThread.interrupt();
             serverThread = null;
         }
+
         removeConnectivityBroadcastReceiver();
     }
 

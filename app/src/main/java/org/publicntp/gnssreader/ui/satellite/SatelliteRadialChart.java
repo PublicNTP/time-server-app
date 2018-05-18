@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -86,13 +87,13 @@ public class SatelliteRadialChart extends View {
         greyStroke.setStyle(Paint.Style.STROKE);
         greyStroke.setStrokeWidth(6f);
 
-        this.setOnTouchListener((v, event) -> {
+        this.setOnTouchListener((View v, MotionEvent event) -> {
             compassEnabled = !compassEnabled;
-            if (!compassEnabled) {
+            if (compassEnabled) {
+                Winebar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
+            } else {
                 Winebar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
                 resetRotation();
-            } else {
-                Winebar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
             }
             return false;
         });
@@ -131,23 +132,21 @@ public class SatelliteRadialChart extends View {
     }
 
     public void setCompassReading(float degrees) {
-        if (!compassEnabled) {
-            return;
-        }
+        if (compassEnabled) {
+            if (degrees < 0) {
+                degrees = 360f + degrees;
+            }
 
-        if (degrees < 0) {
-            degrees = 360f + degrees;
-        }
+            if (degrees > 360) {
+                degrees = degrees % 360;
+            }
 
-        if (degrees > 360) {
-            degrees = degrees % 360;
-        }
-
-        float rotatedDegrees = degrees - 360f;
-        // sometimes, we go from 359 degrees to 1 degree, and the difference rotated should not be 358 degrees, it should be 2 degrees
-        float rotationalDifference = Math.min(Math.abs(azimuth - degrees), Math.abs(azimuth - rotatedDegrees));
-        if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || rotationalDifference > 25f) {
-            rotateToNDegrees(degrees);
+            float rotatedDegrees = degrees - 360f;
+            // sometimes, we go from 359 degrees to 1 degree, and the difference rotated should not be 358 degrees, it should be 2 degrees
+            float rotationalDifference = Math.min(Math.abs(azimuth - degrees), Math.abs(azimuth - rotatedDegrees));
+            if (lastSet == null || System.currentTimeMillis() - lastSet > 300 || rotationalDifference > 25f) {
+                rotateToNDegrees(degrees);
+            }
         }
     }
 
@@ -217,10 +216,6 @@ public class SatelliteRadialChart extends View {
     }
 
     private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas) {
-        drawSatellite(satelliteModel, canvas, false);
-    }
-
-    private void drawSatellite(SatelliteModel satelliteModel, Canvas canvas, boolean forceHighlight) {
         Rect bounds = canvas.getClipBounds();
         float radius = getRadius(canvas) * .85f; // don't let satellites go out of bounds
 
@@ -242,7 +237,7 @@ public class SatelliteRadialChart extends View {
 
         float shapeRadius = 30f * satelliteScale();
         if (satelliteModel.usedInFix) {
-            drawTriangle(canvas, x, y, shapeRadius*1.4f, paint);
+            drawTriangle(canvas, x, y, shapeRadius * 1.4f, paint);
         } else {
             canvas.drawRect(new Rect(
                             (int) (x - shapeRadius),

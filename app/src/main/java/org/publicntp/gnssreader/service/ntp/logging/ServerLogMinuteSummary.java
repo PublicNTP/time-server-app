@@ -13,7 +13,7 @@ public class ServerLogMinuteSummary {
         this.outbound = summaries.parallelStream().filter(s -> !s.isInbound).count();
     }
 
-    public long getTotal() {
+    public long totalCount() {
         return inbound + outbound;
     }
 

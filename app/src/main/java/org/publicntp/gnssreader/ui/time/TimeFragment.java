@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
 import org.publicntp.gnssreader.helper.DateFormatter;
 import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
 import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
+import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
 import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
 import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
-import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
 import org.publicntp.gnssreader.ui.BaseFragment;
 
 import java.util.Timer;
@@ -84,7 +85,10 @@ public class TimeFragment extends BaseFragment {
                 viewBinding.setLocationstorage(new LocationStorageConsumer(CoordinateConverter.byName(units)));
             }
         });
-        optionsDialogFragment.show(getFragmentManager(), "OptionsFragment");
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager != null) {
+            optionsDialogFragment.show(fragmentManager, "OptionsFragment");
+        }
     }
 
     private void initializeSpinningLogo() {

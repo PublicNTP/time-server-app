@@ -159,6 +159,8 @@ public class SimpleNTPServer implements Runnable {
      * Handle incoming packet. If NTP packet is client-mode then respond
      * to that host with a NTP response packet otherwise ignore.
      *
+     * Zac: This function has been altered to log requests and deliver satellite time, rather than system time.
+     *
      * @param request incoming DatagramPacket
      * @param rcvTime time packet received
      * @throws IOException if an I/O error occurs.
