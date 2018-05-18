@@ -44,11 +44,6 @@ public class TimeFragment extends BaseFragment {
     private GifDrawable spinningDrawable;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }

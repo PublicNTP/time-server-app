@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
 import org.publicntp.gnssreader.repository.location.converters.LatLongConverter;
-import org.publicntp.gnssreader.repository.location.converters.UTMConverter;
 
 /**
  * Created by zac on 2/7/18.

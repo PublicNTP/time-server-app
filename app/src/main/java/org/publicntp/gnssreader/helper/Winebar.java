@@ -3,7 +3,6 @@ package org.publicntp.gnssreader.helper;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
 
 import org.publicntp.gnssreader.R;
 

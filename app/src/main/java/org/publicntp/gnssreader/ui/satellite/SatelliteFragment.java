@@ -62,13 +62,6 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
         return view;
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -111,7 +104,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
 
     private void distributePositionData() {
         List<SatelliteModel> satellites = LocationStorage.sortedSatellites();
-        satellites.sort((s1, s2) -> s1.svn > s2.svn ? 1 : -1);
+        satellites.sort((s1, s2) -> Long.compare(s1.svn, s2.svn));
 
         radialChart.setSatelliteModels(satellites);
 

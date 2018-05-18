@@ -2,10 +2,7 @@ package org.publicntp.gnssreader.listener;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Location;
 import android.location.LocationManager;
-
-import org.publicntp.gnssreader.helper.TimeMillis;
 
 /**
  * Created by zac on 2/7/18.

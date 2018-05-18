@@ -1,11 +1,9 @@
 package org.publicntp.gnssreader.repository.time;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
-import org.publicntp.gnssreader.repository.time.TimeStorage;
 import org.publicntp.gnssreader.service.ntp.NtpService;
-
-import java.sql.Time;
 
 /**
  * Created by zac on 2/7/18.
@@ -34,12 +32,13 @@ public class TimeStorageConsumer {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     public String getDateDifference() {
         try {
             double difference = (double) TimeStorage.getDateDifference();
             return String.format("±%.2f", (float) difference / 1000);
         } catch (Exception e) {
-            return String.format(e.getMessage());
+            return e.getMessage();
         }
     }
 

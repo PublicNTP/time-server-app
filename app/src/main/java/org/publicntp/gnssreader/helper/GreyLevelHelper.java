@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 
 import org.publicntp.gnssreader.R;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
