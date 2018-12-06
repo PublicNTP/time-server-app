@@ -10,12 +10,16 @@ With this app, you can:
 
 ## Credit
 - [Zachary Neubert](https://github.com/ZacNeubert)
-- [Richard Macdonald](https://github.com/thewidgetsmith)
-- [Keltson Howell](https://keltsonhowell.com/)
 - [PublicNTP, Inc.](https://publicntp.org)
 - [PXP](https://pxp200.com)
 - [Rooster Glue, Inc.](https://roosterglue.com)
 - [GPSTest Project](https://github.com/barbeau/gpstest/wiki)
+- [Zachary Neubert](https://github.com/ZacNeubert)
+- [Richard Macdonald](https://github.com/thewidgetsmith)
+- [Keltson Howell](https://keltsonhowell.com)
+- [Tod Robbins](https://github.com/todrobbins)
+- [Cody Deskins](https://github.com/cdeskins)
+- [Eric Evans](https://github.com/
 
 ## Legal
 `time-server-app` is copyrighted by [PublicNTP, Inc.](https://publicntp.org),
