@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp.logging;
+package org.publicntp.timeserver.service.ntp.logging;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.server;
+package org.publicntp.timeserver.ui.server;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
@@ -14,16 +14,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.databinding.FragmentServerBinding;
-import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
-import org.publicntp.gnssreader.helper.TimeMillis;
-import org.publicntp.gnssreader.helper.Winebar;
-import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
-import org.publicntp.gnssreader.service.ntp.NtpService;
-import org.publicntp.gnssreader.service.ntp.logging.ServerLogDataPointGrouper;
-import org.publicntp.gnssreader.service.ntp.logging.ServerLogMinuteSummary;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.databinding.FragmentServerBinding;
+import org.publicntp.timeserver.helper.NetworkInterfaceHelper;
+import org.publicntp.timeserver.helper.TimeMillis;
+import org.publicntp.timeserver.helper.Winebar;
+import org.publicntp.timeserver.helper.preferences.TimezoneStore;
+import org.publicntp.timeserver.repository.time.TimeStorageConsumer;
+import org.publicntp.timeserver.service.ntp.NtpService;
+import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
+import org.publicntp.timeserver.service.ntp.logging.ServerLogMinuteSummary;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

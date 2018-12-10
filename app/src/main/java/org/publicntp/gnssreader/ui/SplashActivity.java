@@ -1,14 +1,14 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.timeserver.ui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.permissions.PermissionsHelper;
-import org.publicntp.gnssreader.helper.TimeMillis;
-import org.publicntp.gnssreader.listener.LocationHelper;
-import org.publicntp.gnssreader.helper.permissions.Permission;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.permissions.PermissionsHelper;
+import org.publicntp.timeserver.helper.TimeMillis;
+import org.publicntp.timeserver.listener.LocationHelper;
+import org.publicntp.timeserver.helper.permissions.Permission;
 
 import java.util.Timer;
 import java.util.TimerTask;

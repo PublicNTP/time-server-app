@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.timeserver.ui;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,14 +15,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.permissions.Permission;
-import org.publicntp.gnssreader.helper.permissions.PermissionsHelper;
-import org.publicntp.gnssreader.listener.LocationHelper;
-import org.publicntp.gnssreader.ui.about.AboutFragment;
-import org.publicntp.gnssreader.ui.satellite.SatelliteFragment;
-import org.publicntp.gnssreader.ui.server.ServerFragment;
-import org.publicntp.gnssreader.ui.time.TimeFragment;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.permissions.Permission;
+import org.publicntp.timeserver.helper.permissions.PermissionsHelper;
+import org.publicntp.timeserver.listener.LocationHelper;
+import org.publicntp.timeserver.ui.about.AboutFragment;
+import org.publicntp.timeserver.ui.satellite.SatelliteFragment;
+import org.publicntp.timeserver.ui.server.ServerFragment;
+import org.publicntp.timeserver.ui.time.TimeFragment;
 
 import butterknife.BindColor;
 import butterknife.BindView;

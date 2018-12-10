@@ -1,9 +1,9 @@
-package org.publicntp.gnssreader.repository.location;
+package org.publicntp.timeserver.repository.location;
 
 import android.annotation.SuppressLint;
 
-import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
-import org.publicntp.gnssreader.repository.location.converters.LatLongConverter;
+import org.publicntp.timeserver.repository.location.converters.CoordinateConverter;
+import org.publicntp.timeserver.repository.location.converters.LatLongConverter;
 
 /**
  * Created by zac on 2/7/18.

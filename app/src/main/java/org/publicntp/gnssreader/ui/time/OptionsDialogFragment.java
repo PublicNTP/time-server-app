@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.time;
+package org.publicntp.timeserver.ui.time;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,13 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.Winebar;
-import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
-import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.location.LocationStorage;
-import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
-import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.Winebar;
+import org.publicntp.timeserver.helper.preferences.LocationCoordinateTypeStore;
+import org.publicntp.timeserver.helper.preferences.TimezoneStore;
+import org.publicntp.timeserver.repository.location.LocationStorage;
+import org.publicntp.timeserver.repository.location.LocationStorageConsumer;
+import org.publicntp.timeserver.repository.location.converters.CoordinateConverter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

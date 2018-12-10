@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.repository.location.converters;
+package org.publicntp.timeserver.repository.location.converters;
 
 import android.annotation.SuppressLint;
 

@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.satellite;
+package org.publicntp.timeserver.ui.satellite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.GreyLevelHelper;
-import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.ui.BaseFragment;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.GreyLevelHelper;
+import org.publicntp.timeserver.model.SatelliteModel;
+import org.publicntp.timeserver.ui.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;

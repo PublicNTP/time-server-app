@@ -1,6 +1,6 @@
-package org.publicntp.gnssreader.service.ntp.logging;
+package org.publicntp.timeserver.service.ntp.logging;
 
-import org.publicntp.gnssreader.helper.TimeMillis;
+import org.publicntp.timeserver.helper.TimeMillis;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader;
+package org.publicntp.timeserver;
 
 import android.app.Application;
 import android.support.annotation.NonNull;

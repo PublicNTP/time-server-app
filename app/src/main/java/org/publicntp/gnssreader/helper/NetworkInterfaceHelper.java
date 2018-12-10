@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;

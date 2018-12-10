@@ -14,7 +14,7 @@
             android:layout_margin="5dp"
             android:orientation="vertical"
             android:id="@+id/satellite_inner_container"
-            tools:context="org.publicntp.gnssreader.ui.satellite.SatelliteFragment">
+            tools:context="org.publicntp.timeserver.ui.satellite.SatelliteFragment">
 
             <TextView
                 android:id="@+id/satellites_in_view_label"
@@ -52,7 +52,7 @@
                 android:textAlignment="textEnd"
                 android:textSize="36sp" />
 
-            <org.publicntp.gnssreader.ui.satellite.SatelliteRadialChart
+            <org.publicntp.timeserver.ui.satellite.SatelliteRadialChart
                 android:id="@+id/satellite_radial_chart"
                 android:layout_width="match_parent"
                 android:layout_height="460dp"

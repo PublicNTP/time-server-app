@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 import android.content.Context;
 import android.os.LocaleList;

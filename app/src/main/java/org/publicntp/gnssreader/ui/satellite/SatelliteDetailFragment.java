@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.satellite;
+package org.publicntp.timeserver.ui.satellite;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.location.LocationStorage;
-import org.publicntp.gnssreader.ui.BaseFragment;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.model.SatelliteModel;
+import org.publicntp.timeserver.repository.location.LocationStorage;
+import org.publicntp.timeserver.ui.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

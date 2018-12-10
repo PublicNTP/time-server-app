@@ -1,10 +1,10 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
 
-import org.publicntp.gnssreader.R;
+import org.publicntp.timeserver.R;
 
 import java.util.TreeMap;
 

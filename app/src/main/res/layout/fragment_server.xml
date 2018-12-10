@@ -6,7 +6,7 @@
 
         <variable
             name="servertimestorage"
-            type="org.publicntp.gnssreader.repository.time.TimeStorageConsumer" />
+            type="org.publicntp.timeserver.repository.time.TimeStorageConsumer" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:orientation="vertical"
-            tools:context="org.publicntp.gnssreader.ui.server.ServerFragment">
+            tools:context="org.publicntp.timeserver.ui.server.ServerFragment">
 
             <lecho.lib.hellocharts.view.ColumnChartView
                 android:id="@+id/server_bar_graph"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="org.publicntp.gnssreader.ui.MainActivity">
+    tools:context="org.publicntp.timeserver.ui.MainActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/fragment_container"

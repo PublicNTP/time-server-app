@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.satellite;
+package org.publicntp.timeserver.ui.satellite;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.GreyLevelHelper;
-import org.publicntp.gnssreader.helper.Winebar;
-import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.location.LocationStorage;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.GreyLevelHelper;
+import org.publicntp.timeserver.helper.Winebar;
+import org.publicntp.timeserver.model.SatelliteModel;
+import org.publicntp.timeserver.repository.location.LocationStorage;
 
 import java.util.ArrayList;
 import java.util.List;

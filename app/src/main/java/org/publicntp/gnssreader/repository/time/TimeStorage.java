@@ -1,8 +1,8 @@
-package org.publicntp.gnssreader.repository.time;
+package org.publicntp.timeserver.repository.time;
 
 import android.content.Context;
 
-import org.publicntp.gnssreader.helper.DateFormatter;
+import org.publicntp.timeserver.helper.DateFormatter;
 
 import java.util.Date;
 

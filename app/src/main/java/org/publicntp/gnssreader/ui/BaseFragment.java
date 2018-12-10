@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui;
+package org.publicntp.timeserver.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,9 +1,9 @@
-package org.publicntp.gnssreader.repository.location;
+package org.publicntp.timeserver.repository.location;
 
 import android.location.GnssStatus;
 import android.location.Location;
 
-import org.publicntp.gnssreader.model.SatelliteModel;
+import org.publicntp.timeserver.model.SatelliteModel;
 
 import java.util.ArrayList;
 import java.util.List;

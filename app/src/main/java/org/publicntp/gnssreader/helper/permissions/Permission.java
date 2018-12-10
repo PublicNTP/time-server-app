@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helper.permissions;
+package org.publicntp.timeserver.helper.permissions;
 
 import android.Manifest;
 
