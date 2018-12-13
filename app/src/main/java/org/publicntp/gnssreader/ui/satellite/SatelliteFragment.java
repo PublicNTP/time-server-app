@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.satellite;
+package org.publicntp.timeserver.ui.satellite;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -17,10 +17,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.TimeMillis;
-import org.publicntp.gnssreader.model.SatelliteModel;
-import org.publicntp.gnssreader.repository.location.LocationStorage;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.TimeMillis;
+import org.publicntp.timeserver.model.SatelliteModel;
+import org.publicntp.timeserver.repository.location.LocationStorage;
 
 import java.util.List;
 import java.util.Timer;

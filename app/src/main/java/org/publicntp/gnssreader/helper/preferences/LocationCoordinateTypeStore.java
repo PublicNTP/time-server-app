@@ -1,8 +1,8 @@
-package org.publicntp.gnssreader.helper.preferences;
+package org.publicntp.timeserver.helper.preferences;
 
 import android.content.Context;
 
-import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
+import org.publicntp.timeserver.repository.location.converters.CoordinateConverter;
 
 public class LocationCoordinateTypeStore extends StringPreferenceStore {
     public String getKey() {

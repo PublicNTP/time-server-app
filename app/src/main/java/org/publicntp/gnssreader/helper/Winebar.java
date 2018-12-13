@@ -1,10 +1,10 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import org.publicntp.gnssreader.R;
+import org.publicntp.timeserver.R;
 
 public class Winebar {
     public static Snackbar make(View view, String text, int length, int color) {

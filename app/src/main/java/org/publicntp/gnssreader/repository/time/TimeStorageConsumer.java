@@ -1,9 +1,9 @@
-package org.publicntp.gnssreader.repository.time;
+package org.publicntp.timeserver.repository.time;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import org.publicntp.gnssreader.service.ntp.NtpService;
+import org.publicntp.timeserver.service.ntp.NtpService;
 
 /**
  * Created by zac on 2/7/18.

@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.about;
+package org.publicntp.timeserver.ui.about;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.publicntp.gnssreader.BuildConfig;
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.ui.BaseFragment;
+import org.publicntp.timeserver.BuildConfig;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.ui.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

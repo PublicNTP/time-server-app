@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 public class TimeMillis {
     public static final long SECOND = 1000;

@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp;
+package org.publicntp.timeserver.service.ntp;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -23,9 +23,9 @@ import org.apache.commons.net.ntp.NtpUtils;
 import org.apache.commons.net.ntp.NtpV3Impl;
 import org.apache.commons.net.ntp.NtpV3Packet;
 import org.apache.commons.net.ntp.TimeStamp;
-import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
-import org.publicntp.gnssreader.service.ntp.logging.ServerLogDataPoint;
-import org.publicntp.gnssreader.service.ntp.logging.ServerLogDataPointGrouper;
+import org.publicntp.timeserver.repository.time.TimeStorageConsumer;
+import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPoint;
+import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

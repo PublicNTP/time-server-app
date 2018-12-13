@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.repository.location.converters;
+package org.publicntp.timeserver.repository.location.converters;
 
 public class CoordinateConverter {
     public static CoordinateConverter byName(String name) {

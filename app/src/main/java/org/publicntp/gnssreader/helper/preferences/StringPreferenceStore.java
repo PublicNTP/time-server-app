@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.helper.preferences;
+package org.publicntp.timeserver.helper.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

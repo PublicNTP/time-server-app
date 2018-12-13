@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.model;
+package org.publicntp.timeserver.model;
 
 import android.location.GnssStatus;
 

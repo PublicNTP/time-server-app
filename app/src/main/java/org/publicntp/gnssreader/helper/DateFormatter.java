@@ -1,8 +1,8 @@
-package org.publicntp.gnssreader.helper;
+package org.publicntp.timeserver.helper;
 
 import android.content.Context;
 
-import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
+import org.publicntp.timeserver.helper.preferences.TimezoneStore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

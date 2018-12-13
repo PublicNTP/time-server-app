@@ -1,10 +1,10 @@
-package org.publicntp.gnssreader.helper.preferences;
+package org.publicntp.timeserver.helper.preferences;
 
 import android.content.Context;
 import android.icu.util.TimeZone;
 
-import org.publicntp.gnssreader.helper.DateFormatter;
-import org.publicntp.gnssreader.helper.LocaleHelper;
+import org.publicntp.timeserver.helper.DateFormatter;
+import org.publicntp.timeserver.helper.LocaleHelper;
 
 import java.util.Date;
 import java.util.Locale;

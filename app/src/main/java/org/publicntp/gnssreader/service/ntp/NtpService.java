@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp;
+package org.publicntp.timeserver.service.ntp;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -16,9 +16,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.helper.NetworkInterfaceHelper;
-import org.publicntp.gnssreader.ui.MainActivity;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.helper.NetworkInterfaceHelper;
+import org.publicntp.timeserver.ui.MainActivity;
 
 import java.io.IOException;
 

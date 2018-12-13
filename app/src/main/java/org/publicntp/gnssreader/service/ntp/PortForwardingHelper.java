@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp;
+package org.publicntp.timeserver.service.ntp;
 
 import android.annotation.SuppressLint;
 

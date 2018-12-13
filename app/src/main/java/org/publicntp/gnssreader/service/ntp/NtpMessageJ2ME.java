@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.service.ntp;
+package org.publicntp.timeserver.service.ntp;
 
 import java.util.Date;
 import java.util.Random;
@@ -14,7 +14,7 @@ import java.util.Random;
  * stored as doubles (as opposed to the NTP unsigned 64-bit fixed point
  * format).
  * 
- * However, the contructor org.publicntp.gnssreader.service.ntp.NtpMessage(byte[]) and the method toByteArray()
+ * However, the contructor org.publicntp.timeserver.service.ntp.NtpMessage(byte[]) and the method toByteArray()
  * allow the import and export of the raw NTP message format.
  * 
  * 
@@ -23,7 +23,7 @@ import java.util.Random;
  * // Send message
  * DatagramSocket socket = new DatagramSocket();
  * InetAddress address = InetAddress.getByName("ntp.cais.rnp.br");
- * byte[] buf = new org.publicntp.gnssreader.service.ntp.NtpMessage().toByteArray();
+ * byte[] buf = new org.publicntp.timeserver.service.ntp.NtpMessage().toByteArray();
  * DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);
  * socket.send(packet);
  * 
@@ -49,7 +49,7 @@ import java.util.Random;
  * Comments for member variables are taken from RFC2030 by David Mills,
  * University of Delaware.
  * 
- * Number format conversion code in org.publicntp.gnssreader.service.ntp.NtpMessage(byte[] array) and toByteArray()
+ * Number format conversion code in org.publicntp.timeserver.service.ntp.NtpMessage(byte[] array) and toByteArray()
  * inspired by http://www.pps.jussieu.fr/~jch/enseignement/reseaux/
  * NTPMessage.java which is copyright (c) 2003 by Juliusz Chroboczek
  * 
@@ -220,7 +220,7 @@ public class NtpMessageJ2ME
 	
 	
 	/**
-	 * Constructs a new org.publicntp.gnssreader.service.ntp.NtpMessage from an array of bytes.
+	 * Constructs a new org.publicntp.timeserver.service.ntp.NtpMessage from an array of bytes.
 	 */
 	public NtpMessageJ2ME(byte[] array)
 	{
@@ -256,7 +256,7 @@ public class NtpMessageJ2ME
 	
 	
 	/**
-	 * Constructs a new org.publicntp.gnssreader.service.ntp.NtpMessage in client -> server mode, and sets the
+	 * Constructs a new org.publicntp.timeserver.service.ntp.NtpMessage in client -> server mode, and sets the
 	 * transmit timestamp to the current time.
 	 */
 	public NtpMessageJ2ME()
@@ -313,7 +313,7 @@ public class NtpMessageJ2ME
 	
 	
 	/**
-	 * Returns a string representation of a org.publicntp.gnssreader.service.ntp.NtpMessage
+	 * Returns a string representation of a org.publicntp.timeserver.service.ntp.NtpMessage
 	 */
 	public String toString()
 	{

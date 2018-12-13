@@ -1,4 +1,4 @@
-package org.publicntp.gnssreader.ui.time;
+package org.publicntp.timeserver.ui.time;
 
 
 import android.databinding.DataBindingUtil;
@@ -11,15 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.publicntp.gnssreader.R;
-import org.publicntp.gnssreader.databinding.FragmentTimeBinding;
-import org.publicntp.gnssreader.helper.DateFormatter;
-import org.publicntp.gnssreader.helper.preferences.LocationCoordinateTypeStore;
-import org.publicntp.gnssreader.helper.preferences.TimezoneStore;
-import org.publicntp.gnssreader.repository.location.LocationStorageConsumer;
-import org.publicntp.gnssreader.repository.location.converters.CoordinateConverter;
-import org.publicntp.gnssreader.repository.time.TimeStorageConsumer;
-import org.publicntp.gnssreader.ui.BaseFragment;
+import org.publicntp.timeserver.R;
+import org.publicntp.timeserver.databinding.FragmentTimeBinding;
+import org.publicntp.timeserver.helper.DateFormatter;
+import org.publicntp.timeserver.helper.preferences.LocationCoordinateTypeStore;
+import org.publicntp.timeserver.helper.preferences.TimezoneStore;
+import org.publicntp.timeserver.repository.location.LocationStorageConsumer;
+import org.publicntp.timeserver.repository.location.converters.CoordinateConverter;
+import org.publicntp.timeserver.repository.time.TimeStorageConsumer;
+import org.publicntp.timeserver.ui.BaseFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
