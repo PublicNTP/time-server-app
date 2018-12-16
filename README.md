@@ -19,7 +19,7 @@ With this app, you can:
 - [Keltson Howell](https://keltsonhowell.com)
 - [Tod Robbins](https://github.com/todrobbins)
 - [Cody Deskins](https://github.com/cdeskins)
-- [Eric Evans](https://github.com/
+- [Eric Evans](https://github.com/Zipbug)
 
 ## Legal
 `time-server-app` is copyrighted by [PublicNTP, Inc.](https://publicntp.org),
