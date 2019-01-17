@@ -38,6 +38,7 @@ With this app, you can:
 - [GPSTest Project](https://github.com/barbeau/gpstest)
 - [Knight Labs](http://timeline.knightlab.com/)
 - [NASA WorldWind](https://worldwind.arc.nasa.gov/)
+- [Open Location Code](https://github.com/google/open-location-code)
 
 ## Legal
 `time-server-app` is copyrighted by [PublicNTP, Inc.](https://publicntp.org),
