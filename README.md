@@ -20,6 +20,7 @@ With this app, you can:
 - [Eric Evans](https://github.com/Zipbug)
 - [Keltson Howell](https://keltsonhowell.com/)
 - [Micah Brown](https://github.com/Brnin8r)
+- [Richard Macdonald] (https://github.com/thewidgetsmith)
 - [Scott Waddell](https://github.com/swaddell)
 - [Terry Ott](https://github.com/TerryOtt)
 - [Tod Robbins](https://github.com/todrobbins)
