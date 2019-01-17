@@ -35,6 +35,7 @@ With this app, you can:
 - [Sixbucks Solutions, LLC](https://github.com/SixbucksSolutions)
 
 ### Project
+- [GPSTest Project](https://github.com/barbeau/gpstest)
 - [Knight Labs](http://timeline.knightlab.com/)
 
 ## Legal
