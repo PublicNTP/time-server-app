@@ -18,5 +18,5 @@
     <dimen name="togglebutton_indicator_width">40dp</dimen>
     <dimen name="togglebutton_indicator_height">3dp</dimen>
     <dimen name="togglebutton_indicator_corner_radius">3dp</dimen>
-    <dimen name="togglebutton_radius">10dp</dimen>
+    <dimen name="togglebutton_radius">3dp</dimen>
 </resources>

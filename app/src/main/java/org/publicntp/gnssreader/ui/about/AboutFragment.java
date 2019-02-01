@@ -41,37 +41,9 @@ public class AboutFragment extends BaseFragment {
         return view;
     }
 
-    @OnClick(R.id.about_btn_contact)
-    public void contactClick() {
-        composeEmail(getString(R.string.contact_email_address), getString(R.string.contact_email_subject));
-    }
-
-    @OnClick(R.id.about_btn_website)
+    @OnClick(R.id.donate_btn)
     public void websiteClick() {
-        launchWebUrl(getString(R.string.owner_web_address));
-    }
-
-    protected void composeEmail(String address, String subject) {
-        composeEmail(new String[]{address}, subject);
-    }
-
-    protected void composeEmail(String[] addresses, String subject) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-
-        try {
-            startActivity(Intent.createChooser(
-                    intent, getString(R.string.chooser_app_email)));
-
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(
-                    getContext(),
-                    getString(R.string.error_email_client_not_found),
-                    Toast.LENGTH_SHORT).show();
-        }
+        launchWebUrl(getString(R.string.owner_donate_address));
     }
 
     protected void launchWebUrl(String webAddress) {

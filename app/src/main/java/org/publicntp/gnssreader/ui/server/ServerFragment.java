@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.ToggleButton;
+import android.widget.CompoundButton;
 
 import org.publicntp.timeserver.R;
 import org.publicntp.timeserver.databinding.FragmentServerBinding;
@@ -60,7 +62,8 @@ public class ServerFragment extends Fragment {
     RefreshGraphTask refreshGraphTask;
     private boolean graphHasBeenInit = false;
 
-    @BindView(R.id.server_btn_toggle) ToggleButton toggleServerButton;
+
+    @BindView(R.id.server_switch) Switch switchButton;
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
@@ -132,7 +135,7 @@ public class ServerFragment extends Fragment {
         scheduleGraphRefresh();
 
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
-        toggleServerButton.setChecked(NtpService.getNtpService() != null);
+        switchButton.setChecked(NtpService.getNtpService() != null);
         super.onResume();
     }
 
@@ -157,8 +160,8 @@ public class ServerFragment extends Fragment {
                 viewBinding.invalidateAll();
                 uiHandler.post(() -> {
                     boolean serviceExists = NtpService.exists();
-                    toggleServerButton.setChecked(serviceExists);
-                    toggleServerButton.setText(serviceExists ? "Server On" : "Server Off");
+                    switchButton.setChecked(serviceExists);
+                    switchButton.setText(serviceExists ? "Server On" : "Server Off");
                 });
             }
         }, 0, invalidationFrequency);
@@ -194,25 +197,29 @@ public class ServerFragment extends Fragment {
         }, 0, updatePacketsFrequency);
     }
 
-    @OnCheckedChanged(R.id.server_btn_toggle)
+    @OnCheckedChanged(R.id.server_switch)
     public void toggleServer() {
         NtpService ntpService = NtpService.getNtpService();
-        if (toggleServerButton.isChecked()) {
+        if (switchButton.isChecked()) {
+            switchButton.setChecked(true);
+            switchButton.setText("Server On");
             if (ntpService == null) {
                 boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0"));
                 if(!hasReliableConnection) {
-                    Winebar.make(toggleServerButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
+                    Winebar.make(switchButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
                 }
 
                 getActivity().startService(NtpService.ignitionIntent(getContext()));
                 graphHasBeenInit = true;
                 if (!Shell.SU.available()) {
-                    Winebar.make(toggleServerButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
+                    Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
                         // TODO redirect to a help page on the PublicNTP Wiki
                     }).setActionTextColor(white).show();
                 }
             }
         } else {
+          switchButton.setChecked(false);
+          switchButton.setText("Server Off");
             if (ntpService != null) {
                 ntpService.stopSelf();
             }

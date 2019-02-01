@@ -10,16 +10,25 @@
     <string name="about_btn_website_label">Website</string>
     <string name="about_btn_contact_label">Contact</string>
     <string name="about_text_title">About</string>
-    <string name="about_text_content">Thanks for using our app. We\'re PublicNTP, a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
-    <string name="about_text_version">Version %1$s</string>
-    <string name="about_text_organization">Owned by PublicNTP, Inc.</string>
-    <string name="about_text_designer">Designed by Keltson Howell</string>    
-    <string name="about_text_developer">Built by Pony Express Productions, LLC</string>
+    <string name="about_text_content"><b>PublicNTP</b> is a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
+    <string name="about_text_version">Build Version %1$s</string>
+    <string name="about_text_organization"><b>Time Server App</b> is copyrighted by PublicNTP, Inc., open-sourced under the MIT License</string>
 
     <string name="contact_email_address">contact@publicntp.org</string>
     <string name="contact_email_subject">PublicNTP Inquiry</string>
     <string name="developer_web_address">https://roosterglue.com</string>
     <string name="owner_web_address">https://publicntp.org</string>
+    <string name="owner_donate_address">https://publicntp.org/donate.html</string>
+    <string name="donate_text">Help PublicNTP bring time to the World.</string>
+    <string name="donate_title">DONATE</string>
+
+    <string name="about_text_credit_title">Credit</string>
+    <string name="about_individual_title">Individuals</string>
+    <string name="about_individual_text">Alex Porter\nBrad Woodfin\nBryant Oblad\nCam Peterson\nCody Deskins\nDan Nolan\nEric Evans\nKeltson Howell\nMicah Brown\nRichard Macdonald\nScott Waddell\nTerry Ott\nTod Robbins\nWylie Thomas\nZachary Neubert</string>
+    <string name="about_organization_title">Organizations</string>
+    <string name="about_organization_text">Kempt Design LLC\nNetwork Time Foundation\nPony Express Productions, LLC\nPublicNTP, Inc.\nRooster Glue, Inc.\nSixbucks Solutions, LLC</string>
+    <string name="about_projects_title">Projects</string>
+    <string name="about_projects_text">GPSTest Project\nNASA WorldWind\nNetwork Time Protocol (NTP)\nOpen Location Code (Plus Codes)</string>
 
     <!-- Navigation Strings -->
     <string name="title_action_info">Info</string>

@@ -125,7 +125,7 @@ public class SimpleNTPServer implements Runnable {
         if (!started) {
             started = true;
             new Thread(this).start();
-        }
+        }        
     }
 
     /**
