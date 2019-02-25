@@ -15,15 +15,19 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
+import android.os.Handler;
+import android.util.Log;
 
 import org.publicntp.timeserver.R;
 import org.publicntp.timeserver.helper.NetworkInterfaceHelper;
 import org.publicntp.timeserver.ui.MainActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import eu.chainfire.libsuperuser.Shell;
-
+import butterknife.BindView;
 import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
 
 /**
@@ -37,19 +41,26 @@ public class NtpService extends Service {
     public static final int NTP_DEFAULT_PORT = 123;
     public static final int NTP_UNRESTRICTED_PORT = 1234;
 
+    private Intent serverIntent;
+    public static final String BROADCAST_ACTION = ".service.ntp.ServiceActivity";
+    private Handler handler = new Handler();
+    private static String chosenInterface = "";
     private static NtpService ntpService;
 
     private NetworkChangeReceiver networkChangeReceiver;
 
+    public static String port = "";
+    public static ArrayList<String> portList = new ArrayList<String>();
+
     Thread serverThread;
     SimpleNTPServer simpleNTPServer;
 
+    boolean started = false;
     boolean rootRedirected = false;
 
     public static NtpService getNtpService() {
         return ntpService;
     }
-
 
     public static Intent ignitionIntent(Context context) {
         return new Intent(context, NtpService.class);
@@ -63,6 +74,10 @@ public class NtpService extends Service {
 
     @Override
     public void onCreate() {
+      serverIntent = new Intent(BROADCAST_ACTION);
+      if(!started){
+        BeginNTPService();
+      }
     }
 
     @SuppressLint("DefaultLocale")
@@ -83,17 +98,22 @@ public class NtpService extends Service {
 
         NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
         String ipAddress;
-        String chosenInterface = "";
+
         final String ethernetInterfaceName = "eth0";
         final String wifiInterfaceName = "wlan0";
-        if (networkInterfaceHelper.hasConnectivityOn(ethernetInterfaceName)) {
-            ipAddress = networkInterfaceHelper.ipFor(ethernetInterfaceName);
-            chosenInterface = ethernetInterfaceName;
-        } else if (networkInterfaceHelper.hasConnectivityOn(wifiInterfaceName)) {
-            ipAddress = networkInterfaceHelper.ipFor(wifiInterfaceName);
-            chosenInterface = wifiInterfaceName;
-        } else {
-            ipAddress = "0.0.0.0";
+        final String usbInterfaceName = "usb0";
+        if(chosenInterface == ""){
+          if (networkInterfaceHelper.hasConnectivityOn(ethernetInterfaceName)) {
+              ipAddress = networkInterfaceHelper.ipFor(ethernetInterfaceName);
+              chosenInterface = ethernetInterfaceName;
+          } else if (networkInterfaceHelper.hasConnectivityOn(wifiInterfaceName)) {
+              ipAddress = networkInterfaceHelper.ipFor(wifiInterfaceName);
+              chosenInterface = wifiInterfaceName;
+          } else {
+              ipAddress = "0.0.0.0";
+          }
+        }else{
+          ipAddress = networkInterfaceHelper.ipFor(chosenInterface);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -115,22 +135,9 @@ public class NtpService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         ntpService = this;
-
-        serverThread = new Thread(() -> {
-            simpleNTPServer = new SimpleNTPServer(NTP_UNRESTRICTED_PORT);
-            try {
-                simpleNTPServer.start();
-            } catch (IOException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                NtpService.this.stopSelf();
-            }
-        });
-        serverThread.run();
-
-        tryForwardPorts();
-
-        startForeground(SERVICE_ID, buildNotification());
-        addConnectivityBroadcastReceiver();
+        if(!started){
+          BeginNTPService();
+        }
 
         return START_STICKY;
     }
@@ -158,6 +165,42 @@ public class NtpService extends Service {
         unregisterReceiver(networkChangeReceiver);
     }
 
+    private void BeginNTPService(){
+      started = true;
+      serverThread = new Thread(() -> {
+          simpleNTPServer = new SimpleNTPServer(NTP_UNRESTRICTED_PORT);
+          try {
+              simpleNTPServer.start();
+          } catch (IOException e) {
+              Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+              NtpService.this.stopSelf();
+          }
+      });
+      serverThread.run();
+
+      tryForwardPorts();
+      NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
+      final String ethernetInterfaceName = "eth0";
+      final String wifiInterfaceName = "wlan0";
+      final String usbInterfaceName = "usb0";
+      portList = new ArrayList();
+      if (networkInterfaceHelper.hasConnectivityOn(ethernetInterfaceName)) {
+          portList.add(ethernetInterfaceName);
+      }
+      if (networkInterfaceHelper.hasConnectivityOn(wifiInterfaceName)) {
+          portList.add(wifiInterfaceName);
+      }
+      if (networkInterfaceHelper.hasConnectivityOn(usbInterfaceName)) {
+          portList.add(usbInterfaceName);
+      }
+      port = Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
+
+      startForeground(SERVICE_ID, buildNotification());
+      addConnectivityBroadcastReceiver();
+      Log.i("NTP", "NTP Service started, send broadcast");
+      sendBroadcast(serverIntent);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -176,6 +219,11 @@ public class NtpService extends Service {
         removeConnectivityBroadcastReceiver();
     }
 
+    public void changeSelectedPort(String selected){
+      chosenInterface = selected;
+      startForeground(SERVICE_ID, buildNotification());
+    }
+
     public static boolean exists() {
         return ntpService != null;
     }
@@ -183,4 +231,5 @@ public class NtpService extends Service {
     public void rebuildNotification() {
         startForeground(SERVICE_ID, buildNotification());
     }
+
 }

@@ -22,7 +22,7 @@
     <string name="donate_text">Help PublicNTP bring time to the World.</string>
     <string name="donate_title">DONATE</string>
 
-    <string name="about_text_credit_title">Credit</string>
+    <string name="about_text_credit_title">Credits</string>
     <string name="about_individual_title">Individuals</string>
     <string name="about_individual_text">Alex Porter\nBrad Woodfin\nBryant Oblad\nCam Peterson\nCody Deskins\nDan Nolan\nEric Evans\nKeltson Howell\nMicah Brown\nRichard Macdonald\nScott Waddell\nTerry Ott\nTod Robbins\nWylie Thomas\nZachary Neubert</string>
     <string name="about_organization_title">Organizations</string>

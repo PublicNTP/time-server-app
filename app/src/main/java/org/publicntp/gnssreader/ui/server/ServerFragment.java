@@ -1,8 +1,10 @@
 package org.publicntp.timeserver.ui.server;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,8 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Switch;
+import android.widget.Spinner;
 import android.widget.ToggleButton;
 import android.widget.CompoundButton;
+import android.content.Context;
+import android.content.Intent;
+import android.content.BroadcastReceiver;
+import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.content.IntentFilter;
+import android.util.Log;
 
 import org.publicntp.timeserver.R;
 import org.publicntp.timeserver.databinding.FragmentServerBinding;
@@ -28,6 +40,7 @@ import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
 import org.publicntp.timeserver.service.ntp.logging.ServerLogMinuteSummary;
 
 import java.lang.ref.WeakReference;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,8 +61,9 @@ import lecho.lib.hellocharts.view.ColumnChartView;
 
 
 public class ServerFragment extends Fragment {
+    public Context mContext;
     FragmentServerBinding viewBinding;
-
+    Intent ntp_intent;
     Timer invalidationTimer;
     Handler uiHandler;
     final int invalidationFrequency = 1;
@@ -62,11 +76,13 @@ public class ServerFragment extends Fragment {
     RefreshGraphTask refreshGraphTask;
     private boolean graphHasBeenInit = false;
 
-
     @BindView(R.id.server_switch) Switch switchButton;
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
+    @BindView(R.id.server_port) TextView serverPort;
+    @BindView(R.id.ports_available) Spinner portsAvailable;
+
 
     @BindColor(R.color.packet_outgoing_green) int outgoing_green;
     @BindColor(R.color.packet_incoming_purple) int incoming_purple;
@@ -76,6 +92,8 @@ public class ServerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -83,9 +101,10 @@ public class ServerFragment extends Fragment {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_server, container, false);
         viewBinding.setServertimestorage(new TimeStorageConsumer());
         ButterKnife.bind(this, viewBinding.getRoot());
-
+        ntp_intent = new Intent(getContext(), NtpService.class);
         return viewBinding.getRoot();
     }
+
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -133,6 +152,7 @@ public class ServerFragment extends Fragment {
         scheduleUIInvalidation();
         scheduleUpdatePacketCounter();
         scheduleGraphRefresh();
+        buildDropdown();
 
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         switchButton.setChecked(NtpService.getNtpService() != null);
@@ -160,8 +180,6 @@ public class ServerFragment extends Fragment {
                 viewBinding.invalidateAll();
                 uiHandler.post(() -> {
                     boolean serviceExists = NtpService.exists();
-                    switchButton.setChecked(serviceExists);
-                    switchButton.setText(serviceExists ? "Server On" : "Server Off");
                 });
             }
         }, 0, invalidationFrequency);
@@ -201,31 +219,53 @@ public class ServerFragment extends Fragment {
     public void toggleServer() {
         NtpService ntpService = NtpService.getNtpService();
         if (switchButton.isChecked()) {
-            switchButton.setChecked(true);
-            switchButton.setText("Server On");
+
             if (ntpService == null) {
                 boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0"));
                 if(!hasReliableConnection) {
                     Winebar.make(switchButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
                 }
+                try {
+                    getContext().startService(ntp_intent);
+                    getContext().registerReceiver(broadcastReceiver, new IntentFilter(NtpService.BROADCAST_ACTION));
+                    Log.i("SERVICE", "START SERVICE");
+                    graphHasBeenInit = true;
+                } catch (IllegalArgumentException e) {
+                    // Check wether we are in debug mode
+                    Log.i("SERVICE", "FAILED TO START SERVICE");
+                }
 
-                getActivity().startService(NtpService.ignitionIntent(getContext()));
-                graphHasBeenInit = true;
+
                 if (!Shell.SU.available()) {
                     Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
-                        // TODO redirect to a help page on the PublicNTP Wiki
+                        launchWebUrl("https://www.xda-developers.com/root/");
                     }).setActionTextColor(white).show();
                 }
             }
         } else {
-          switchButton.setChecked(false);
-          switchButton.setText("Server Off");
+
             if (ntpService != null) {
-                ntpService.stopSelf();
+              getContext().unregisterReceiver(broadcastReceiver);
+              getContext().stopService(ntp_intent);
             }
         }
     }
+    protected void launchWebUrl(String webAddress) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(webAddress));
 
+        try {
+            startActivity(Intent.createChooser(
+                    intent, getString(R.string.chooser_app_weburl)));
+
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.error_web_browser_not_found),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
     private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {
         private WeakReference<ServerFragment> fragmentReference;
 
@@ -247,4 +287,48 @@ public class ServerFragment extends Fragment {
             }
         }
     }
+
+
+    private void buildDropdown(){
+      String port = NtpService.port;
+      serverPort.setText(port);
+      ArrayList portList = NtpService.portList;
+      ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+          getActivity(),
+          android.R.layout.simple_spinner_item,
+          portList
+      );
+      portsAvailable.setAdapter(null);
+      portsAvailable.setAdapter(adapter);
+      portsAvailable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+          String selected = portsAvailable.getSelectedItem().toString();
+          NtpService ntpService = NtpService.getNtpService();
+          ntpService.changeSelectedPort(selected);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    });
+    }
+    private void updateFragment(){
+
+      uiHandler = new Handler();
+      buildDropdown();
+      scheduleUIInvalidation();
+      scheduleUpdatePacketCounter();
+      scheduleGraphRefresh();
+      timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
+    }
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+      private static final String TAG = "ServerActivity";
+        @Override
+        public void onReceive(Context context, Intent intent) {
+          Log.i("NTP", "NTP broadcast received.");
+          updateFragment();
+        }
+    };
 }

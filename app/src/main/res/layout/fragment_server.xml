@@ -135,10 +135,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="14dp"
                 android:layout_weight="2.8"
                 android:orientation="horizontal">
 
@@ -147,14 +147,64 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:switchMinWidth="56dp"
-                  android:text="Toggle Server"
                   android:checked="false"
-                  android:textOff="@string/server_off"
-                  android:textOn="@string/server_on"
-                  android:textColor="@color/primary"
-                  android:textSize="20sp" />
-            </LinearLayout>
 
+                 />
+                <TextView
+                    android:id="@+id/server_switch_text"
+                    android:layout_width="200sp"
+                    android:layout_height="wrap_content"
+                    android:text="SNTP Server"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="20sp"
+                />
+            </LinearLayout>
+            <View
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/primary"
+              android:layout_marginEnd="16dp"
+              android:layout_marginStart="16dp"
+            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2.8"
+                android:orientation="horizontal">
+
+                <TextView
+                  android:id="@+id/server_port_interface"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Interface:"
+                  android:textColor="@color/primary_dark"
+                />
+                <Spinner
+                  android:id="@+id/ports_available"
+                  android:layout_marginEnd="5dp"
+                  android:layout_width="220sp"
+                  android:layout_height="wrap_content"
+                  android:textColor="@color/primary_dark"
+                />
+                <View
+                  android:layout_width="1dp"
+                  android:layout_height="30dp"
+                  android:background="@color/primary"
+                  android:layout_marginEnd="5dp"
+                  android:layout_marginStart="5dp"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginBottom="5dp"
+                />
+                <TextView
+                    android:id="@+id/server_port"
+                    android:layout_width="50sp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/primary_dark"
+                />
+            </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

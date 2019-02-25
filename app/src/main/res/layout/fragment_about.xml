@@ -3,7 +3,11 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
+  android:id="@+id/CreditView"
   >
+  <android.support.design.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
   <ScrollView
     android:id="@+id/ScrollView"
     android:layout_width="fill_parent"
@@ -56,18 +60,18 @@
         android:id="@+id/about_text_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_text_content"
         android:textColor="@color/primary_dark"
-        android:textSize="15sp"/>
+        android:textSize="18sp"/>
 
       <TextView
         android:id="@+id/about_text_credit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="60dp"
         android:text="@string/about_text_credit_title"
         android:textSize="18sp"
         android:textColor="@color/primary_dark"/>
@@ -76,10 +80,10 @@
         android:id="@+id/about_individual_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_individual_title"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary_dark"/>
 
       <TextView
@@ -88,7 +92,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_individual_text"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary"/>
 
       <TextView
@@ -98,7 +102,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_organization_title"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary_dark"/>
 
       <TextView
@@ -107,7 +111,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_organization_text"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary"/>
 
       <TextView
@@ -117,7 +121,7 @@
         android:layout_marginTop="15dp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_projects_title"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary_dark"/>
 
       <TextView
@@ -125,48 +129,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
+        android:layout_marginBottom="30dp"
         android:text="@string/about_projects_text"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textColor="@color/primary"/>
     </LinearLayout>
   </ScrollView>
   <RelativeLayout
-    android:id="@+id/donate_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="40sp"
-    android:background="@color/blue"
-    android:gravity="center_horizontal|bottom"
+    android:id="@+id/myCoordinatorLayout"
     android:orientation="horizontal"
-    android:layout_weight="2"
-    android:layout_alignParentBottom="true"
-    >
-    <TextView
-      android:id="@+id/donate_text"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/roboto"
-      android:text="@string/donate_text"
-      android:textSize="12sp"
-      android:layout_alignParentLeft="true"
-      android:gravity="center_vertical"
-      android:textColor="@color/white"
-      android:layout_marginStart="25dp"
-      android:layout_marginBottom="12dp"
-      />
-    <TextView
-      android:id="@+id/donate_btn"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="@string/donate_title"
-      android:fontFamily="@font/roboto_medium"
-      android:textColor="@color/white"
-      android:background="@color/blue"
-      android:textSize="12sp"
-      android:gravity="center_vertical"
-      android:layout_alignParentRight="true"
-      android:layout_marginEnd="25dp"
-      android:layout_marginBottom="11dp"
-      tools:text="DONATE"/>
-    </RelativeLayout>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+  </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

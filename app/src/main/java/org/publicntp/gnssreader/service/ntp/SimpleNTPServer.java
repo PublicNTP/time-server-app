@@ -18,6 +18,8 @@ package org.publicntp.timeserver.service.ntp;
  */
 
 import android.util.Log;
+import android.content.Intent;
+import android.content.Context;
 
 import org.apache.commons.net.ntp.NtpUtils;
 import org.apache.commons.net.ntp.NtpV3Impl;
@@ -43,7 +45,7 @@ import java.net.DatagramSocket;
  * run from any local port.
  */
 public class SimpleNTPServer implements Runnable {
-
+    private Context sContext;
     private int port;
 
     private volatile boolean running;
@@ -52,6 +54,8 @@ public class SimpleNTPServer implements Runnable {
     private DatagramSocket socket;
 
     private TimeStorageConsumer timeStorageConsumer;
+    public static final String BROADCAST_ACTION = ".service.ntp.UPDATE_NTP_SERVICE";
+    private Intent serverIntent;
 
     /**
      * Create SimpleNTPServer listening on default NTP port.
@@ -104,6 +108,7 @@ public class SimpleNTPServer implements Runnable {
      */
     public void connect() throws IOException {
         if (socket == null) {
+            serverIntent = new Intent(BROADCAST_ACTION);
             socket = new DatagramSocket(port);
             // port = 0 is bound to available free port
             if (port == 0) {
@@ -125,7 +130,7 @@ public class SimpleNTPServer implements Runnable {
         if (!started) {
             started = true;
             new Thread(this).start();
-        }        
+        }
     }
 
     /**
@@ -141,6 +146,9 @@ public class SimpleNTPServer implements Runnable {
                 socket.receive(request);
                 final long rcvTime = timeStorageConsumer.getTime();
                 handlePacket(request, rcvTime);
+                Log.i("NTP", "NTP Server Packet Updated, send broadcast");
+                sContext.sendBroadcast(serverIntent);
+
             } catch (IOException e) {
                 Log.e("NTP", e.getMessage(), e);
                 if (running) {
@@ -198,8 +206,10 @@ public class SimpleNTPServer implements Runnable {
             dp.setAddress(request.getAddress());
             socket.send(dp);
             ServerLogDataPointGrouper.addPacket(new ServerLogDataPoint(appTime, dp, false));
+
         }
         // otherwise if received packet is other than CLIENT mode then ignore it
+
     }
 
     /**
