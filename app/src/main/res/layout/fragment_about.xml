@@ -1,119 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:id="@+id/CreditView"
+  >
+  <android.support.design.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+  <ScrollView
+    android:id="@+id/ScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_marginBottom="40dp"
+   >
+    <LinearLayout
+      android:id="@+id/ScrollView_child"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:paddingBottom="15dp"
+      android:orientation="vertical"
+      >
+      <TextView
         android:id="@+id/about_title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="60sp"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/about_text_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/primary_dark"
-        android:textSize="54sp" />
+        android:textSize="54sp"/>
 
-    <!-- version/app info -->
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:orientation="vertical">
+      <!-- version/app info -->
+      <TextView
+        android:id="@+id/about_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/about_text_version"
+        android:textColor="@color/primary"
+        android:textSize="12sp"
+        android:typeface="normal"/>
 
-        <TextView
-            android:id="@+id/about_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/about_text_version"
-            android:textColor="@color/primary"
-            android:textSize="12sp"
-            android:typeface="normal" />
+      <TextView
+        android:id="@+id/about_text_organization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/about_text_organization"
+        android:textColor="@color/primary"
+        android:textSize="12sp"
+        android:typeface="normal"/>
 
-        <TextView
-            android:id="@+id/about_text_organization"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/about_text_organization"
-            android:textColor="@color/primary"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/about_text_designer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/about_text_designer"
-            android:textColor="@color/primary"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/about_text_developer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/about_text_developer"
-            android:textColor="@color/primary"
-            android:textSize="12sp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/about_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/roboto"
+      <TextView
+        android:id="@+id/about_text_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/about_text_content"
+        android:textColor="@color/primary_dark"
+        android:textSize="18sp"/>
+
+      <TextView
+        android:id="@+id/about_text_credit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:layout_marginTop="60dp"
+        android:text="@string/about_text_credit_title"
         android:textSize="18sp"
-        android:textColor="@color/primary_dark" />
+        android:textColor="@color/primary_dark"/>
 
-    <Button
-        android:id="@+id/about_btn_website"
-        style="@style/AppTheme.Button.Large"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+      <TextView
+        android:id="@+id/about_individual_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/about_btn_website_label"
-        android:background="@drawable/button_with_rounded_corners"
-        android:textSize="20sp"
-        tools:text="website" />
+        android:text="@string/about_individual_title"
+        android:textSize="16sp"
+        android:textColor="@color/primary_dark"/>
 
-    <Button
-        android:id="@+id/about_btn_contact"
-        style="@style/AppTheme.Button.Large"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/about_btn_contact_label"
+      <TextView
+        android:id="@+id/about_individual_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_medium"
-        android:textSize="20sp"
-        android:background="@drawable/button_with_rounded_corners"
-        tools:text="contact" />
+        android:text="@string/about_individual_text"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
 
+      <TextView
+        android:id="@+id/about_organization_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/about_organization_title"
+        android:textSize="16sp"
+        android:textColor="@color/primary_dark"/>
 
+      <TextView
+        android:id="@+id/about_organization_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/about_organization_text"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
 
-</LinearLayout>
+      <TextView
+        android:id="@+id/about_projects_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/about_projects_title"
+        android:textSize="16sp"
+        android:textColor="@color/primary_dark"/>
+
+      <TextView
+        android:id="@+id/about_projects_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:layout_marginBottom="30dp"
+        android:text="@string/about_projects_text"
+        android:textSize="16sp"
+        android:textColor="@color/primary"/>
+    </LinearLayout>
+  </ScrollView>
+  <RelativeLayout
+    android:id="@+id/myCoordinatorLayout"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+  </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

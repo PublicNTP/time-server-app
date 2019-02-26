@@ -18,6 +18,8 @@ package org.publicntp.timeserver.service.ntp;
  */
 
 import android.util.Log;
+import android.content.Intent;
+import android.content.Context;
 
 import org.apache.commons.net.ntp.NtpUtils;
 import org.apache.commons.net.ntp.NtpV3Impl;
@@ -43,7 +45,7 @@ import java.net.DatagramSocket;
  * run from any local port.
  */
 public class SimpleNTPServer implements Runnable {
-
+    private Context sContext;
     private int port;
 
     private volatile boolean running;
@@ -52,6 +54,7 @@ public class SimpleNTPServer implements Runnable {
     private DatagramSocket socket;
 
     private TimeStorageConsumer timeStorageConsumer;
+    private Intent serverIntent;
 
     /**
      * Create SimpleNTPServer listening on default NTP port.
@@ -141,6 +144,7 @@ public class SimpleNTPServer implements Runnable {
                 socket.receive(request);
                 final long rcvTime = timeStorageConsumer.getTime();
                 handlePacket(request, rcvTime);
+
             } catch (IOException e) {
                 Log.e("NTP", e.getMessage(), e);
                 if (running) {
@@ -198,8 +202,10 @@ public class SimpleNTPServer implements Runnable {
             dp.setAddress(request.getAddress());
             socket.send(dp);
             ServerLogDataPointGrouper.addPacket(new ServerLogDataPoint(appTime, dp, false));
+
         }
         // otherwise if received packet is other than CLIENT mode then ignore it
+
     }
 
     /**

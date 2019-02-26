@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:name=".TimeServerApplication"
@@ -44,7 +46,20 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.ntp.NtpService" />
+        <receiver
+            android:name=".service.ntp.ServerActivity"
+            android:exported="true"
+            android:enabled="true"
+          >
+            <intent-filter>
+                <action android:name="START_NTP_SERVICE" />
+                <action android:name="RESTART_NTP_SERVICE" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".service.ntp.NtpService"
+          android:enabled="true"
+          android:exported="true"
+        />
     </application>
 
 </manifest>
