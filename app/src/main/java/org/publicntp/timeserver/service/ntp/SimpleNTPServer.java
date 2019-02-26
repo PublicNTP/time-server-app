@@ -54,7 +54,6 @@ public class SimpleNTPServer implements Runnable {
     private DatagramSocket socket;
 
     private TimeStorageConsumer timeStorageConsumer;
-    public static final String BROADCAST_ACTION = ".service.ntp.UPDATE_NTP_SERVICE";
     private Intent serverIntent;
 
     /**
@@ -108,7 +107,6 @@ public class SimpleNTPServer implements Runnable {
      */
     public void connect() throws IOException {
         if (socket == null) {
-            serverIntent = new Intent(BROADCAST_ACTION);
             socket = new DatagramSocket(port);
             // port = 0 is bound to available free port
             if (port == 0) {
@@ -146,8 +144,6 @@ public class SimpleNTPServer implements Runnable {
                 socket.receive(request);
                 final long rcvTime = timeStorageConsumer.getTime();
                 handlePacket(request, rcvTime);
-                Log.i("NTP", "NTP Server Packet Updated, send broadcast");
-                sContext.sendBroadcast(serverIntent);
 
             } catch (IOException e) {
                 Log.e("NTP", e.getMessage(), e);

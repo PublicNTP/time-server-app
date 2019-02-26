@@ -221,13 +221,16 @@ public class ServerFragment extends Fragment {
         if (switchButton.isChecked()) {
 
             if (ntpService == null) {
-                boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0"));
+                boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0","usb0"));
                 if(!hasReliableConnection) {
                     Winebar.make(switchButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
                 }
                 try {
+                    IntentFilter serviceFilter= new IntentFilter();
+                    serviceFilter.addAction(NtpService.SERVICE_ACTION);
+                    serviceFilter.addAction(NtpService.RESTART_ACTION);
                     getContext().startService(ntp_intent);
-                    getContext().registerReceiver(broadcastReceiver, new IntentFilter(NtpService.BROADCAST_ACTION));
+                    getContext().registerReceiver(broadcastReceiver, serviceFilter);
                     Log.i("SERVICE", "START SERVICE");
                     graphHasBeenInit = true;
                 } catch (IllegalArgumentException e) {
@@ -314,8 +317,8 @@ public class ServerFragment extends Fragment {
         }
     });
     }
-    private void updateFragment(){
 
+    private void updateFragment(){
       uiHandler = new Handler();
       buildDropdown();
       scheduleUIInvalidation();
@@ -323,12 +326,42 @@ public class ServerFragment extends Fragment {
       scheduleGraphRefresh();
       timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
     }
+
+    private void restartService(){
+      NtpService ntpService = NtpService.getNtpService();
+      if (ntpService == null) {
+          boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0","usb0"));
+          try {
+              IntentFilter serviceFilter= new IntentFilter();
+              serviceFilter.addAction(NtpService.SERVICE_ACTION);
+              serviceFilter.addAction(NtpService.RESTART_ACTION);
+              getContext().startService(ntp_intent);
+              getContext().registerReceiver(broadcastReceiver, serviceFilter);
+              Log.i("NTP", "RESTART SERVICE");
+              graphHasBeenInit = true;
+          } catch (IllegalArgumentException e) {
+              // Check wether we are in debug mode
+              Log.i("NTP", "FAILED TO RESTART SERVICE");
+          }
+      }else {
+          getContext().unregisterReceiver(broadcastReceiver);
+          getContext().stopService(ntp_intent);
+        }
+    }
+
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
       private static final String TAG = "ServerActivity";
         @Override
         public void onReceive(Context context, Intent intent) {
-          Log.i("NTP", "NTP broadcast received.");
-          updateFragment();
+          final String action = intent.getAction();
+          if("START_NTP_SERVICE".equals(action)){
+            Log.i("NTP", "NTP start received.");
+            updateFragment();
+          }else if ("RESTART_NTP_SERVICE".equals(action)){
+            Log.i("NTP", "NTP restart received.");
+            restartService();
+          }
+
         }
     };
 }

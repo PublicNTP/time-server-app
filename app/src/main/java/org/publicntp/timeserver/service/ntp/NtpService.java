@@ -10,13 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
-import android.os.Handler;
 import android.util.Log;
+import android.provider.Settings;
 
 import org.publicntp.timeserver.R;
 import org.publicntp.timeserver.helper.NetworkInterfaceHelper;
@@ -35,6 +37,8 @@ import static android.support.v4.app.NotificationCompat.PRIORITY_MAX;
  */
 
 public class NtpService extends Service {
+    protected PowerManager.WakeLock mWakeLock;
+
     private static final int SERVICE_ID = 1;
     private static final String CHANNEL_ID = "NTP_SERVICE";
 
@@ -42,8 +46,10 @@ public class NtpService extends Service {
     public static final int NTP_UNRESTRICTED_PORT = 1234;
 
     private Intent serverIntent;
-    public static final String BROADCAST_ACTION = ".service.ntp.ServiceActivity";
-    private Handler handler = new Handler();
+    private Intent restartIntent;
+    public static final String SERVICE_ACTION = "START_NTP_SERVICE";
+    public static final String RESTART_ACTION = "RESTART_NTP_SERVICE";
+
     private static String chosenInterface = "";
     private static NtpService ntpService;
 
@@ -74,7 +80,9 @@ public class NtpService extends Service {
 
     @Override
     public void onCreate() {
-      serverIntent = new Intent(BROADCAST_ACTION);
+      serverIntent = new Intent(SERVICE_ACTION);
+      restartIntent = new Intent(RESTART_ACTION);
+
       if(!started){
         BeginNTPService();
       }
@@ -134,7 +142,7 @@ public class NtpService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        ntpService = this;
+
         if(!started){
           BeginNTPService();
         }
@@ -166,6 +174,7 @@ public class NtpService extends Service {
     }
 
     private void BeginNTPService(){
+      ntpService = this;
       started = true;
       serverThread = new Thread(() -> {
           simpleNTPServer = new SimpleNTPServer(NTP_UNRESTRICTED_PORT);
@@ -195,14 +204,28 @@ public class NtpService extends Service {
       }
       port = Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
+
+      final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+      this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+      this.mWakeLock.acquire();
+      if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                 Intent optimizationIntent = new Intent();
+                 String packageName = getPackageName();
+                 if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                     optimizationIntent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                     optimizationIntent.setData(Uri.parse("package:" + packageName));
+                     startActivity(optimizationIntent);
+                 }
+             }
       startForeground(SERVICE_ID, buildNotification());
       addConnectivityBroadcastReceiver();
-      Log.i("NTP", "NTP Service started, send broadcast");
+      Log.i("NTP", "NTP Service Started, Show interface");
       sendBroadcast(serverIntent);
     }
 
     @Override
     public void onDestroy() {
+        this.mWakeLock.release();
         super.onDestroy();
 
         if (simpleNTPServer != null) {
@@ -211,12 +234,15 @@ public class NtpService extends Service {
         }
 
         ntpService = null;
+        started = false;
         if (serverThread != null) {
             if (serverThread.isAlive()) serverThread.interrupt();
             serverThread = null;
         }
 
         removeConnectivityBroadcastReceiver();
+        Log.i("NTP", "NTP Service destroyed, Restart");
+        sendBroadcast(restartIntent);
     }
 
     public void changeSelectedPort(String selected){
