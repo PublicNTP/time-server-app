@@ -53,9 +53,10 @@ public class ServerLogDataPointGrouper {
     }
 
     public synchronized static void addPacket(ServerLogDataPoint serverLogDataPoint) {
-        if (System.currentTimeMillis() - lastCleaned > TimeMillis.HOUR) {
-            cleanOld();
-        }
+        // Removed because it was causing crash after an hour. 
+        // if ((System.currentTimeMillis() + 60) - lastCleaned > ( 60 + TimeMillis.HOUR)) {
+        //     cleanOld();
+        // }
 
         setData.add(serverLogDataPoint);
     }

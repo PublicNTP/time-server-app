@@ -51,10 +51,6 @@
             android:exported="true"
             android:enabled="true"
           >
-            <intent-filter>
-                <action android:name="START_NTP_SERVICE" />
-                <action android:name="RESTART_NTP_SERVICE" />
-            </intent-filter>
         </receiver>
         <service android:name=".service.ntp.NtpService"
           android:enabled="true"
