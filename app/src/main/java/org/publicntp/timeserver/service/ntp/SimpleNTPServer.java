@@ -20,6 +20,7 @@ package org.publicntp.timeserver.service.ntp;
 import android.util.Log;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Handler;
 
 import org.apache.commons.net.ntp.NtpUtils;
 import org.apache.commons.net.ntp.NtpV3Impl;
@@ -29,6 +30,7 @@ import org.publicntp.timeserver.repository.time.TimeStorageConsumer;
 import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPoint;
 import org.publicntp.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
 
+import java.lang.Runnable;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -55,6 +57,11 @@ public class SimpleNTPServer implements Runnable {
 
     private TimeStorageConsumer timeStorageConsumer;
     private Intent serverIntent;
+    byte buffer[] = new byte[48];
+    public DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+    Handler restartHandle = new Handler();
+
+
 
     /**
      * Create SimpleNTPServer listening on default NTP port.
@@ -128,6 +135,7 @@ public class SimpleNTPServer implements Runnable {
         if (!started) {
             started = true;
             new Thread(this).start();
+            restartHandle.post(restart);
         }
     }
 
@@ -137,13 +145,17 @@ public class SimpleNTPServer implements Runnable {
     @Override
     public void run() {
         running = true;
-        byte buffer[] = new byte[48];
-        final DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+
         do {
             try {
-                socket.receive(request);
-                final long rcvTime = timeStorageConsumer.getTime();
-                handlePacket(request, rcvTime);
+                if(socket == null){
+                  connect();
+                  request = new DatagramPacket(buffer, buffer.length);
+                }else{
+                  socket.receive(request);
+                  final long rcvTime = timeStorageConsumer.getTime();
+                  handlePacket(request, rcvTime);
+                }
 
             } catch (IOException e) {
                 Log.e("NTP", e.getMessage(), e);
@@ -153,7 +165,7 @@ public class SimpleNTPServer implements Runnable {
                 // otherwise socket thrown exception during shutdown
             } catch (Exception e) {
                 // Don't fail for malformed packets
-                //Log.e("NTP", e.getMessage(), e);
+                Log.e("NTP", e.getMessage(), e);
                 Log.i("NTP", "Sent by: " + request.getAddress() + " on port " + request.getPort());
             }
         } while (running);
@@ -208,6 +220,29 @@ public class SimpleNTPServer implements Runnable {
 
     }
 
+    public Runnable restart = new Runnable() {
+      @Override
+      public void run() {
+        // Do something here on the main thread
+        if(running){
+          if (socket != null) {
+              socket.close();  // force closing of the socket
+              socket = null;
+              try {
+                  connect();
+                }
+                catch(IOException e) {
+                  Log.e("NTP", "restarting error " + e.getMessage(), e);
+                }
+          }
+
+
+        }
+        // Repeat this the same runnable code block again another 2 seconds
+        restartHandle.postDelayed(restart, 300000);
+      }
+  };
+
     /**
      * Close server socket and stop listening.
      */
@@ -218,5 +253,6 @@ public class SimpleNTPServer implements Runnable {
             socket = null;
         }
         started = false;
+        restartHandle.removeCallbacks(restart);
     }
 }
