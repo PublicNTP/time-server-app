@@ -11,7 +11,7 @@
     <string name="about_btn_contact_label">Contact</string>
     <string name="about_text_title">About</string>
     <string name="about_text_content"><b>PublicNTP</b> is a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
-    <string name="about_text_version">Build Version %1$s</string>
+    <string name="about_text_version">Build Version 1.0.10</string>
     <string name="about_text_organization"><b>Time Server App</b> is copyrighted by PublicNTP, Inc., open-sourced under the MIT License</string>
 
     <string name="contact_email_address">contact@publicntp.org</string>
