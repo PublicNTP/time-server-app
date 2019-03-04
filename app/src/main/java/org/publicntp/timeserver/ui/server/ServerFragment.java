@@ -299,13 +299,11 @@ public class ServerFragment extends Fragment {
       serverPort.setTypeface(null, Typeface.BOLD);
       serverPort.setTextSize(25);
       ArrayList portList = NtpService.portList;
-      ArrayAdapter<String> adapter = ArrayAdapter.createFromResource(
+      ArrayAdapter<String> adapter = new ArrayAdapter<String>(
           getActivity(),
-          portList,
-          R.layout.dropdown
+          android.R.layout.simple_spinner_item,
+          portList
       );
-      adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-
       portsAvailable.setAdapter(null);
       portsAvailable.setAdapter(adapter);
       portsAvailable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
