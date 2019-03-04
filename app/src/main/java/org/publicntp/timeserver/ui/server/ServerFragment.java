@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.content.IntentFilter;
 import android.util.Log;
+import android.graphics.Typeface;
 
 import org.publicntp.timeserver.R;
 import org.publicntp.timeserver.databinding.FragmentServerBinding;
@@ -295,12 +296,16 @@ public class ServerFragment extends Fragment {
     private void buildDropdown(){
       String port = NtpService.port;
       serverPort.setText(port);
+      serverPort.setTypeface(null, Typeface.BOLD);
+      serverPort.setTextSize(25);
       ArrayList portList = NtpService.portList;
-      ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+      ArrayAdapter<String> adapter = ArrayAdapter.createFromResource(
           getActivity(),
-          android.R.layout.simple_spinner_item,
-          portList
+          portList,
+          R.layout.dropdown
       );
+      adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+
       portsAvailable.setAdapter(null);
       portsAvailable.setAdapter(adapter);
       portsAvailable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
