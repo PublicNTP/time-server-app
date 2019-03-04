@@ -7,7 +7,7 @@
 
         <variable
             name="servertimestorage"
-            type="org.app.timeserver.repository.time.TimeStorageConsumer" />
+            type="app.timeserver.repository.time.TimeStorageConsumer" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -25,7 +25,7 @@
             android:layout_margin="10dp"
             android:layout_marginBottom="0dp"
             android:orientation="vertical"
-            tools:context="org.app.timeserver.ui.server.ServerFragment">
+            tools:context="app.timeserver.ui.server.ServerFragment">
 
             <lecho.lib.hellocharts.view.ColumnChartView
                 android:id="@+id/server_bar_graph"

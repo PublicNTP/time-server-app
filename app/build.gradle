@@ -21,13 +21,13 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.app.timeserver"
+        applicationId "app.timeserver"
 
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         versionCode 1
-        versionName "1.0.10"
+        versionName "1.0.12"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
