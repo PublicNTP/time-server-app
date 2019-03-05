@@ -6,11 +6,11 @@
 
         <variable
             name="timestorage"
-            type="org.publicntp.timeserver.repository.time.TimeStorageConsumer" />
+            type="app.timeserver.repository.time.TimeStorageConsumer" />
 
         <variable
             name="locationstorage"
-            type="org.publicntp.timeserver.repository.location.LocationStorageConsumer" />
+            type="app.timeserver.repository.location.LocationStorageConsumer" />
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="15dp"
-        tools:context="org.publicntp.timeserver.ui.time.TimeFragment">
+        tools:context="app.timeserver.ui.time.TimeFragment">
 
         <Space
             android:layout_width="match_parent"
