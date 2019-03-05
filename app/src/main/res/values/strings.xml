@@ -18,9 +18,9 @@
     <string name="contact_email_subject">PublicNTP Inquiry</string>
     <string name="developer_web_address">https://roosterglue.com</string>
     <string name="owner_web_address">https://publicntp.org</string>
-    <string name="owner_donate_address">https://publicntp.org/donate.html</string>
-    <string name="donate_text">Help PublicNTP bring time to the World.</string>
-    <string name="donate_title">DONATE</string>
+    <string name="owner_visit_address">https://publicntp.org</string>
+    <string name="donate_text">Find out more about PublicNTP.</string>
+    <string name="donate_title">VISIT</string>
 
     <string name="about_text_credit_title">Credits</string>
     <string name="about_individual_title">Individuals</string>
