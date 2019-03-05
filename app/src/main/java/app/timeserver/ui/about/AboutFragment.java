@@ -46,8 +46,8 @@ public class AboutFragment extends BaseFragment {
             new Runnable() {
                 public void run() {
 
-                  Winebar.make(viewPos, R.string.donate_text, Snackbar.LENGTH_INDEFINITE).setAction("DONATE", v -> {
-                      launchWebUrl(getString(R.string.owner_donate_address));
+                  Winebar.make(viewPos, R.string.donate_text, Snackbar.LENGTH_INDEFINITE).setAction("VISIT", v -> {
+                      launchWebUrl(getString(R.string.owner_visit_address));
                   }).setActionTextColor(white).show();
                 }
             },
