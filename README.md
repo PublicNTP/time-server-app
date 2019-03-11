@@ -1,3 +1,5 @@
+![Time Server App](https://github.com/PublicNTP/time-server-app/blob/master/app/src/main/ic_launcher-web.png "Time Server App")
+
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 # Time Server App for Android
 This is a time server app built specifically for android devices.
