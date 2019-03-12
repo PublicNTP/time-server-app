@@ -19,16 +19,45 @@
             android:orientation="vertical">
 
             <TextView
+              android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/measurement_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/option_text_size" />
+
+            <Spinner
+                android:id="@+id/options_measurement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/option_spacing" />
+
+
+            <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time_zone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/option_text_size" />
 
-            <Spinner
-                android:id="@+id/options_timezone"
+              <Switch
+                android:id="@+id/time_zone_switch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:switchMinWidth="56dp"
+                android:checked="false"
+                android:textSize="25sp"
+                android:gravity="right"
+                />
+            </RelativeLayout>
 
             <Space
                 android:layout_width="match_parent"

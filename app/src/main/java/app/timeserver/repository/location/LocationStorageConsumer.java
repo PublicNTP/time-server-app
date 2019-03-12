@@ -1,15 +1,18 @@
 package app.timeserver.repository.location;
 
+import android.content.Context;
 import android.annotation.SuppressLint;
 
 import app.timeserver.repository.location.converters.CoordinateConverter;
 import app.timeserver.repository.location.converters.LatLongConverter;
-
+import app.timeserver.helper.preferences.MeasurementStore;
 /**
  * Created by zac on 2/7/18.
  */
 
 public class LocationStorageConsumer {
+    public static String measurement = "Metric/SI";
+
     private CoordinateConverter coordinateConverter;
 
     public LocationStorageConsumer() {
@@ -45,7 +48,12 @@ public class LocationStorageConsumer {
     public String getStringError() {
         if(LocationStorage.isPopulated()) {
             float error = LocationStorage.getAccuracy();
-            return String.format("±%.2f", error);
+            if(measurement.equals("Imperial/US")){
+              double feet = error * 3.28084;
+              return String.format("±%.2f", feet);
+            }else{
+              return String.format("±%.2f", error);
+            }
         } else {
             return "±--";
         }

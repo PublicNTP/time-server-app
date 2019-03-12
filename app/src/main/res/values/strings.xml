@@ -48,7 +48,7 @@
     <string name="test_string">Number of Satellites: idk, 6?</string>
     <string name="in_view">in view</string>
     <string name="in_use">in use</string>
-    <string name="distance_accuracy_units">ft</string>
+    <string name="distance_accuracy_units">m</string>
     <string name="time_accuracy_units">sec</string>
     <string name="server_off">Server Off</string>
     <string name="default_timezone">UTC</string>
@@ -58,8 +58,9 @@
     <string name="server_on">Server On</string>
     <string name="open_location_in_maps">Open Location in Maps</string>
     <string name="share_location">Open in Maps</string>
-    <string name="time_zone">Time Zone</string>
-    <string name="location_units">Location Units</string>
+    <string name="time_zone">Local Time Zone</string>
+    <string name="measurement_title">System of Measurement</string>
+    <string name="location_units">Geocoordinate Standard</string>
     <string name="copy_to_clipboard">Copy to Clipboard</string>
     <string name="coordinates">Coordinates:</string>
     <string name="constellation">Constellation:</string>

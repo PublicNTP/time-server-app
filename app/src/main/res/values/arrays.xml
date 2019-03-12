@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="location_choices">
-        <item>Lat/Long</item>
+        <item>WGS84 (Lat/Long)</item>
         <item>UTM</item>
         <item>MGRS</item>
         <item>OLC (Plus Codes)</item>
@@ -10,6 +10,11 @@
     <string-array name="timezone_choices">
         <item>UTC</item>
         <item>Local</item>
+    </string-array>
+
+    <string-array name="measurement_choices">
+        <item>Metric/SI</item>
+        <item>Imperial/US</item>
     </string-array>
 
     <string-array name="tab_names">

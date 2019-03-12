@@ -3,7 +3,7 @@ package app.timeserver.repository.location.converters;
 public class CoordinateConverter {
     public static CoordinateConverter byName(String name) {
         switch(name) {
-            case "Lat/Long":
+            case "WGS84 (Lat/Long)":
                 return new LatLongConverter();
             case "UTM":
                 return new UTMConverter();
