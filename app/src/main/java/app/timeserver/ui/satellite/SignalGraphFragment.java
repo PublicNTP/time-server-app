@@ -14,6 +14,7 @@ import app.timeserver.ui.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +76,7 @@ public class SignalGraphFragment extends BaseFragment {
 
         List<Column> satelliteSignalValues = new ArrayList<>();
         List<AxisValue> axisValues = new ArrayList<>();
+
         int i = 0;
         for (SatelliteModel s : satellites) {
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
@@ -88,6 +90,8 @@ public class SignalGraphFragment extends BaseFragment {
             satelliteSignalValues.add(column);
             axisValues.add(axisValue);
         }
+
+        Collections.sort(satelliteSignalValues);
         ColumnChartData columnChartData = new ColumnChartData(satelliteSignalValues);
         columnChartData.setStacked(true);
 

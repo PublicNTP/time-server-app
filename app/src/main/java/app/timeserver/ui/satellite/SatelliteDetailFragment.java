@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.util.Log;
 
 import app.timeserver.R;
 import app.timeserver.model.SatelliteModel;
@@ -29,6 +30,8 @@ public class SatelliteDetailFragment extends BaseFragment {
     @BindView(R.id.satellite_signal_to_noise) TextView signalToNoiseView;
     @BindView(R.id.satellite_altitude) TextView altitudeAngleView;
     @BindView(R.id.satellite_heading) TextView headingView;
+    @BindView(R.id.satellite_frequency) TextView satelliteFrequency;
+
 
     public static SatelliteDetailFragment newInstance(SatelliteModel satelliteModel, OnDetailsClosedListener onDetailsClosedListener) {
         SatelliteDetailFragment satelliteDetailFragment = new SatelliteDetailFragment();
@@ -45,9 +48,10 @@ public class SatelliteDetailFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
 
         titleView.setText(String.format("%s %d", satelliteModel.constellationName(), satelliteModel.svn));
-        altitudeAngleView.setText(String.format("%.0f° upwards", satelliteModel.elevationDegrees));
+        altitudeAngleView.setText(String.format("%.0f° above horizon", satelliteModel.elevationDegrees));
         headingView.setText(String.format("%.0f° from North", satelliteModel.azimuthDegrees));
-        signalToNoiseView.setText(String.format("%.1f to 1", satelliteModel.Cn0DbHz));
+        signalToNoiseView.setText(String.format("%.1f dB", satelliteModel.snrInDb));
+        // satelliteFrequency.setText(String.format("%s", satelliteModel.carrierFrequencyHz));
 
         return rootView;
     }

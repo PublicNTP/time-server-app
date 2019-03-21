@@ -66,11 +66,13 @@
     <string name="constellation">Constellation:</string>
     <string name="satellite_title_example">Satellite 6</string>
     <string name="satellite_coordinates_example">66 N 66 E</string>
-    <string name="altitude_angle">Altitude Angle: </string>
-    <string name="heading">Heading:</string>
+    <string name="altitude_angle">Elevation: </string>
+    <string name="heading">Azimuth:</string>
     <string name="satellite_heading_example">60 degrees from North</string>
     <string name="satellite_altitude_example">1000 feet</string>
     <string name="signal_to_noise_ratio">Signal-to-Noise Ratio:</string>
+    <string name="carrier_frequency">Carrier Frequency:</string>
+    <string name="carrier_frequency_example">L1:</string>
     <string name="unreliable_connection_warning">No reliable connection - connect to ethernet or wifi</string>
 
 </resources>

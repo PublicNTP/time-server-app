@@ -1,6 +1,8 @@
 package app.timeserver.model;
 
 import android.location.GnssStatus;
+import android.location.GnssMeasurement;
+import android.util.Log;
 
 /**
  * Created by zac on 2/14/18.
@@ -9,12 +11,16 @@ import android.location.GnssStatus;
 public class SatelliteModel {
     public final int constellationType;
     public final int svn;
+    public final float snrInDb;
     public final float Cn0DbHz;
     public final float elevationDegrees;
     public final float azimuthDegrees;
     public final boolean ephemerisData;
     public final boolean almanacData;
     public final boolean usedInFix;
+    public float carrierFrequencyHz;
+    public boolean hasFrequency = false;
+
 
     public SatelliteModel(int i, GnssStatus status) {
         svn = status.getSvid(i);
@@ -25,6 +31,23 @@ public class SatelliteModel {
         ephemerisData = status.hasEphemerisData(i);
         almanacData = status.hasAlmanacData(i);
         usedInFix = status.usedInFix(i);
+        snrInDb =  status.getCn0DbHz(i);
+
+        // try{
+        //   hasFrequency = status.hasCarrierFrequencyHz(i);
+        // } catch  (IllegalArgumentException e) {
+        //   Log.e("error", "error",  e);
+        // }
+        // if(hasFrequency){
+        //   try{
+        //     carrierFrequencyHz = status.getCarrierFrequencyHz(i);
+        //   } catch  (IllegalArgumentException e) {
+        //     Log.e("error", "error",  e);
+        //   }
+        // }else{
+        //   carrierFrequencyHz = 1;
+        // }
+
     }
 
     public String constellationName() {
