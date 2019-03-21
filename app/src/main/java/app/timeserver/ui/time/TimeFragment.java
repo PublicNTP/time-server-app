@@ -36,6 +36,7 @@ public class TimeFragment extends BaseFragment {
     final int invalidationFrequency = 1;
 
     @BindView(R.id.time_text_time_display) TextView TimeTextDisplay;
+    @BindView(R.id.time_text_accuracy_units) TextView TimeTextAccuracyUnits;
     @BindView(R.id.time_image_logo) GifImageView spinningLogo;
     @BindView(R.id.time_text_time_zone) TextView timezoneDisplay;
     @BindView(R.id.time_logo_text) TextView timeLogoText;
@@ -72,6 +73,11 @@ public class TimeFragment extends BaseFragment {
             @Override
             public void onTimezonePicked(String timezone) {
                 timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
+            }
+
+            public void onMeasurementPicked(String measurement) {
+                TimeTextAccuracyUnits.setText(measurement.equals("Metric/SI") ? "m" : "ft");
+                LocationStorageConsumer.measurement = measurement;
             }
 
             @Override

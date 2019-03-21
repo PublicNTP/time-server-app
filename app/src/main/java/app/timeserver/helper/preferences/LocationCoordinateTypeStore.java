@@ -11,7 +11,7 @@ public class LocationCoordinateTypeStore extends StringPreferenceStore {
 
     @Override
     public String getDefault() {
-        return "Lat/Long";
+        return "WGS84 (Lat/Long)";
     }
 
     public CoordinateConverter getConverter(Context context) {
