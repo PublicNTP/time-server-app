@@ -30,7 +30,7 @@ public class SatelliteDetailFragment extends BaseFragment {
     @BindView(R.id.satellite_signal_to_noise) TextView signalToNoiseView;
     @BindView(R.id.satellite_altitude) TextView altitudeAngleView;
     @BindView(R.id.satellite_heading) TextView headingView;
-    @BindView(R.id.satellite_frequency) TextView satelliteFrequency;
+    //@BindView(R.id.satellite_frequency) TextView satelliteFrequency;
 
 
     public static SatelliteDetailFragment newInstance(SatelliteModel satelliteModel, OnDetailsClosedListener onDetailsClosedListener) {
@@ -51,7 +51,7 @@ public class SatelliteDetailFragment extends BaseFragment {
         altitudeAngleView.setText(String.format("%.0f° above horizon", satelliteModel.elevationDegrees));
         headingView.setText(String.format("%.0f° from North", satelliteModel.azimuthDegrees));
         signalToNoiseView.setText(String.format("%.1f dB", satelliteModel.snrInDb));
-        // satelliteFrequency.setText(String.format("%s", satelliteModel.carrierFrequencyHz));
+        //satelliteFrequency.setText(String.format("%s", satelliteModel.carrierFrequencyHz));
 
         return rootView;
     }

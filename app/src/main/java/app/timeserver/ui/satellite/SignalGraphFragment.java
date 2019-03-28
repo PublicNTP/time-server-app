@@ -78,6 +78,8 @@ public class SignalGraphFragment extends BaseFragment {
         List<AxisValue> axisValues = new ArrayList<>();
 
         int i = 0;
+        satellites.sort((s1, s2) -> Float.compare(s2.Cn0DbHz, s1.Cn0DbHz));
+
         for (SatelliteModel s : satellites) {
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
             subcolumnValues.add(new SubcolumnValue(s.Cn0DbHz).setColor(GreyLevelHelper.asColor(getContext(), s.Cn0DbHz)));
@@ -91,7 +93,7 @@ public class SignalGraphFragment extends BaseFragment {
             axisValues.add(axisValue);
         }
 
-        Collections.sort(satelliteSignalValues);
+
         ColumnChartData columnChartData = new ColumnChartData(satelliteSignalValues);
         columnChartData.setStacked(true);
 

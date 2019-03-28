@@ -1,7 +1,6 @@
 package app.timeserver.model;
 
 import android.location.GnssStatus;
-import android.location.GnssMeasurement;
 import android.util.Log;
 
 /**
@@ -32,21 +31,6 @@ public class SatelliteModel {
         almanacData = status.hasAlmanacData(i);
         usedInFix = status.usedInFix(i);
         snrInDb =  status.getCn0DbHz(i);
-
-        // try{
-        //   hasFrequency = status.hasCarrierFrequencyHz(i);
-        // } catch  (IllegalArgumentException e) {
-        //   Log.e("error", "error",  e);
-        // }
-        // if(hasFrequency){
-        //   try{
-        //     carrierFrequencyHz = status.getCarrierFrequencyHz(i);
-        //   } catch  (IllegalArgumentException e) {
-        //     Log.e("error", "error",  e);
-        //   }
-        // }else{
-        //   carrierFrequencyHz = 1;
-        // }
 
     }
 

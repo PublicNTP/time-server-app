@@ -190,12 +190,18 @@ public class ServerFragment extends Fragment {
             public void run() {
                 viewBinding.invalidateAll();
                 refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
-                try{
-                  refreshGraphTask.execute();
-                }
-                catch (Exception e) {
-                   Log.e("refreshGraphTask","exception", e);
-                }
+                if(refreshGraphTask == null)
+                  {
+                       return; //or return false/true, based on where you are calling from
+                  }else{
+                    try{
+                      refreshGraphTask.execute();
+                    }
+                    catch (Exception e) {
+                       Log.e("refreshGraphTask","exception", e);
+                    }
+                  }
+
             }
         }, 0, graphRefreshFrequency);
     }
