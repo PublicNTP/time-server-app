@@ -198,7 +198,7 @@
                 android:text="Interface: "
                 android:textColor="@color/primary_dark"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="19sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 />
@@ -209,7 +209,7 @@
                 android:layout_height="40sp"
                 android:textColor="@color/primary_dark"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="19sp"
                 android:layout_marginTop="8dp"
                 />
               <View
@@ -220,7 +220,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20sp"
+                android:textSize="19sp"
                 />
               <TextView
                 android:id="@+id/server_port_text"
@@ -229,7 +229,7 @@
                 android:text="Port: "
                 android:textColor="@color/primary_dark"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="19sp"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="3dp"
                 />

@@ -305,7 +305,7 @@ public class ServerFragment extends Fragment {
       String port = NtpService.port;
       serverPort.setText(port);
       serverPort.setTypeface(null, Typeface.BOLD);
-      serverPort.setTextSize(20);
+      serverPort.setTextSize(19);
       ArrayList portList = NtpService.portList;
       ArrayAdapter<String> adapter = new ArrayAdapter<String>(
           getActivity(),

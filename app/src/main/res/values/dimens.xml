@@ -5,7 +5,7 @@
 
     <dimen name="info_text_title">54sp</dimen>
     <dimen name="info_text_content">16sp</dimen>
-    <dimen name="large_detail_text_size">55sp</dimen>
+    <dimen name="large_detail_text_size">49sp</dimen>
     <dimen name="detail_text_size">34sp</dimen>
     <dimen name="unit_text_size">20sp</dimen>
     <dimen name="option_text_size">20sp</dimen>
