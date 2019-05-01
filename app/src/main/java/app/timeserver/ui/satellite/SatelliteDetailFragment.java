@@ -53,7 +53,7 @@ public class SatelliteDetailFragment extends BaseFragment {
         altitudeAngleView.setText(String.format("%.0f° above horizon", satelliteModel.elevationDegrees));
         headingView.setText(String.format("%.0f° from North", satelliteModel.azimuthDegrees));
         signalToNoiseView.setText(String.format("%.1f dB-Hz", satelliteModel.snrInDb));
-        if(android.os.Build.VERSION.SDK_INT >= 26){
+        if(android.os.Build.VERSION.SDK_INT >= 27){
           String carrierLabel = satelliteModel.getCarrierFrequencyLabel();
           satelliteFrequencyHeading.setText(R.string.carrier_frequency);
           if(carrierLabel != null){

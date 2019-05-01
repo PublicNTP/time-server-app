@@ -32,7 +32,7 @@ public class SatelliteModel {
         almanacData = status.hasAlmanacData(i);
         usedInFix = status.usedInFix(i);
         snrInDb =  status.getCn0DbHz(i);
-        if(android.os.Build.VERSION.SDK_INT >= 26){
+        if(android.os.Build.VERSION.SDK_INT >= 27){
           hasFrequency = status.hasCarrierFrequencyHz(i);
           if(hasFrequency){
             carrierFrequencyMhz = toMhz(status.getCarrierFrequencyHz(i));
