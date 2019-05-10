@@ -39,7 +39,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
 
     private Timer refreshTimer = new Timer();
     private Handler handler = new Handler();
-    private final int REFRESH_DELAY = (int) (TimeMillis.SECOND * 2.5);
+    private final int REFRESH_DELAY = (int) (TimeMillis.SECOND * 0.25);
 
     private SensorManager mSensorManager;
     private Sensor accelerometer;
@@ -64,7 +64,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
     @Override
     public void onResume() {
         super.onResume();
-
+        detailContainer.bringToFront();
         refreshTimer = new Timer();
         refreshTimer.schedule(new TimerTask() {
             @Override
@@ -77,6 +77,7 @@ public class SatelliteFragment extends Fragment implements SensorEventListener, 
                     satellitesInView.bringToFront();
                     satellitesInUseLabel.bringToFront();
                     satellitesInViewLabel.bringToFront();
+
                 });
             }
         }, 0, REFRESH_DELAY);
