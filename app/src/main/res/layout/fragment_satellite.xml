@@ -63,7 +63,7 @@
         <FrameLayout
             android:id="@+id/satellite_details_container"
             android:layout_width="match_parent"
-            android:layout_height="1090dp"
+            android:layout_height="1130dp"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/satellite_inner_container" />

@@ -14,6 +14,7 @@ import app.timeserver.ui.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +76,10 @@ public class SignalGraphFragment extends BaseFragment {
 
         List<Column> satelliteSignalValues = new ArrayList<>();
         List<AxisValue> axisValues = new ArrayList<>();
+
         int i = 0;
+        satellites.sort((s1, s2) -> Float.compare(s2.Cn0DbHz, s1.Cn0DbHz));
+
         for (SatelliteModel s : satellites) {
             List<SubcolumnValue> subcolumnValues = new ArrayList<>();
             subcolumnValues.add(new SubcolumnValue(s.Cn0DbHz).setColor(GreyLevelHelper.asColor(getContext(), s.Cn0DbHz)));
@@ -88,6 +92,8 @@ public class SignalGraphFragment extends BaseFragment {
             satelliteSignalValues.add(column);
             axisValues.add(axisValue);
         }
+
+
         ColumnChartData columnChartData = new ColumnChartData(satelliteSignalValues);
         columnChartData.setStacked(true);
 

@@ -190,7 +190,18 @@ public class ServerFragment extends Fragment {
             public void run() {
                 viewBinding.invalidateAll();
                 refreshGraphTask = new RefreshGraphTask(ServerFragment.this);
-                refreshGraphTask.execute();
+                if(refreshGraphTask == null)
+                  {
+                       return; //or return false/true, based on where you are calling from
+                  }else{
+                    try{
+                      refreshGraphTask.execute();
+                    }
+                    catch (Exception e) {
+                       Log.e("refreshGraphTask","exception", e);
+                    }
+                  }
+
             }
         }, 0, graphRefreshFrequency);
     }
@@ -294,7 +305,7 @@ public class ServerFragment extends Fragment {
       String port = NtpService.port;
       serverPort.setText(port);
       serverPort.setTypeface(null, Typeface.BOLD);
-      serverPort.setTextSize(20);
+      serverPort.setTextSize(19);
       ArrayList portList = NtpService.portList;
       ArrayAdapter<String> adapter = new ArrayAdapter<String>(
           getActivity(),

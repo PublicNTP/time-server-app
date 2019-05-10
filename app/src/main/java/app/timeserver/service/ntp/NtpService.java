@@ -240,8 +240,8 @@ public class NtpService extends Service {
         }
 
         removeConnectivityBroadcastReceiver();
-        Log.i("NTP", "NTP Service destroyed, Restart");
-        sendBroadcast(restartIntent);
+        //Log.i("NTP", "NTP Service destroyed, Restart");
+        //sendBroadcast(restartIntent);
     }
 
     public void changeSelectedPort(String selected){
