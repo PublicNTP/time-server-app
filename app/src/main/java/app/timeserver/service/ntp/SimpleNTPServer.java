@@ -135,7 +135,7 @@ public class SimpleNTPServer implements Runnable {
         if (!started) {
             started = true;
             new Thread(this).start();
-            restartHandle.post(restart);
+            //restartHandle.post(restart);
         }
     }
 
@@ -253,6 +253,6 @@ public class SimpleNTPServer implements Runnable {
             socket = null;
         }
         started = false;
-        restartHandle.removeCallbacks(restart);
+        //restartHandle.removeCallbacks(restart);
     }
 }
