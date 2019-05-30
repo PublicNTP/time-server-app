@@ -74,5 +74,11 @@
     <string name="carrier_frequency">Carrier Freq:</string>
     <string name="carrier_frequency_example">L1:</string>
     <string name="unreliable_connection_warning">No reliable connection - connect to ethernet or wifi</string>
+    <string name="running">Running On </string>
+    <string name="stratum_title">Stratum Level</string>
+    <string name="network_title">Network Interface</string>
+    <string name="port_title">Interface Port</string>
+    <string name="packet_title">Throttle (Packets/min)</string>
+    <string name="auto_start">Auto-Start NTP Server</string>
 
 </resources>

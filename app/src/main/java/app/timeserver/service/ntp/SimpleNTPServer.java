@@ -49,6 +49,7 @@ import java.net.DatagramSocket;
 public class SimpleNTPServer implements Runnable {
     private Context sContext;
     private int port;
+    private String stratum = "1";
 
     private volatile boolean running;
     private boolean started;
@@ -87,6 +88,14 @@ public class SimpleNTPServer implements Runnable {
 
     public int getPort() {
         return port;
+    }
+
+    public String getStratumNumber(){
+       return stratum;
+    }
+
+    public void setStratumNumber(String value) {
+        stratum = value;
     }
 
     /**
@@ -189,8 +198,9 @@ public class SimpleNTPServer implements Runnable {
                 NtpUtils.getModeName(message.getMode()));
         if (message.getMode() == NtpV3Packet.MODE_CLIENT) {
             NtpV3Packet response = new NtpV3Impl();
+            Integer stratumNumber = Integer.parseInt(stratum);
 
-            response.setStratum(1);
+            response.setStratum(stratumNumber);
             response.setMode(NtpV3Packet.MODE_SERVER);
             response.setVersion(NtpV3Packet.VERSION_3);
             response.setPrecision(-20);

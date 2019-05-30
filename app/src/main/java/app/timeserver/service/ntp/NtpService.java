@@ -49,12 +49,14 @@ public class NtpService extends Service {
     public static final String SERVICE_ACTION = "START_NTP_SERVICE";
     public static final String RESTART_ACTION = "RESTART_NTP_SERVICE";
 
-    private static String chosenInterface = "";
+    public static String chosenInterface = "";
+    public static String ipAddress = "";
     private static NtpService ntpService;
 
     private NetworkChangeReceiver networkChangeReceiver;
 
     public static String port = "";
+    public static String stratum = "1";
     public static ArrayList<String> portList = new ArrayList<String>();
 
     Thread serverThread;
@@ -104,7 +106,6 @@ public class NtpService extends Service {
         PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
 
         NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
-        String ipAddress;
 
         final String ethernetInterfaceName = "eth0";
         final String wifiInterfaceName = "wlan0";
@@ -244,9 +245,24 @@ public class NtpService extends Service {
         //sendBroadcast(restartIntent);
     }
 
-    public void changeSelectedPort(String selected){
+    public void changeNetwork(String selected){
       chosenInterface = selected;
       startForeground(SERVICE_ID, buildNotification());
+    }
+
+    public void setStratumNumber(String selected) {
+      stratum = selected;
+      simpleNTPServer.setStratumNumber(selected);
+    }
+
+    public String getStratumNumber() {
+      String stratum;
+      if(simpleNTPServer != null){
+        stratum = simpleNTPServer.getStratumNumber();
+      }else{
+        stratum = "1";
+      }
+      return stratum;
     }
 
     public static boolean exists() {

@@ -144,29 +144,35 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:orientation="vertical"
-            android:gravity="bottom"
             android:layout_alignParentBottom="true"
             >
-            <LinearLayout
+            <RelativeLayout
               android:layout_width="match_parent"
-              android:layout_height="30dp"
+              android:layout_height="35dp"
               android:layout_marginEnd="16dp"
               android:layout_marginStart="16dp"
-              android:layout_marginBottom="16dp"
-              android:orientation="horizontal">
+              android:layout_marginBottom="20dp"
+              android:orientation="horizontal"
 
+              >
+              <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
               <Switch
                 android:id="@+id/server_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="10dp"
                 android:switchMinWidth="56dp"
                 android:checked="false"
                 android:textSize="25sp"
                 />
               <TextView
                 android:id="@+id/server_switch_text"
-                android:layout_width="200sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SNTP Server"
                 android:textColor="@color/primary_dark"
@@ -175,82 +181,40 @@
 
                 />
               </LinearLayout>
-            <View
-              android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:background="@color/primary"
-              android:layout_marginEnd="16dp"
-              android:layout_marginStart="16dp"
-              android:layout_marginTop="8dp"
-              />
+                <ImageButton
+                    android:id="@+id/sntp_options"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/options_button_background"
+                    android:src="@drawable/ic_more_vert_white_24dp"
+                    android:text="@string/time_options_text"
+                    android:textColor="@color/blue" />
+              </RelativeLayout>
+
             <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="39dp"
-              android:layout_marginEnd="16dp"
-              android:layout_marginStart="16dp"
+              android:layout_height="wrap_content"
               android:orientation="horizontal"
+              android:layout_marginEnd="16dp"
+              android:layout_centerHorizontal="true"
               >
 
               <TextView
                 android:id="@+id/server_port_interface"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="40sp"
-                android:text="Interface: "
-                android:textColor="@color/primary_dark"
-                android:textStyle="bold"
+                android:text=""
+                android:textColor="@color/primary"
                 android:textSize="19sp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
                 />
-              <Spinner
-                android:id="@+id/ports_available"
-                android:layout_marginEnd="5dp"
-                android:layout_width="120sp"
-                android:layout_height="40sp"
-                android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                android:textSize="19sp"
-                android:layout_marginTop="8dp"
-                />
-              <View
-                android:layout_width="1dp"
-                android:layout_height="40sp"
-                android:background="@color/primary"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="19sp"
-                />
-              <TextView
-                android:id="@+id/server_port_text"
-                android:layout_width="wrap_content"
-                android:layout_height="40sp"
-                android:text="Port: "
-                android:textColor="@color/primary_dark"
-                android:textStyle="bold"
-                android:textSize="19sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="3dp"
-                />
-                <TextView
-                  android:id="@+id/server_port"
-                  android:layout_width="wrap_content"
-                  android:layout_height="40sp"
-                  android:text=""
-                  android:textColor="@color/primary_dark"
-                  android:textStyle="bold"
-                  android:layout_marginTop="8dp"
-                  />
               </LinearLayout>
-                <View
-                  android:layout_width="match_parent"
-                  android:layout_height="1dp"
-                  android:background="@color/primary"
-                  android:layout_marginEnd="16dp"
-                  android:layout_marginStart="16dp"
-                  android:layout_marginTop="5dp"
-                  />
+
             </LinearLayout>
       </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>

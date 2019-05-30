@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import eu.chainfire.libsuperuser.Shell;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -78,8 +80,7 @@ public class ServerFragment extends Fragment {
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
-    @BindView(R.id.server_port) TextView serverPort;
-    @BindView(R.id.ports_available) Spinner portsAvailable;
+    @BindView(R.id.server_port_interface) TextView serverPort;
 
 
     @BindColor(R.color.packet_outgoing_green) int outgoing_green;
@@ -90,8 +91,6 @@ public class ServerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -103,6 +102,40 @@ public class ServerFragment extends Fragment {
         return viewBinding.getRoot();
     }
 
+    @OnClick(R.id.sntp_options)
+    public void sntpOptionsOnClick() {
+        NtpService ntpService = NtpService.getNtpService();
+        ServerDialogFragment serverDialogFragment = new ServerDialogFragment();
+
+        serverDialogFragment.setOnOptionPicked(new ServerDialogFragment.OnOptionPicked() {
+            @Override
+            public void onStratumPicked(String option) {
+              if(ntpService != null){
+                ntpService.setStratumNumber(option);
+              }
+            }
+            public void onNetworkPicked(String option) {
+                if(ntpService != null){
+                  ntpService.changeNetwork(option);
+                }
+            }
+            /*public void onPortClicked(String option) {
+                //todo
+            }
+            public void onPacketClicked(String option) {
+                //todo
+            }
+
+            @Override
+            public void onAutoStartClicked(String units) {
+                //todo add auto start
+            }*/
+        });
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager != null) {
+            serverDialogFragment.show(fragmentManager, "OptionsFragment");
+        }
+    }
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -303,30 +336,13 @@ public class ServerFragment extends Fragment {
 
     private void buildDropdown(){
       String port = NtpService.port;
-      serverPort.setText(port);
-      serverPort.setTypeface(null, Typeface.BOLD);
-      serverPort.setTextSize(19);
-      ArrayList portList = NtpService.portList;
-      ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-          getActivity(),
-          R.layout.dropdown,
-          portList
-      );
-      portsAvailable.setAdapter(null);
-      portsAvailable.setAdapter(adapter);
-      portsAvailable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          String selected = portsAvailable.getSelectedItem().toString();
-          NtpService ntpService = NtpService.getNtpService();
-          ntpService.changeSelectedPort(selected);
-        }
+      String chosenInterface = NtpService.chosenInterface;
+      String ipAddress = NtpService.ipAddress;
+      if (chosenInterface!="") {
+          serverPort.setText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
+      }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
 
-        }
-    });
     }
 
     private void updateFragment(){
@@ -375,4 +391,6 @@ public class ServerFragment extends Fragment {
 
         }
     };
+
+
 }
