@@ -3,10 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="info_text_title">54sp</dimen>
+    <dimen name="info_text_title">48sp</dimen>
     <dimen name="info_text_content">16sp</dimen>
-    <dimen name="large_detail_text_size">49sp</dimen>
-    <dimen name="detail_text_size">34sp</dimen>
+    <dimen name="large_detail_text_size">40sp</dimen>
+    <dimen name="detail_text_size">32sp</dimen>
     <dimen name="unit_text_size">20sp</dimen>
     <dimen name="option_text_size">20sp</dimen>
     <dimen name="option_spacing">30dp</dimen>

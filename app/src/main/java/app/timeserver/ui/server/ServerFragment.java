@@ -119,11 +119,16 @@ public class ServerFragment extends Fragment {
                   ntpService.changeNetwork(option);
                 }
             }
-            /*public void onPortClicked(String option) {
-                //todo
+            public void onPacketPicked(String option) {
+              if(ntpService != null){
+                ntpService.limitPackets(option);
+              }
             }
-            public void onPacketClicked(String option) {
-                //todo
+            /*
+            public void onPortPicked(String option) {
+                if(ntpService != null){
+                ntpService.changePort(option);
+              }
             }
 
             @Override

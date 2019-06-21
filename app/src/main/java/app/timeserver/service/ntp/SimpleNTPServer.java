@@ -29,6 +29,8 @@ import org.apache.commons.net.ntp.TimeStamp;
 import app.timeserver.repository.time.TimeStorageConsumer;
 import app.timeserver.service.ntp.logging.ServerLogDataPoint;
 import app.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
+import com.google.common.util.concurrent.RateLimiter;
+
 
 import java.lang.Runnable;
 import java.io.IOException;
@@ -49,6 +51,7 @@ import java.net.DatagramSocket;
 public class SimpleNTPServer implements Runnable {
     private Context sContext;
     private int port;
+    private int maxPackets;
     private String stratum = "1";
 
     private volatile boolean running;
@@ -58,6 +61,7 @@ public class SimpleNTPServer implements Runnable {
 
     private TimeStorageConsumer timeStorageConsumer;
     private Intent serverIntent;
+    private RateLimiter rateLimiter;
     byte buffer[] = new byte[48];
     public DatagramPacket request = new DatagramPacket(buffer, buffer.length);
     Handler restartHandle = new Handler();
@@ -97,6 +101,17 @@ public class SimpleNTPServer implements Runnable {
     public void setStratumNumber(String value) {
         stratum = value;
     }
+
+    public int getPacketSize(){
+      return maxPackets;
+    }
+
+    public void setPacketSize(int value){
+      maxPackets = value;
+      rateLimiter.create(value);
+    }
+
+
 
     /**
      * Return state of whether time service is running.
@@ -153,32 +168,32 @@ public class SimpleNTPServer implements Runnable {
      */
     @Override
     public void run() {
-        running = true;
+       running = true;
 
-        do {
-            try {
-                if(socket == null){
-                  connect();
-                  request = new DatagramPacket(buffer, buffer.length);
-                }else{
-                  socket.receive(request);
-                  final long rcvTime = timeStorageConsumer.getTime();
-                  handlePacket(request, rcvTime);
-                }
+       do {
+           try {
+               if(socket == null){
+                 connect();
+                 request = new DatagramPacket(buffer, buffer.length);
+               }else{
+                 socket.receive(request);
+                 final long rcvTime = timeStorageConsumer.getTime();
+                 handlePacket(request, rcvTime);
+               }
 
-            } catch (IOException e) {
-                Log.e("NTP", e.getMessage(), e);
-                if (running) {
-                    e.printStackTrace();
-                }
-                // otherwise socket thrown exception during shutdown
-            } catch (Exception e) {
-                // Don't fail for malformed packets
-                Log.e("NTP", e.getMessage(), e);
-                Log.i("NTP", "Sent by: " + request.getAddress() + " on port " + request.getPort());
-            }
-        } while (running);
-    }
+           } catch (IOException e) {
+               Log.e("NTP", e.getMessage(), e);
+               if (running) {
+                   e.printStackTrace();
+               }
+               // otherwise socket thrown exception during shutdown
+           } catch (Exception e) {
+               // Don't fail for malformed packets
+               Log.e("NTP", e.getMessage(), e);
+               Log.i("NTP", "Sent by: " + request.getAddress() + " on port " + request.getPort());
+           }
+       } while (running);
+   }
 
     /**
      * Handle incoming packet. If NTP packet is client-mode then respond
@@ -191,6 +206,7 @@ public class SimpleNTPServer implements Runnable {
      * @throws IOException if an I/O error occurs.
      */
     protected void handlePacket(DatagramPacket request, long rcvTime) throws IOException {
+        final RateLimiter rateLimiter = RateLimiter.create(5000.0);
         ServerLogDataPointGrouper.addPacket(new ServerLogDataPoint(timeStorageConsumer.getTime(), request, true));
         NtpV3Packet message = new NtpV3Impl();
         message.setDatagramPacket(request);
@@ -198,9 +214,8 @@ public class SimpleNTPServer implements Runnable {
                 NtpUtils.getModeName(message.getMode()));
         if (message.getMode() == NtpV3Packet.MODE_CLIENT) {
             NtpV3Packet response = new NtpV3Impl();
-            Integer stratumNumber = Integer.parseInt(stratum);
 
-            response.setStratum(stratumNumber);
+            response.setStratum(1);
             response.setMode(NtpV3Packet.MODE_SERVER);
             response.setVersion(NtpV3Packet.VERSION_3);
             response.setPrecision(-20);
@@ -226,6 +241,7 @@ public class SimpleNTPServer implements Runnable {
             ServerLogDataPointGrouper.addPacket(new ServerLogDataPoint(appTime, dp, false));
 
         }
+
         // otherwise if received packet is other than CLIENT mode then ignore it
 
     }

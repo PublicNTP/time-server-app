@@ -2,18 +2,18 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical" >
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="440dp"
+            android:layout_height="fill_parent"
             android:layout_margin="5dp"
             android:orientation="vertical"
             android:id="@+id/satellite_inner_container"
+            android:layout_weight="1"
             tools:context="app.timeserver.ui.satellite.SatelliteFragment">
 
             <TextView
@@ -54,17 +54,26 @@
 
             <app.timeserver.ui.satellite.SatelliteRadialChart
                 android:id="@+id/satellite_radial_chart"
-                android:layout_width="match_parent"
-                android:layout_height="460dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_alignParentTop="true" />
 
         </RelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/satellite_details_container"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="1130dp"
+            android:layout_height="fill_parent"
             android:layout_marginBottom="10dp"
-            android:layout_below="@id/satellite_inner_container" />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:layout_weight="2"
+            android:layout_below="@id/satellite_inner_container"
+            tools:context="app.timeserver.ui.satellite.SatelliteFragment"
+            >
+            <FrameLayout
+                android:id="@+id/satellite_details_container"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                />
+            </RelativeLayout>
+</LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

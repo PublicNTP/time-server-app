@@ -51,11 +51,13 @@ public class NtpService extends Service {
 
     public static String chosenInterface = "";
     public static String ipAddress = "";
+    public static int packet;
     private static NtpService ntpService;
 
     private NetworkChangeReceiver networkChangeReceiver;
 
     public static String port = "";
+    public static String selectedPort = "";
     public static String stratum = "1";
     public static ArrayList<String> portList = new ArrayList<String>();
 
@@ -123,6 +125,9 @@ public class NtpService extends Service {
         }else{
           ipAddress = networkInterfaceHelper.ipFor(chosenInterface);
         }
+        port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
+                ? selectedPort
+                : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_large_w_transparency)
@@ -132,9 +137,9 @@ public class NtpService extends Service {
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
 
         if (chosenInterface.equals("")) {
-            builder = builder.setContentText(String.format("Running on %s:%d", ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
+            builder = builder.setContentText(String.format("Running on %s:%s", ipAddress, port));
         } else {
-            builder = builder.setContentText(String.format("Running on %s, %s:%d", chosenInterface, ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
+            builder = builder.setContentText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
         }
 
         return builder.build();
@@ -202,7 +207,9 @@ public class NtpService extends Service {
       if (networkInterfaceHelper.hasConnectivityOn(usbInterfaceName)) {
           portList.add(usbInterfaceName);
       }
-      port = Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
+      port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
+              ? selectedPort
+              : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
 
       final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -247,13 +254,27 @@ public class NtpService extends Service {
 
     public void changeNetwork(String selected){
       chosenInterface = selected;
-      startForeground(SERVICE_ID, buildNotification());
+
     }
 
     public void setStratumNumber(String selected) {
       stratum = selected;
       simpleNTPServer.setStratumNumber(selected);
     }
+
+    public void limitPackets(String selected) {
+      if(selected == "Unlimited"){
+        packet = 0;
+      }else{
+        packet = Integer.parseInt(selected);
+      }
+      simpleNTPServer.setPacketSize(packet);
+    }
+
+    public void changePort(String selected) {
+      selectedPort = selected;
+    }
+
 
     public String getStratumNumber() {
       String stratum;

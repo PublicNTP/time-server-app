@@ -22,10 +22,10 @@
         <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="0dp"
-            android:orientation="vertical"
-            tools:context="app.timeserver.ui.server.ServerFragment">
+          android:layout_margin="10dp"
+          android:layout_marginBottom="0dp"
+          android:orientation="vertical"
+          tools:context="app.timeserver.ui.server.ServerFragment">
 
             <lecho.lib.hellocharts.view.ColumnChartView
                 android:id="@+id/server_bar_graph"
@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -68,7 +69,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -77,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginBottom="0dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -88,6 +90,7 @@
                         android:text="@{servertimestorage.getDateStringIfServiceRunning(context)}"
                         android:textColor="@color/primary_dark"
                         android:textSize="@dimen/large_detail_text_size"
+                        android:layout_marginBottom="0dp"
                         tools:text="00:00:00" />
 
                     <TextView
@@ -98,6 +101,7 @@
                         android:text="@string/default_timezone"
                         android:textColor="@color/primary_dark"
                         android:textSize="@dimen/unit_text_size"
+                        android:layout_marginBottom="0dp"
                         tools:text="TZONE" />
 
                 </LinearLayout>
@@ -142,7 +146,6 @@
           <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
             android:orientation="vertical"
             android:layout_alignParentBottom="true"
             >
@@ -151,7 +154,6 @@
               android:layout_height="35dp"
               android:layout_marginEnd="16dp"
               android:layout_marginStart="16dp"
-              android:layout_marginBottom="20dp"
               android:orientation="horizontal"
 
               >
@@ -208,7 +210,7 @@
                 android:layout_height="40sp"
                 android:text=""
                 android:textColor="@color/primary"
-                android:textSize="19sp"
+                android:textSize="16sp"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
