@@ -125,9 +125,7 @@ public class NtpService extends Service {
         }else{
           ipAddress = networkInterfaceHelper.ipFor(chosenInterface);
         }
-        port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
-                ? selectedPort
-                : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_large_w_transparency)
@@ -135,6 +133,10 @@ public class NtpService extends Service {
                 .setPriority(PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
+
+        port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
+                ? selectedPort
+                : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
         if (chosenInterface.equals("")) {
             builder = builder.setContentText(String.format("Running on %s:%s", ipAddress, port));
@@ -254,12 +256,13 @@ public class NtpService extends Service {
 
     public void changeNetwork(String selected){
       chosenInterface = selected;
-
+      startForeground(SERVICE_ID, buildNotification());
     }
 
     public void setStratumNumber(String selected) {
       stratum = selected;
       simpleNTPServer.setStratumNumber(selected);
+      startForeground(SERVICE_ID, buildNotification());
     }
 
     public void limitPackets(String selected) {
@@ -268,11 +271,13 @@ public class NtpService extends Service {
       }else{
         packet = Integer.parseInt(selected);
       }
-      simpleNTPServer.setPacketSize(packet);
+        //simpleNTPServer.setPacketSize(packet);
+      startForeground(SERVICE_ID, buildNotification());
     }
 
     public void changePort(String selected) {
       selectedPort = selected;
+      startForeground(SERVICE_ID, buildNotification());
     }
 
 
@@ -291,7 +296,7 @@ public class NtpService extends Service {
     }
 
     public void rebuildNotification() {
-        startForeground(SERVICE_ID, buildNotification());
+      startForeground(SERVICE_ID, buildNotification());
     }
 
 }

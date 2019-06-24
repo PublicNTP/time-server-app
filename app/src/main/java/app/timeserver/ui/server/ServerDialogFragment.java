@@ -98,6 +98,8 @@ public class ServerDialogFragment extends DialogFragment {
         packetChoices = getResources().getStringArray(R.array.packet_choices);
         packetSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.packet_choices, R.layout.spinner_item));
 
+        setSpinnerSelection(Integer.toString(ntpService.packet), packetChoices, packetSpinner);
+
         //interfaceChoices = getResources().getStringArray(R.array.interface_choices);
         // portSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.interface_choices, R.layout.spinner_item));
 

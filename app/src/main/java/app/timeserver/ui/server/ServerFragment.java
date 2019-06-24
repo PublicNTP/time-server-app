@@ -91,7 +91,7 @@ public class ServerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,7 +100,7 @@ public class ServerFragment extends Fragment {
         ButterKnife.bind(this, viewBinding.getRoot());
         ntp_intent = new Intent(getContext(), NtpService.class);
         return viewBinding.getRoot();
-    }
+    };
 
     @OnClick(R.id.sntp_options)
     public void sntpOptionsOnClick() {
@@ -134,13 +134,15 @@ public class ServerFragment extends Fragment {
             @Override
             public void onAutoStartClicked(String units) {
                 //todo add auto start
-            }*/
+            }
+            */
         });
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager != null) {
             serverDialogFragment.show(fragmentManager, "OptionsFragment");
         }
-    }
+
+    };
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -179,7 +181,7 @@ public class ServerFragment extends Fragment {
 
         barChartView.setColumnChartData(columnChartData);
         barChartView.setZoomEnabled(false);
-    }
+    };
 
     @Override
     public void onResume() {
@@ -193,7 +195,7 @@ public class ServerFragment extends Fragment {
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         switchButton.setChecked(NtpService.getNtpService() != null);
         super.onResume();
-    }
+    };
 
     @Override
     public void onPause() {
@@ -202,7 +204,7 @@ public class ServerFragment extends Fragment {
         invalidationTimer.cancel();
         graphRefreshTimer.cancel();
         updatePacketsTimer.cancel();
-    }
+    };
 
     public static ServerFragment newInstance() {
         return new ServerFragment();
@@ -219,7 +221,7 @@ public class ServerFragment extends Fragment {
                 });
             }
         }, 0, invalidationFrequency);
-    }
+    };
 
     private void scheduleGraphRefresh() {
         graphRefreshTimer = new Timer();
@@ -242,7 +244,7 @@ public class ServerFragment extends Fragment {
 
             }
         }, 0, graphRefreshFrequency);
-    }
+    };
 
     private void scheduleUpdatePacketCounter() {
         updatePacketsTimer = new Timer();
@@ -260,7 +262,7 @@ public class ServerFragment extends Fragment {
                 });
             }
         }, 0, updatePacketsFrequency);
-    }
+    };
 
     @OnCheckedChanged(R.id.server_switch)
     public void toggleServer() {
@@ -315,7 +317,7 @@ public class ServerFragment extends Fragment {
                     getString(R.string.error_web_browser_not_found),
                     Toast.LENGTH_SHORT).show();
         }
-    }
+    };
     private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {
         private WeakReference<ServerFragment> fragmentReference;
 
@@ -336,19 +338,17 @@ public class ServerFragment extends Fragment {
                 fragmentReference.get().graphHasBeenInit = true;
             }
         }
-    }
+    };
 
 
     private void buildDropdown(){
       String port = NtpService.port;
       String chosenInterface = NtpService.chosenInterface;
       String ipAddress = NtpService.ipAddress;
-      if (chosenInterface!="") {
+      if (chosenInterface != "") {
           serverPort.setText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
       }
-
-
-    }
+    };
 
     private void updateFragment(){
       uiHandler = new Handler();
@@ -357,7 +357,7 @@ public class ServerFragment extends Fragment {
       scheduleUpdatePacketCounter();
       scheduleGraphRefresh();
       timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
-    }
+    };
 
     private void restartService(){
       NtpService ntpService = NtpService.getNtpService();
@@ -379,7 +379,7 @@ public class ServerFragment extends Fragment {
           getContext().unregisterReceiver(broadcastReceiver);
           getContext().stopService(ntp_intent);
         }
-    }
+    };
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
       private static final String TAG = "ServerActivity";
