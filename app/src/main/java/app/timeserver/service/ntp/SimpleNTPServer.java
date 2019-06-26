@@ -215,7 +215,7 @@ public class SimpleNTPServer implements Runnable {
         if (message.getMode() == NtpV3Packet.MODE_CLIENT) {
             NtpV3Packet response = new NtpV3Impl();
 
-            response.setStratum(1);
+            response.setStratum(Integer.parseInt(stratum));
             response.setMode(NtpV3Packet.MODE_SERVER);
             response.setVersion(NtpV3Packet.VERSION_3);
             response.setPrecision(-20);
