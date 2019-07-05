@@ -266,12 +266,10 @@ public class NtpService extends Service {
     }
 
     public void limitPackets(String selected) {
-      if(selected == "Unlimited"){
-        packet = 0;
-      }else{
-        packet = Integer.parseInt(selected);
-      }
-        //simpleNTPServer.setPacketSize(packet);
+
+      packet = Integer.parseInt(selected);
+
+      simpleNTPServer.setPacketSize(packet);
       startForeground(SERVICE_ID, buildNotification());
     }
 

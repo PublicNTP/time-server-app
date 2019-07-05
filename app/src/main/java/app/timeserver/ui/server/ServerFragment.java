@@ -120,8 +120,12 @@ public class ServerFragment extends Fragment {
                 }
             }
             public void onPacketPicked(String option) {
+              String value = option;
               if(ntpService != null){
-                ntpService.limitPackets(option);
+                if(option.equals("Unlimited")){
+                  value = "100000";
+                }
+                ntpService.limitPackets(value);
               }
             }
             /*
