@@ -11,7 +11,7 @@
     <string name="about_btn_contact_label">Contact</string>
     <string name="about_text_title">About</string>
     <string name="about_text_content"><b>PublicNTP</b> is a nonprofit that provides unrestricted access to no-cost, highly-accurate time sources for the public good. Help us help you. Donate and bring time to the world!</string>
-    <string name="about_text_version">Build Version 1.0.18</string>
+    <string name="about_text_version">Build Version 1.0.20</string>
     <string name="about_text_organization"><b>Time Server App</b> is copyrighted by PublicNTP, Inc., open-sourced under the MIT License</string>
 
     <string name="contact_email_address">contact@publicntp.org</string>
@@ -74,5 +74,11 @@
     <string name="carrier_frequency">Carrier Freq:</string>
     <string name="carrier_frequency_example">L1:</string>
     <string name="unreliable_connection_warning">No reliable connection - connect to ethernet or wifi</string>
+    <string name="running">Running On </string>
+    <string name="stratum_title">Stratum Level</string>
+    <string name="network_title">Network Interface</string>
+    <string name="port_title">Interface Port</string>
+    <string name="packet_title">Throttle (Packets/min)</string>
+    <string name="auto_start">Auto-Start NTP Server</string>
 
 </resources>

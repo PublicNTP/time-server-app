@@ -49,12 +49,16 @@ public class NtpService extends Service {
     public static final String SERVICE_ACTION = "START_NTP_SERVICE";
     public static final String RESTART_ACTION = "RESTART_NTP_SERVICE";
 
-    private static String chosenInterface = "";
+    public static String chosenInterface = "";
+    public static String ipAddress = "";
+    public static int packet;
     private static NtpService ntpService;
 
     private NetworkChangeReceiver networkChangeReceiver;
 
     public static String port = "";
+    public static String selectedPort = "";
+    public static String stratum = "1";
     public static ArrayList<String> portList = new ArrayList<String>();
 
     Thread serverThread;
@@ -104,7 +108,6 @@ public class NtpService extends Service {
         PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
 
         NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
-        String ipAddress;
 
         final String ethernetInterfaceName = "eth0";
         final String wifiInterfaceName = "wlan0";
@@ -123,6 +126,7 @@ public class NtpService extends Service {
           ipAddress = networkInterfaceHelper.ipFor(chosenInterface);
         }
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_large_w_transparency)
                 .setContentTitle("NTP Server Running")
@@ -130,10 +134,14 @@ public class NtpService extends Service {
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
 
+        port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
+                ? selectedPort
+                : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
+
         if (chosenInterface.equals("")) {
-            builder = builder.setContentText(String.format("Running on %s:%d", ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
+            builder = builder.setContentText(String.format("Running on %s:%s", ipAddress, port));
         } else {
-            builder = builder.setContentText(String.format("Running on %s, %s:%d", chosenInterface, ipAddress, rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT));
+            builder = builder.setContentText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
         }
 
         return builder.build();
@@ -201,7 +209,9 @@ public class NtpService extends Service {
       if (networkInterfaceHelper.hasConnectivityOn(usbInterfaceName)) {
           portList.add(usbInterfaceName);
       }
-      port = Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
+      port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
+              ? selectedPort
+              : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
 
       final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -244,9 +254,39 @@ public class NtpService extends Service {
         //sendBroadcast(restartIntent);
     }
 
-    public void changeSelectedPort(String selected){
+    public void changeNetwork(String selected){
       chosenInterface = selected;
       startForeground(SERVICE_ID, buildNotification());
+    }
+
+    public void setStratumNumber(String selected) {
+      stratum = selected;
+      simpleNTPServer.setStratumNumber(selected);
+      startForeground(SERVICE_ID, buildNotification());
+    }
+
+    public void limitPackets(String selected) {
+
+      packet = Integer.parseInt(selected);
+
+      simpleNTPServer.setPacketSize(packet);
+      startForeground(SERVICE_ID, buildNotification());
+    }
+
+    public void changePort(String selected) {
+      selectedPort = selected;
+      startForeground(SERVICE_ID, buildNotification());
+    }
+
+
+    public String getStratumNumber() {
+      String stratum;
+      if(simpleNTPServer != null){
+        stratum = simpleNTPServer.getStratumNumber();
+      }else{
+        stratum = "1";
+      }
+      return stratum;
     }
 
     public static boolean exists() {
@@ -254,7 +294,7 @@ public class NtpService extends Service {
     }
 
     public void rebuildNotification() {
-        startForeground(SERVICE_ID, buildNotification());
+      startForeground(SERVICE_ID, buildNotification());
     }
 
 }

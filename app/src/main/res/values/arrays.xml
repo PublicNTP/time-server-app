@@ -23,4 +23,32 @@
         <item>Server</item>
         <item>About</item>
     </string-array>
+
+    <string-array name="stratum_choices">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="network_choices">
+        <item>eth0</item>
+        <item>wan0</item>
+        <item>usb0</item>
+    </string-array>
+
+    <string-array name="interface_choices">
+        <item>123</item>
+        <item>1234</item>
+    </string-array>
+
+    <string-array name="packet_choices">
+        <item>Unlimited</item>
+        <item>9000</item>
+        <item>4800</item>
+        <item>2400</item>
+        <item>1200</item>
+        <item>600</item>
+    </string-array>
+
 </resources>

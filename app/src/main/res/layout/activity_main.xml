@@ -13,13 +13,13 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="901" />
+        android:layout_weight="899" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="99"
+        android:layout_weight="120"
         app:tabMinWidth="600dp"
         android:background="@color/primary_dark" />
 

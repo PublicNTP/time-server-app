@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import eu.chainfire.libsuperuser.Shell;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -78,8 +80,7 @@ public class ServerFragment extends Fragment {
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
-    @BindView(R.id.server_port) TextView serverPort;
-    @BindView(R.id.ports_available) Spinner portsAvailable;
+    @BindView(R.id.server_port_interface) TextView serverPort;
 
 
     @BindColor(R.color.packet_outgoing_green) int outgoing_green;
@@ -90,9 +91,7 @@ public class ServerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-    }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,8 +100,53 @@ public class ServerFragment extends Fragment {
         ButterKnife.bind(this, viewBinding.getRoot());
         ntp_intent = new Intent(getContext(), NtpService.class);
         return viewBinding.getRoot();
-    }
+    };
 
+    @OnClick(R.id.sntp_options)
+    public void sntpOptionsOnClick() {
+        NtpService ntpService = NtpService.getNtpService();
+        ServerDialogFragment serverDialogFragment = new ServerDialogFragment();
+
+        serverDialogFragment.setOnOptionPicked(new ServerDialogFragment.OnOptionPicked() {
+            @Override
+            public void onStratumPicked(String option) {
+              if(ntpService != null){
+                ntpService.setStratumNumber(option);
+              }
+            }
+            public void onNetworkPicked(String option) {
+                if(ntpService != null){
+                  ntpService.changeNetwork(option);
+                }
+            }
+            public void onPacketPicked(String option) {
+              String value = option;
+              if(ntpService != null){
+                if(option.equals("Unlimited")){
+                  value = "100000";
+                }
+                ntpService.limitPackets(value);
+              }
+            }
+            /*
+            public void onPortPicked(String option) {
+                if(ntpService != null){
+                ntpService.changePort(option);
+              }
+            }
+
+            @Override
+            public void onAutoStartClicked(String units) {
+                //todo add auto start
+            }
+            */
+        });
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager != null) {
+            serverDialogFragment.show(fragmentManager, "OptionsFragment");
+        }
+
+    };
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -141,7 +185,7 @@ public class ServerFragment extends Fragment {
 
         barChartView.setColumnChartData(columnChartData);
         barChartView.setZoomEnabled(false);
-    }
+    };
 
     @Override
     public void onResume() {
@@ -155,7 +199,7 @@ public class ServerFragment extends Fragment {
         timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
         switchButton.setChecked(NtpService.getNtpService() != null);
         super.onResume();
-    }
+    };
 
     @Override
     public void onPause() {
@@ -164,7 +208,7 @@ public class ServerFragment extends Fragment {
         invalidationTimer.cancel();
         graphRefreshTimer.cancel();
         updatePacketsTimer.cancel();
-    }
+    };
 
     public static ServerFragment newInstance() {
         return new ServerFragment();
@@ -181,7 +225,7 @@ public class ServerFragment extends Fragment {
                 });
             }
         }, 0, invalidationFrequency);
-    }
+    };
 
     private void scheduleGraphRefresh() {
         graphRefreshTimer = new Timer();
@@ -204,7 +248,7 @@ public class ServerFragment extends Fragment {
 
             }
         }, 0, graphRefreshFrequency);
-    }
+    };
 
     private void scheduleUpdatePacketCounter() {
         updatePacketsTimer = new Timer();
@@ -222,7 +266,7 @@ public class ServerFragment extends Fragment {
                 });
             }
         }, 0, updatePacketsFrequency);
-    }
+    };
 
     @OnCheckedChanged(R.id.server_switch)
     public void toggleServer() {
@@ -277,7 +321,7 @@ public class ServerFragment extends Fragment {
                     getString(R.string.error_web_browser_not_found),
                     Toast.LENGTH_SHORT).show();
         }
-    }
+    };
     private static class RefreshGraphTask extends AsyncTask<Void, Void, List<ServerLogMinuteSummary>> {
         private WeakReference<ServerFragment> fragmentReference;
 
@@ -298,36 +342,17 @@ public class ServerFragment extends Fragment {
                 fragmentReference.get().graphHasBeenInit = true;
             }
         }
-    }
+    };
 
 
     private void buildDropdown(){
       String port = NtpService.port;
-      serverPort.setText(port);
-      serverPort.setTypeface(null, Typeface.BOLD);
-      serverPort.setTextSize(19);
-      ArrayList portList = NtpService.portList;
-      ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-          getActivity(),
-          R.layout.dropdown,
-          portList
-      );
-      portsAvailable.setAdapter(null);
-      portsAvailable.setAdapter(adapter);
-      portsAvailable.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-          String selected = portsAvailable.getSelectedItem().toString();
-          NtpService ntpService = NtpService.getNtpService();
-          ntpService.changeSelectedPort(selected);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    });
-    }
+      String chosenInterface = NtpService.chosenInterface;
+      String ipAddress = NtpService.ipAddress;
+      if (chosenInterface != "") {
+          serverPort.setText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
+      }
+    };
 
     private void updateFragment(){
       uiHandler = new Handler();
@@ -336,7 +361,7 @@ public class ServerFragment extends Fragment {
       scheduleUpdatePacketCounter();
       scheduleGraphRefresh();
       timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
-    }
+    };
 
     private void restartService(){
       NtpService ntpService = NtpService.getNtpService();
@@ -358,7 +383,7 @@ public class ServerFragment extends Fragment {
           getContext().unregisterReceiver(broadcastReceiver);
           getContext().stopService(ntp_intent);
         }
-    }
+    };
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
       private static final String TAG = "ServerActivity";
@@ -375,4 +400,6 @@ public class ServerFragment extends Fragment {
 
         }
     };
+
+
 }

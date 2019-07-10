@@ -7,6 +7,7 @@
         android:icon="@drawable/icon_nav_time_light_24px"
         android:title="@string/title_action_time"
         android:enabled="true"
+        android:textSize="0sp"
         app:showAsAction="always" />
 
     <item
@@ -14,6 +15,7 @@
         android:icon="@drawable/icon_nav_satl_light_24px"
         android:title="@string/title_action_satl"
         android:enabled="true"
+        android:textSize="0sp"
         app:showAsAction="ifRoom" />
 
     <item
@@ -21,6 +23,7 @@
         android:icon="@drawable/icon_nav_serv_light_24px"
         android:title="@string/title_action_serv"
         android:enabled="true"
+        android:textSize="0sp"
         app:showAsAction="ifRoom" />
 
     <item
@@ -28,6 +31,7 @@
         android:icon="@drawable/icon_nav_info_light_24px"
         android:title="@string/title_action_info"
         android:enabled="true"
+        android:textSize="0sp"
         app:showAsAction="ifRoom" />
 
 </menu>

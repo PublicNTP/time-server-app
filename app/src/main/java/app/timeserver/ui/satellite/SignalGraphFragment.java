@@ -2,10 +2,12 @@ package app.timeserver.ui.satellite;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.view.ViewGroup.LayoutParams;
 
 import app.timeserver.R;
 import app.timeserver.helper.GreyLevelHelper;
@@ -44,10 +46,15 @@ public class SignalGraphFragment extends BaseFragment {
     @BindColor(R.color.black) int black;
     @BindColor(R.color.greyC) int backgroundGrey;
 
+    private int screenWidth, screenHeight;
+
+
     public static SignalGraphFragment newInstance(List<SatelliteModel> satelliteModelList, @NonNull OnSatelliteSelectedListener onSatelliteSelectedListener) {
         SignalGraphFragment signalGraphFragment = new SignalGraphFragment();
         signalGraphFragment.setSatelliteModels(satelliteModelList, false);
         signalGraphFragment.setOnSatelliteSelectedListener(onSatelliteSelectedListener);
+
+
         return signalGraphFragment;
     }
 
@@ -55,6 +62,7 @@ public class SignalGraphFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_signal_graph, container, false);
         ButterKnife.bind(this, rootView);
+
         return rootView;
     }
 
@@ -114,10 +122,10 @@ public class SignalGraphFragment extends BaseFragment {
         signalGraph.setOnValueTouchListener(new ColumnChartOnValueSelectListener() {
             @Override
             public void onValueSelected(int columnIndex, int subcolumnIndex, SubcolumnValue value) {
-                if(satelliteModelList.size() > columnIndex) {
-                    SatelliteModel selectedSatellite = satelliteModelList.get(columnIndex);
-                    onSatelliteSelectedListener.onSatelliteSelected(selectedSatellite);
-                }
+              SatelliteModel selectedSatellite = satelliteModelList.get(columnIndex);
+              onSatelliteSelectedListener.onSatelliteSelected(selectedSatellite);
+                //if(satelliteModelList.size() > columnIndex) {
+                //}
             }
 
             @Override
@@ -141,6 +149,7 @@ public class SignalGraphFragment extends BaseFragment {
         }
         layoutParams.height = horizontalScrollView.getMeasuredHeight();
         signalGraph.setLayoutParams(layoutParams);
+
     }
 
     public void setOnSatelliteSelectedListener(OnSatelliteSelectedListener onSatelliteSelectedListener) {
