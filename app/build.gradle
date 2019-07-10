@@ -26,8 +26,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode 4
-        versionName "1.0.18"
+        versionCode 5
+        versionName "1.0.20"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
