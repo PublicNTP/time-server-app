@@ -19,7 +19,7 @@ With this app, you can:
 - [Cam Peterson](https://github.com/campeterson)
 - [Cody Deskins](https://github.com/cdeskins)
 - [Dan Noland](https://github.com/nolandda)
-- [Dane Oborn]()
+- [Dane Oborn](https://www.linkedin.com/in/daneoborn/)
 - [Eric Evans](https://github.com/Zipbug)
 - [Keltson Howell](https://keltsonhowell.com/)
 - [Kenji Ishigaki]()
