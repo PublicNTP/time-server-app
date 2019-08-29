@@ -14,6 +14,7 @@ With this app, you can:
 
 ### Individuals
 - [Alex Porter](https://github.com/TheAlexPorter)
+- [Alice Neubert](https://github.com/ZacNeubert)
 - [Brad Woodfin](https://github.com/woodfjo)
 - [Bryant Oblad](https://github.com/boblad)
 - [Cam Peterson](https://github.com/campeterson)
@@ -28,7 +29,6 @@ With this app, you can:
 - [Terry Ott](https://github.com/TerryOtt)
 - [Tod Robbins](https://github.com/todrobbins)
 - [Wylie Thomas](https://github.com/wyliethomas)
-- [Zachary Neubert](https://github.com/ZacNeubert)
 
 ### Organizations
 - Kempt Design LLC
