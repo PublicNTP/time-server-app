@@ -89,10 +89,9 @@ public class SatelliteRadialChart extends View {
 
         this.setOnTouchListener((View v, MotionEvent event) -> {
             compassEnabled = !compassEnabled;
-            if (compassEnabled) {
-                Winebar.make(this, "Compass Enabled.", Snackbar.LENGTH_SHORT).show();
-            } else {
-                Winebar.make(this, "Compass Disabled.", Snackbar.LENGTH_SHORT).show();
+            String compassText = compassEnabled ? this.getContext().getString(R.string.compass_enabled) : this.getContext().getString(R.string.compass_disabled);
+            Winebar.make(this, compassText, Snackbar.LENGTH_SHORT).show();
+            if (!compassEnabled) {
                 resetRotation();
             }
             return false;

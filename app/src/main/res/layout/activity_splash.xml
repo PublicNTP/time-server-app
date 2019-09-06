@@ -5,11 +5,11 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/splash_logo"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:contentDescription="@string/time_image_logo_desc"
-        android:src="@drawable/infinite_logo_spin" />
+        android:src="@drawable/pntp_logo" />
 </RelativeLayout>

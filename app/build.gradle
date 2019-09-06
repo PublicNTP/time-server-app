@@ -26,8 +26,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode 5
-        versionName "1.0.20"
+        versionCode 7
+        versionName "1.0.24"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -51,7 +51,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:${daggerVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 
-    compile 'commons-net:commons-net:3.6'
+    api 'commons-net:commons-net:3.6'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -71,10 +71,10 @@ dependencies {
     implementation "com.jakewharton:butterknife:${butterknifeVersion}"
     implementation "com.jakewharton.timber:timber:4.6.0"
 
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
-    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    api 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
-    compile 'eu.chainfire:libsuperuser:1.0.0.+'
+    api 'eu.chainfire:libsuperuser:1.0.0.+'
 
     androidTestImplementation "com.android.support.test:runner:1.0.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"

@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import app.timeserver.R;
 import app.timeserver.helper.permissions.Permission;
 import app.timeserver.helper.permissions.PermissionsHelper;
@@ -23,6 +26,7 @@ import app.timeserver.ui.about.AboutFragment;
 import app.timeserver.ui.satellite.SatelliteFragment;
 import app.timeserver.ui.server.ServerFragment;
 import app.timeserver.ui.time.TimeFragment;
+import android.content.Context;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -35,11 +39,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     @BindColor(R.color.blue) int blue;
     @BindColor(R.color.greydark) int greydark;
 
+    private Boolean autoStart;
+    Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        mContext = this;
+        autoStart = getPrefs(mContext).getBoolean("autoStart", false);
 
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionPagerAdapter);
@@ -49,8 +58,12 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             tab.setCustomView(sectionPagerAdapter.getTabView(i));
             onTabUnselected(tab);
         }
-        onTabSelected(tabLayout.getTabAt(0));
+        onTabSelected(tabLayout.getTabAt(autoStart ? 2 : 0));
+        if(autoStart){
+          tabLayout.getTabAt(2).select();
+        }
         tabLayout.addOnTabSelectedListener(this);
+
 
 
         if (PermissionsHelper.permissionIsGranted(this, Permission.FINE_LOCATION)) {
@@ -58,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         } else {
             PermissionsHelper.requestPermission(this, Permission.FINE_LOCATION);
         }
+    }
+
+    private static SharedPreferences getPrefs(Context context) {
+        return context.getSharedPreferences("ServerPreferences", Context.MODE_PRIVATE);
     }
 
     @Override

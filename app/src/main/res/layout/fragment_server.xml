@@ -11,7 +11,6 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-      android:keepScreenOn="true"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
     >
@@ -59,10 +58,10 @@
                     android:layout_marginBottom="0dp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="packets/min"
+                    android:text="@string/packet_min"
                     android:textColor="@color/primary_dark"
                     android:textSize="@dimen/unit_text_size"
-                    tools:text="packets/min" />
+                    tools:text="@string/packet_min" />
 
             </LinearLayout>
 
@@ -162,21 +161,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
-              <Switch
+              <android.support.v7.widget.SwitchCompat
                 android:id="@+id/server_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="10dp"
                 android:switchMinWidth="56dp"
-                android:checked="false"
+                android:checked="@{servertimestorage.isServiceRunning()}"
                 android:textSize="25sp"
                 />
               <TextView
                 android:id="@+id/server_switch_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SNTP Server"
+                android:text="@string/sntp_server"
                 android:textColor="@color/primary_dark"
                 android:textSize="25sp"
                 android:textStyle="bold"

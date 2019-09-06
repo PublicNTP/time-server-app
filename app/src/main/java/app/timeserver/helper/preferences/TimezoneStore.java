@@ -33,6 +33,10 @@ public class TimezoneStore extends StringPreferenceStore {
     public String getTimeZoneShortName(Context context, String zone) {
         if (zone.equals("UTC")) {
             return zone;
+        }else if (zone.equals("Decimal Time")) {
+            return "decMs";
+        }else if (zone.equals("Swatch Internet Time")) {
+            return ".beats";
         } else {
             Locale locale = LocaleHelper.getUserLocale(context);
             TimeZone tz = TimeZone.getDefault();

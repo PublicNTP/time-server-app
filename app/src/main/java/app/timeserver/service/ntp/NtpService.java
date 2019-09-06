@@ -129,7 +129,7 @@ public class NtpService extends Service {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_large_w_transparency)
-                .setContentTitle("NTP Server Running")
+                .setContentTitle(getString(R.string.server_running))
                 .setPriority(PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
@@ -139,9 +139,9 @@ public class NtpService extends Service {
                 : Integer.toString(rootRedirected ? NTP_DEFAULT_PORT : NTP_UNRESTRICTED_PORT);
 
         if (chosenInterface.equals("")) {
-            builder = builder.setContentText(String.format("Running on %s:%s", ipAddress, port));
+            builder = builder.setContentText(String.format("%s %s:%s", getString(R.string.server_port), ipAddress, port));
         } else {
-            builder = builder.setContentText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
+            builder = builder.setContentText(String.format("%s %s, %s:%s", getString(R.string.server_port), chosenInterface, ipAddress, port));
         }
 
         return builder.build();
@@ -162,7 +162,7 @@ public class NtpService extends Service {
             boolean allowed = PortForwardingHelper.allowAllForwarding();
             boolean forwarded = PortForwardingHelper.forwardUDPPort(NTP_DEFAULT_PORT, NTP_UNRESTRICTED_PORT);
             if (!allowed || !forwarded) {
-                Toast.makeText(NtpService.this, "Firewall routing failed. Server may not work.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NtpService.this, getString(R.string.firewall_fail), Toast.LENGTH_SHORT).show();
             } else {
                 rootRedirected = true;
             }
@@ -215,10 +215,11 @@ public class NtpService extends Service {
 
 
       final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-      this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+      this.mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
       this.mWakeLock.acquire();
       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                  Intent optimizationIntent = new Intent();
+                 optimizationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  String packageName = getPackageName();
                  if (!pm.isIgnoringBatteryOptimizations(packageName)) {
                      optimizationIntent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
@@ -256,13 +257,13 @@ public class NtpService extends Service {
 
     public void changeNetwork(String selected){
       chosenInterface = selected;
-      startForeground(SERVICE_ID, buildNotification());
+      //startForeground(SERVICE_ID, buildNotification());
     }
 
     public void setStratumNumber(String selected) {
       stratum = selected;
       simpleNTPServer.setStratumNumber(selected);
-      startForeground(SERVICE_ID, buildNotification());
+      //startForeground(SERVICE_ID, buildNotification());
     }
 
     public void limitPackets(String selected) {
@@ -270,12 +271,12 @@ public class NtpService extends Service {
       packet = Integer.parseInt(selected);
 
       simpleNTPServer.setPacketSize(packet);
-      startForeground(SERVICE_ID, buildNotification());
+      //startForeground(SERVICE_ID, buildNotification());
     }
 
     public void changePort(String selected) {
       selectedPort = selected;
-      startForeground(SERVICE_ID, buildNotification());
+      //startForeground(SERVICE_ID, buildNotification());
     }
 
 

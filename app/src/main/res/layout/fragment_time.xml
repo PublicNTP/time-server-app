@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="PublicNTP"
+                    android:text="@string/pntp"
                     android:textColor="@color/greydark"
                     android:textSize="26sp" />
 
@@ -98,7 +98,7 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="UTC"
+                android:text="@string/default_timezone"
                 android:textColor="@color/primary_dark"
                 android:textSize="20sp"
                 tools:text="TZONE" />

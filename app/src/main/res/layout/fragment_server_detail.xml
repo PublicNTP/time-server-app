@@ -82,12 +82,6 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/option_spacing" />
               -->
-        </LinearLayout>
-        <!-- <RelativeLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +99,8 @@
               android:textSize="25sp"
               android:gravity="right"
               />
-            </RelativeLayout> -->
+        </LinearLayout>
+      
     </android.support.design.widget.CoordinatorLayout>
 
     <Button
@@ -121,7 +116,7 @@
         android:layout_weight="1"
         android:background="@drawable/button_with_rounded_corners"
         android:fontFamily="@font/roboto_medium"
-        android:text="Done"
+        android:text="@string/complete"
         android:textColor="@color/white"
         android:textSize="20sp" />
 </LinearLayout>

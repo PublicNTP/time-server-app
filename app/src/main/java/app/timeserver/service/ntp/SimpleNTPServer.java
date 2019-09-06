@@ -228,7 +228,7 @@ public class SimpleNTPServer implements Runnable {
             // Receive Time is time request received by server (t2)
             response.setReceiveTimeStamp(TimeStamp.getNtpTime(rcvTime));
             response.setReferenceTime(response.getReceiveTimeStamp());
-            response.setReferenceId(0x4C434C00); // LCL (Undisciplined Local Clock)
+            response.setReferenceId(0x47505300); // GPS
 
             // Transmit time is time reply sent by server (t3)
             long appTime = timeStorageConsumer.getTime();

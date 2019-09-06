@@ -21,6 +21,9 @@ import android.widget.Switch;
 import android.util.Log;
 import app.timeserver.service.ntp.NtpService;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,9 +42,10 @@ import butterknife.OnCheckedChanged;
  */
 
 public class ServerDialogFragment extends DialogFragment {
-  @BindView(R.id.stratum_options) Spinner stratumSpinner;
-  @BindView(R.id.network_options) Spinner networkSpinner;
-  @BindView(R.id.packet_options) Spinner packetSpinner;
+    @BindView(R.id.stratum_options) Spinner stratumSpinner;
+    @BindView(R.id.network_options) Spinner networkSpinner;
+    @BindView(R.id.packet_options) Spinner packetSpinner;
+    @BindView(R.id.auto_start_switch) Switch switchAutoStart;
     /*
     @BindView(R.id.port_options) Spinner portSpinner;
     @BindView(R.id.auto_start_switch) Switch switchButton;
@@ -53,12 +57,18 @@ public class ServerDialogFragment extends DialogFragment {
     private String[] networkChoices;
     private String[] interfaceChoices;
     private String[] packetChoices;
+    private String stratumChoice;
+    private String networkChoice;
+    private String packetChoice;
+    private Boolean autoStart;
+
+    Context mContext;
 
     public interface OnOptionPicked {
       void onStratumPicked(String option);
       void onNetworkPicked(String network);
       void onPacketPicked(String packet);
-      // void onPortPicked(String port);
+      //void onPortPicked(String port);
     }
 
     private OnOptionPicked onOptionPicked;
@@ -98,10 +108,6 @@ public class ServerDialogFragment extends DialogFragment {
         packetChoices = getResources().getStringArray(R.array.packet_choices);
         packetSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.packet_choices, R.layout.spinner_item));
 
-        setSpinnerSelection(Integer.toString(ntpService.packet), packetChoices, packetSpinner);
-
-        //interfaceChoices = getResources().getStringArray(R.array.interface_choices);
-        // portSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.interface_choices, R.layout.spinner_item));
 
         ArrayList portList = ntpService.portList;
 
@@ -115,43 +121,70 @@ public class ServerDialogFragment extends DialogFragment {
         networkSpinner.setAdapter(null);
         networkSpinner.setAdapter(adapter);
 
-        if(ntpService != null){
-          setSpinnerSelection(ntpService.stratum, stratumChoices, stratumSpinner);
-        }
+        stratumChoice = getPrefs(activity).getString("stratumChoice", stratumChoices[0]).toString();
+        networkChoice = getPrefs(activity).getString("networkChoice", "wlan0").toString();
+        packetChoice = getPrefs(activity).getString("packetChoice", packetChoices[0]).toString();
+        autoStart = getPrefs(activity).getBoolean("autoStart", false);
+
+        setSpinnerSelection(stratumChoice, stratumChoices, stratumSpinner);
+        setSpinnerSelection(packetChoice, packetChoices, packetSpinner);
+        setSpinnerSelection(networkChoice, networkChoices, networkSpinner);
+        switchAutoStart.setChecked(autoStart);
 
         builder.setView(rootView);
+
         return builder.create();
     }
 
+    private static SharedPreferences getPrefs(Context context) {
+        return context.getSharedPreferences("ServerPreferences", Context.MODE_PRIVATE);
+    }
+
+    public void setString(String PREF_NAME, String input) {
+        SharedPreferences.Editor editor = getPrefs(activity).edit();
+        editor.putString(PREF_NAME, input);
+        editor.commit();
+    }
+
+    public void setBoolean(String PREF_NAME, Boolean input) {
+        SharedPreferences.Editor editor = getPrefs(activity).edit();
+        editor.putBoolean(PREF_NAME, input);
+        editor.commit();
+    }
 
     @OnItemSelected(R.id.stratum_options)
     public void onStratumClicked(AdapterView<?> parent, View view, int position, long id) {
       String units = stratumChoices[position];
+      setString("stratumChoice", units);
       onOptionPicked.onStratumPicked(units);
     }
     @OnItemSelected(R.id.network_options)
     public void onNetworkClicked(AdapterView<?> parent, View view, int position, long id) {
       String units = networkChoices[position];
+      setString("networkChoice", units);
+
       onOptionPicked.onNetworkPicked(units);
     }
     @OnItemSelected(R.id.packet_options)
     public void onPacketClicked(AdapterView<?> parent, View view, int position, long id) {
       String units = packetChoices[position];
+      setString("packetChoice", units);
+
       onOptionPicked.onPacketPicked(units);
     }
 
     /*
-
     @OnItemSelected(R.id.port_options)
       public void onPortClicked(AdapterView<?> parent, View view, int position, long id) {
       String units = interfaceChoices[position];
       onOptionPicked.onPortPicked(units);
     }
+    */
+
     @OnCheckedChanged(R.id.auto_start_switch)
     public void onAutoStartClicked() {
-      //todo add auto start
+      setBoolean("autoStart", switchAutoStart.isChecked());
     }
-    */
 
 
     @OnClick(R.id.server_options_done)

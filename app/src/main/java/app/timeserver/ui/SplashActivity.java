@@ -23,7 +23,7 @@ import pl.droidsonroids.gif.GifImageView;
  */
 
 public class SplashActivity extends Activity {
-    final int SPLASH_DELAY = (int) (TimeMillis.SECOND * 3);
+    final int SPLASH_DELAY = (int) (TimeMillis.SECOND * 6);
 
     @BindView(R.id.splash_logo) GifImageView spinningLogo;
 
@@ -34,7 +34,7 @@ public class SplashActivity extends Activity {
         ButterKnife.bind(this);
 
         GifDrawable spinningDrawable = (GifDrawable) spinningLogo.getDrawable();
-        spinningDrawable.setSpeed(2f);
+        spinningDrawable.setSpeed(1f);
         spinningDrawable.start();
 
         new Timer().schedule(new TimerTask() {

@@ -32,6 +32,10 @@ public class TimeStorageConsumer {
         }
     }
 
+    public Boolean isServiceRunning() {
+      return NtpService.exists();
+    }
+
     @SuppressLint("DefaultLocale")
     public String getDateDifference() {
         try {

@@ -9,7 +9,9 @@
 
     <string-array name="timezone_choices">
         <item>UTC</item>
-        <item>Local</item>
+        <item>Local Time</item>
+        <item>Decimal Time</item>
+        <item>Swatch Internet Time</item>
     </string-array>
 
     <string-array name="measurement_choices">

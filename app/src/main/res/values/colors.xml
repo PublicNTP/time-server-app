@@ -7,6 +7,7 @@
     <!--<color name="muted"></color>-->
 
     <color name="white">#FFFFFF</color>
+    <color name="offWhite">#FBFBFB</color>
     <color name="black">#000000</color>
 
     <color name="greyreallydark">#333333</color>

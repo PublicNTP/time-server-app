@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Switch;
+import android.support.v7.widget.SwitchCompat;
 import android.widget.Spinner;
 import android.content.Context;
 import android.content.Intent;
@@ -37,6 +38,9 @@ import app.timeserver.repository.time.TimeStorageConsumer;
 import app.timeserver.service.ntp.NtpService;
 import app.timeserver.service.ntp.logging.ServerLogDataPointGrouper;
 import app.timeserver.service.ntp.logging.ServerLogMinuteSummary;
+
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import java.lang.ref.WeakReference;
 
@@ -76,7 +80,14 @@ public class ServerFragment extends Fragment {
     RefreshGraphTask refreshGraphTask;
     private boolean graphHasBeenInit = false;
 
-    @BindView(R.id.server_switch) Switch switchButton;
+
+    private String stratumChoice;
+    private String networkChoice;
+    private String packetChoice;
+    private Boolean autoStart;
+    private Boolean autoInit;
+
+    @BindView(R.id.server_switch) SwitchCompat switchButton;
     @BindView(R.id.server_bar_graph) ColumnChartView barChartView;
     @BindView(R.id.server_display_time_zone) TextView timezoneDisplay;
     @BindView(R.id.server_display_net_activity) TextView activityDisplay;
@@ -90,7 +101,14 @@ public class ServerFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        mContext = getContext();
+        stratumChoice = getPrefs(mContext).getString("stratumChoice", "1").toString();
+        networkChoice = getPrefs(mContext).getString("networkChoice", "wlan0").toString();
+        packetChoice = getPrefs(mContext).getString("packetChoice", "Unlimited").toString();
+        autoStart = getPrefs(mContext).getBoolean("autoStart", false);
+        autoInit = false;
         super.onCreate(savedInstanceState);
+
     };
 
     @Override
@@ -99,6 +117,10 @@ public class ServerFragment extends Fragment {
         viewBinding.setServertimestorage(new TimeStorageConsumer());
         ButterKnife.bind(this, viewBinding.getRoot());
         ntp_intent = new Intent(getContext(), NtpService.class);
+        if(autoStart && autoInit == false){
+          switchButton.setChecked(true);
+          autoInit = true;
+        }
         return viewBinding.getRoot();
     };
 
@@ -128,18 +150,6 @@ public class ServerFragment extends Fragment {
                 ntpService.limitPackets(value);
               }
             }
-            /*
-            public void onPortPicked(String option) {
-                if(ntpService != null){
-                ntpService.changePort(option);
-              }
-            }
-
-            @Override
-            public void onAutoStartClicked(String units) {
-                //todo add auto start
-            }
-            */
         });
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager != null) {
@@ -147,6 +157,10 @@ public class ServerFragment extends Fragment {
         }
 
     };
+
+    private static SharedPreferences getPrefs(Context context) {
+        return context.getSharedPreferences("ServerPreferences", Context.MODE_PRIVATE);
+    }
 
     private void initBarChart(List<ServerLogMinuteSummary> data) {
         List<Column> columns = new ArrayList<>();
@@ -267,41 +281,42 @@ public class ServerFragment extends Fragment {
             }
         }, 0, updatePacketsFrequency);
     };
-
+    public void startNTPService() {
+      NtpService ntpService = NtpService.getNtpService();
+      boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0","usb0"));
+      try {
+          IntentFilter serviceFilter= new IntentFilter();
+          serviceFilter.addAction(NtpService.SERVICE_ACTION);
+          serviceFilter.addAction(NtpService.RESTART_ACTION);
+          getContext().startService(ntp_intent);
+          getContext().registerReceiver(broadcastReceiver, serviceFilter);
+          Log.i("NTP", "startNTPService SERVICE");
+          graphHasBeenInit = true;
+      } catch (IllegalArgumentException e) {
+          // Check wether we are in debug mode
+          Log.i("NTP", "FAILED TO startNTPService");
+      }
+      if (!Shell.SU.available()) {
+          Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
+              launchWebUrl("https://www.xda-developers.com/root/");
+          }).setActionTextColor(white).show();
+      }
+    }
     @OnCheckedChanged(R.id.server_switch)
     public void toggleServer() {
         NtpService ntpService = NtpService.getNtpService();
         if (switchButton.isChecked()) {
-
-            if (ntpService == null) {
-                boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0","usb0"));
-                if(!hasReliableConnection) {
-                    Winebar.make(switchButton, R.string.unreliable_connection_warning, Snackbar.LENGTH_LONG).show();
-                }
-                try {
-                    IntentFilter serviceFilter= new IntentFilter();
-                    serviceFilter.addAction(NtpService.SERVICE_ACTION);
-                    serviceFilter.addAction(NtpService.RESTART_ACTION);
-                    getContext().startService(ntp_intent);
-                    getContext().registerReceiver(broadcastReceiver, serviceFilter);
-                    Log.i("SERVICE", "START SERVICE");
-                    graphHasBeenInit = true;
-                } catch (IllegalArgumentException e) {
-                    // Check wether we are in debug mode
-                    Log.i("SERVICE", "FAILED TO START SERVICE");
-                }
-
-
-                if (!Shell.SU.available()) {
-                    Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
-                        launchWebUrl("https://www.xda-developers.com/root/");
-                    }).setActionTextColor(white).show();
-                }
-            }
+          if (ntpService == null) {
+              startNTPService();
+          }
         } else {
 
             if (ntpService != null) {
-              getContext().unregisterReceiver(broadcastReceiver);
+              try {
+                getContext().unregisterReceiver(broadcastReceiver);
+              }catch(IllegalArgumentException e) {
+                e.printStackTrace();
+              }
               getContext().stopService(ntp_intent);
             }
         }
@@ -349,13 +364,24 @@ public class ServerFragment extends Fragment {
       String port = NtpService.port;
       String chosenInterface = NtpService.chosenInterface;
       String ipAddress = NtpService.ipAddress;
+
       if (chosenInterface != "") {
           serverPort.setText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
       }
     };
 
+    private void updatePrefrences(){
+      NtpService ntpService = NtpService.getNtpService();
+      ntpService.setStratumNumber(stratumChoice);
+      ntpService.changeNetwork(networkChoice);
+      if(packetChoice.equals("Unlimited")){
+        packetChoice = "100000";
+      }
+      ntpService.limitPackets(packetChoice);
+    }
     private void updateFragment(){
       uiHandler = new Handler();
+      updatePrefrences();
       buildDropdown();
       scheduleUIInvalidation();
       scheduleUpdatePacketCounter();
@@ -366,21 +392,13 @@ public class ServerFragment extends Fragment {
     private void restartService(){
       NtpService ntpService = NtpService.getNtpService();
       if (ntpService == null) {
-          boolean hasReliableConnection = new NetworkInterfaceHelper().hasConnectivityOnAnyOf(Arrays.asList("eth0", "wlan0","usb0"));
-          try {
-              IntentFilter serviceFilter= new IntentFilter();
-              serviceFilter.addAction(NtpService.SERVICE_ACTION);
-              serviceFilter.addAction(NtpService.RESTART_ACTION);
-              getContext().startService(ntp_intent);
-              getContext().registerReceiver(broadcastReceiver, serviceFilter);
-              Log.i("NTP", "RESTART SERVICE");
-              graphHasBeenInit = true;
-          } catch (IllegalArgumentException e) {
-              // Check wether we are in debug mode
-              Log.i("NTP", "FAILED TO RESTART SERVICE");
-          }
+          startNTPService();
       }else {
-          getContext().unregisterReceiver(broadcastReceiver);
+          try {
+            getContext().unregisterReceiver(broadcastReceiver);
+          }catch(IllegalArgumentException e) {
+            e.printStackTrace();
+          }
           getContext().stopService(ntp_intent);
         }
     };
@@ -392,6 +410,7 @@ public class ServerFragment extends Fragment {
           final String action = intent.getAction();
           if("START_NTP_SERVICE".equals(action)){
             Log.i("NTP", "NTP start received.");
+            updatePrefrences();
             updateFragment();
           }else if ("RESTART_NTP_SERVICE".equals(action)){
             Log.i("NTP", "NTP restart received.");

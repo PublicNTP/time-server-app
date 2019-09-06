@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.os.Build.VERSION;
 
+
 import app.timeserver.R;
 import app.timeserver.model.SatelliteModel;
 import app.timeserver.repository.location.LocationStorage;
@@ -50,8 +51,8 @@ public class SatelliteDetailFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
 
         titleView.setText(String.format("%s %d", satelliteModel.constellationName(), satelliteModel.svn));
-        altitudeAngleView.setText(String.format("%.0f° above horizon", satelliteModel.elevationDegrees));
-        headingView.setText(String.format("%.0f° from North", satelliteModel.azimuthDegrees));
+        altitudeAngleView.setText(String.format("%.0f° %s", satelliteModel.elevationDegrees, getString(R.string.horizon)));
+        headingView.setText(String.format("%.0f° %s", satelliteModel.azimuthDegrees, getString(R.string.north)));
         signalToNoiseView.setText(String.format("%.1f dB-Hz", satelliteModel.snrInDb));
         if(android.os.Build.VERSION.SDK_INT >= 27){
           String carrierLabel = satelliteModel.getCarrierFrequencyLabel();

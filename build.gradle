@@ -37,8 +37,8 @@ ext {
     // and location APIs introduced in that version.
 
     minSdkVersion = 24
-    targetSdkVersion = 26
-    compileSdkVersion = 27
+    targetSdkVersion = 28
+    compileSdkVersion = 28
 
     supportLibraryVersion = '27.0.2'
 }

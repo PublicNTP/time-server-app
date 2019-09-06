@@ -33,13 +33,6 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/option_spacing" />
-
-
-            <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
-
               <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +40,12 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/option_text_size" />
 
-              <Switch
+              <Spinner
+                  android:id="@+id/time_zone_spinner"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content" />
+
+              <!-- <Switch
                 android:id="@+id/time_zone_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,9 +54,8 @@
                 android:checked="false"
                 android:textSize="25sp"
                 android:gravity="right"
-                />
-            </RelativeLayout>
-
+                /> -->
+            
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/option_spacing" />
@@ -130,7 +127,7 @@
         android:layout_weight="1"
         android:background="@drawable/button_with_rounded_corners"
         android:fontFamily="@font/roboto_medium"
-        android:text="Done"
+        android:text="@string/complete"
         android:textColor="@color/white"
         android:textSize="20sp" />
 </LinearLayout>
