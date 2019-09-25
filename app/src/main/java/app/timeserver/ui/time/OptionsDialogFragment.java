@@ -54,7 +54,7 @@ public class OptionsDialogFragment extends DialogFragment {
 
     public interface OnOptionPicked {
       void onLocationPicked(String units);
-      void onMeasurementPicked(String measurement);
+      void onMeasurementPicked(Integer measurement);
       void onTimezonePicked(String timezone);
     }
 
@@ -64,15 +64,8 @@ public class OptionsDialogFragment extends DialogFragment {
         this.onOptionPicked = onOptionPicked;
     }
 
-    public void setSpinnerSelection(String selected, String[] choices, Spinner spinner) {
-        int i = 0;
-        for(String s : choices) {
-            if(s.equals(selected)) {
-                spinner.setSelection(i);
-                break;
-            }
-            i++;
-        }
+    public void setSpinnerSelection(Integer selected, String[] choices, Spinner spinner) {
+      spinner.setSelection(selected);
     }
 
     @Override
@@ -97,9 +90,9 @@ public class OptionsDialogFragment extends DialogFragment {
         timeZoneSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.timezone_choices, R.layout.spinner_item));
 
 
-        setSpinnerSelection(new MeasurementStore().get(activity), measurementChoices, measurementSpinner);
-        setSpinnerSelection(new LocationCoordinateTypeStore().get(activity), locationChoices, locationSpinner);
-        setSpinnerSelection(timezone, timeZoneChoices, timeZoneSpinner);
+        setSpinnerSelection(0, measurementChoices, measurementSpinner);
+        setSpinnerSelection(0, locationChoices, locationSpinner);
+        setSpinnerSelection(0, timeZoneChoices, timeZoneSpinner);
 
         //switchButton.setChecked(local);
 
@@ -117,8 +110,8 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnItemSelected(R.id.options_measurement)
     public void onMeasurementClicked(AdapterView<?> parent, View view, int position, long id) {
         String measurement = measurementChoices[position];
-        new MeasurementStore().set(activity, measurement);
-        onOptionPicked.onMeasurementPicked(measurement);
+        new MeasurementStore().set(activity, position);
+        onOptionPicked.onMeasurementPicked(position);
     }
 
     @OnItemSelected(R.id.time_zone_spinner)

@@ -16,12 +16,12 @@ public class TimezoneStore extends StringPreferenceStore {
     }
 
     @Override
-    public String getDefault() {
-        return "UTC";
+    public Integer getDefault() {
+        return 0;
     }
 
     @Override
-    public void set(Context context, String value) {
+    public void set(Context context, Integer value) {
         super.set(context, value);
         DateFormatter.setTimezonePreference(value);
     }
@@ -30,12 +30,12 @@ public class TimezoneStore extends StringPreferenceStore {
         return getTimeZoneShortName(context, new TimezoneStore().get(context));
     }
 
-    public String getTimeZoneShortName(Context context, String zone) {
-        if (zone.equals("UTC")) {
+    public String getTimeZoneShortName(Context context, Integer zone) {
+        if (zone.equals(0)) {
             return zone;
-        }else if (zone.equals("Decimal Time")) {
+        }else if (zone.equals(1)) {
             return "decMs";
-        }else if (zone.equals("Swatch Internet Time")) {
+        }else if (zone.equals(2)) {
             return ".beats";
         } else {
             Locale locale = LocaleHelper.getUserLocale(context);

@@ -13,15 +13,15 @@ public abstract class StringPreferenceStore {
         throw new RuntimeException("Unimplemented");
     }
 
-    public String getDefault() {
+    public Integer getDefault() {
         throw new RuntimeException("Unimplemented");
     }
 
-    public void set(Context context, String value) {
+    public void set(Context context, Integer value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(getKey(), value).commit();
     }
 
-    public String get(Context context) {
+    public Integer get(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(getKey(), getDefault());
     }

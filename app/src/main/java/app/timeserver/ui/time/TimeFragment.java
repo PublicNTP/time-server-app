@@ -75,8 +75,8 @@ public class TimeFragment extends BaseFragment {
                 timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
             }
 
-            public void onMeasurementPicked(String measurement) {
-                TimeTextAccuracyUnits.setText(measurement.equals("Metric/SI") ? "m" : "ft");
+            public void onMeasurementPicked(Integer measurement) {
+                TimeTextAccuracyUnits.setText(measurement.equals(0) ? "m" : "ft");
                 LocationStorageConsumer.measurement = measurement;
             }
 

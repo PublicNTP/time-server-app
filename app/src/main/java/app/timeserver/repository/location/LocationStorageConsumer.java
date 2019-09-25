@@ -11,7 +11,7 @@ import app.timeserver.helper.preferences.MeasurementStore;
  */
 
 public class LocationStorageConsumer {
-    public static String measurement = "Metric/SI";
+    public static Integer measurement = 0;
 
     private CoordinateConverter coordinateConverter;
 
@@ -48,7 +48,7 @@ public class LocationStorageConsumer {
     public String getStringError() {
         if(LocationStorage.isPopulated()) {
             float error = LocationStorage.getAccuracy();
-            if(measurement.equals("Imperial/US")){
+            if(measurement.equals(1)){
               double feet = error * 3.28084;
               return String.format("±%.2f", feet);
             }else{
