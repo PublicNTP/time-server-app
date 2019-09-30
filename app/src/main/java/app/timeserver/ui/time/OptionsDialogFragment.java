@@ -53,9 +53,9 @@ public class OptionsDialogFragment extends DialogFragment {
     private String[] timeZoneChoices;
 
     public interface OnOptionPicked {
-      void onLocationPicked(String units);
+      void onLocationPicked(Integer units);
       void onMeasurementPicked(Integer measurement);
-      void onTimezonePicked(String timezone);
+      void onTimezonePicked(Integer timezone);
     }
 
     private OnOptionPicked onOptionPicked;
@@ -72,9 +72,6 @@ public class OptionsDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         activity = getActivity();
 
-        String timezone = new TimezoneStore().get(activity);
-        boolean local = timezone.equals("Local");
-
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();
 
@@ -90,11 +87,9 @@ public class OptionsDialogFragment extends DialogFragment {
         timeZoneSpinner.setAdapter(ArrayAdapter.createFromResource(activity, R.array.timezone_choices, R.layout.spinner_item));
 
 
-        setSpinnerSelection(0, measurementChoices, measurementSpinner);
-        setSpinnerSelection(0, locationChoices, locationSpinner);
-        setSpinnerSelection(0, timeZoneChoices, timeZoneSpinner);
-
-        //switchButton.setChecked(local);
+        setSpinnerSelection(new MeasurementStore().get(activity, measurementChoices), measurementChoices, measurementSpinner);
+        setSpinnerSelection(new LocationCoordinateTypeStore().get(activity, locationChoices), locationChoices, locationSpinner);
+        setSpinnerSelection(new TimezoneStore().get(activity, timeZoneChoices), timeZoneChoices, timeZoneSpinner);
 
         builder.setView(rootView);
         return builder.create();
@@ -103,8 +98,8 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnItemSelected(R.id.options_location_units)
     public void onLocationUnitsClicked(AdapterView<?> parent, View view, int position, long id) {
         String units = locationChoices[position];
-        new LocationCoordinateTypeStore().set(activity, units);
-        onOptionPicked.onLocationPicked(units);
+        new LocationCoordinateTypeStore().set(activity, position);
+        onOptionPicked.onLocationPicked(position);
     }
 
     @OnItemSelected(R.id.options_measurement)
@@ -117,21 +112,9 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnItemSelected(R.id.time_zone_spinner)
     public void onTimeZoneSelected(AdapterView<?> parent, View view, int position, long id) {
         String timezone = timeZoneChoices[position];
-        new TimezoneStore().set(activity, timezone);
-        onOptionPicked.onTimezonePicked(timezone);
+        new TimezoneStore().set(activity, position);
+        onOptionPicked.onTimezonePicked(position);
     }
-
-    /*
-    @OnCheckedChanged(R.id.time_zone_switch)
-    public void onTimezoneClicked() {
-        String timezone = switchButton.isChecked() ? "Local" : "UTC";
-        String oldzone = new TimezoneStore().get(activity);
-        if(oldzone != timezone){
-          new TimezoneStore().set(activity, timezone);
-          onOptionPicked.onTimezonePicked(timezone);
-        }
-    }
-    */
 
     @OnClick(R.id.options_share_location)
     public void shareLocation() {
@@ -153,7 +136,7 @@ public class OptionsDialogFragment extends DialogFragment {
     @OnClick(R.id.options_copy_to_clipboard)
     public void copyLocation() {
         if(LocationStorage.isPopulated()) {
-            CoordinateConverter converter = new LocationCoordinateTypeStore().getConverter(getContext());
+            CoordinateConverter converter = new LocationCoordinateTypeStore().getConverter(getContext(), locationChoices);
             String location = new LocationStorageConsumer(converter).getHumanReadableLocation();
             ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
             clipboard.setPrimaryClip(ClipData.newPlainText("Location", location));

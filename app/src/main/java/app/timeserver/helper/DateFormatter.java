@@ -28,10 +28,10 @@ public class DateFormatter {
         hhmmssmmUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    private static String timezonePreference = new TimezoneStore().getDefault();
+    private static Integer timezonePreference = new TimezoneStore().getDefault();
 
-    public static void setTimezonePreference(String timezonePreference) {
-        Log.i("timezonePreference", timezonePreference);
+    public static void setTimezonePreference(Integer timezonePreference) {
+
         DateFormatter.timezonePreference = timezonePreference;
     }
 
@@ -68,12 +68,12 @@ public class DateFormatter {
     public static String preferredTimeString(Context context, Date date) {
         if (date == null) return "";
         Locale locale = LocaleHelper.getUserLocale(context);
-        Log.i("preferredTimeString", timezonePreference);
-        if(timezonePreference.equals("UTC")) {
+
+        if(timezonePreference.equals(0)) {
             return utcTimeString(locale, date);
-        }else if(timezonePreference.equals("Decimal Time")) {
+        }else if(timezonePreference.equals(2)) {
             return getDecimalTime(date);
-        }else if(timezonePreference.equals("Swatch Internet Time")) {
+        }else if(timezonePreference.equals(3)) {
           return getSwatchTime(date);
         }else {
             return timeString(locale, date);

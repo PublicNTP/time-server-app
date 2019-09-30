@@ -14,7 +14,7 @@ public class LocationCoordinateTypeStore extends StringPreferenceStore {
         return 0;
     }
 
-    public CoordinateConverter getConverter(Context context) {
-        return CoordinateConverter.byName(this.get(context));
+    public CoordinateConverter getConverter(Context context, String[] choices) {
+        return CoordinateConverter.byName(this.get(context, choices));
     }
 }

@@ -41,7 +41,7 @@ public class AboutFragment extends BaseFragment {
 
         ButterKnife.bind(this, view);
 
-        versionView.setText(String.format(getString(R.string.about_text_version), BuildConfig.VERSION_NAME));
+        versionView.setText(String.format("%s %s", getString(R.string.about_text_version), BuildConfig.VERSION_NAME));
         new android.os.Handler().postDelayed(
             new Runnable() {
                 public void run() {

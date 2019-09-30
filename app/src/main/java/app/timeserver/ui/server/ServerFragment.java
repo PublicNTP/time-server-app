@@ -84,6 +84,7 @@ public class ServerFragment extends Fragment {
     private String stratumChoice;
     private String networkChoice;
     private String packetChoice;
+    private String[] timeZoneChoices;
     private Boolean autoStart;
     private Boolean autoInit;
 
@@ -106,6 +107,7 @@ public class ServerFragment extends Fragment {
         networkChoice = getPrefs(mContext).getString("networkChoice", "wlan0").toString();
         packetChoice = getPrefs(mContext).getString("packetChoice", "Unlimited").toString();
         autoStart = getPrefs(mContext).getBoolean("autoStart", false);
+        timeZoneChoices = getResources().getStringArray(R.array.timezone_choices);
         autoInit = false;
         super.onCreate(savedInstanceState);
 
@@ -144,7 +146,7 @@ public class ServerFragment extends Fragment {
             public void onPacketPicked(String option) {
               String value = option;
               if(ntpService != null){
-                if(option.equals("Unlimited")){
+                if(!option.matches("\\d")){
                   value = "100000";
                 }
                 ntpService.limitPackets(value);
@@ -187,7 +189,7 @@ public class ServerFragment extends Fragment {
         Axis xAxis = new Axis();
         xAxis.setValues(axisValues);
         xAxis.setHasLines(true);
-        xAxis.setName("Minutes Ago");
+        xAxis.setName(getString(R.string.minutes_passed));
         xAxis.setTextColor(black);
 
         Axis yAxis = new Axis();
@@ -210,7 +212,7 @@ public class ServerFragment extends Fragment {
         scheduleGraphRefresh();
         buildDropdown();
 
-        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
+        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timeZoneChoices));
         switchButton.setChecked(NtpService.getNtpService() != null);
         super.onResume();
     };
@@ -290,14 +292,14 @@ public class ServerFragment extends Fragment {
           serviceFilter.addAction(NtpService.RESTART_ACTION);
           getContext().startService(ntp_intent);
           getContext().registerReceiver(broadcastReceiver, serviceFilter);
-          Log.i("NTP", "startNTPService SERVICE");
+
           graphHasBeenInit = true;
       } catch (IllegalArgumentException e) {
           // Check wether we are in debug mode
           Log.i("NTP", "FAILED TO startNTPService");
       }
       if (!Shell.SU.available()) {
-          Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction("Help", v -> {
+          Winebar.make(switchButton, R.string.no_root_warning, Snackbar.LENGTH_LONG).setAction(getString(R.string.help), v -> {
               launchWebUrl("https://www.xda-developers.com/root/");
           }).setActionTextColor(white).show();
       }
@@ -366,7 +368,7 @@ public class ServerFragment extends Fragment {
       String ipAddress = NtpService.ipAddress;
 
       if (chosenInterface != "") {
-          serverPort.setText(String.format("Running on %s, %s:%s", chosenInterface, ipAddress, port));
+          serverPort.setText(String.format("%s %s, %s:%s", getString(R.string.server_port), chosenInterface, ipAddress, port));
       }
     };
 
@@ -374,7 +376,7 @@ public class ServerFragment extends Fragment {
       NtpService ntpService = NtpService.getNtpService();
       ntpService.setStratumNumber(stratumChoice);
       ntpService.changeNetwork(networkChoice);
-      if(packetChoice.equals("Unlimited")){
+      if(!packetChoice.matches("\\d")){
         packetChoice = "100000";
       }
       ntpService.limitPackets(packetChoice);
@@ -386,7 +388,7 @@ public class ServerFragment extends Fragment {
       scheduleUIInvalidation();
       scheduleUpdatePacketCounter();
       scheduleGraphRefresh();
-      timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
+      timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timeZoneChoices));
     };
 
     private void restartService(){
@@ -409,11 +411,9 @@ public class ServerFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
           final String action = intent.getAction();
           if("START_NTP_SERVICE".equals(action)){
-            Log.i("NTP", "NTP start received.");
             updatePrefrences();
             updateFragment();
           }else if ("RESTART_NTP_SERVICE".equals(action)){
-            Log.i("NTP", "NTP restart received.");
             restartService();
           }
 

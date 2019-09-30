@@ -42,6 +42,8 @@ public class TimeFragment extends BaseFragment {
     @BindView(R.id.time_logo_text) TextView timeLogoText;
 
     private GifDrawable spinningDrawable;
+    private String[] timeZoneChoices;
+    private String[] locationChoices;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,10 +54,13 @@ public class TimeFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_time, container, false);
         viewBinding.setTimestorage(new TimeStorageConsumer());
-        viewBinding.setLocationstorage(new LocationStorageConsumer(new LocationCoordinateTypeStore().getConverter(getContext())));
+        locationChoices = getResources().getStringArray(R.array.location_choices);
+        viewBinding.setLocationstorage(new LocationStorageConsumer(new LocationCoordinateTypeStore().getConverter(getContext(), locationChoices)));
         ButterKnife.bind(this, viewBinding.getRoot());
 
-        DateFormatter.setTimezonePreference(new TimezoneStore().get(getContext()));
+
+        timeZoneChoices = getResources().getStringArray(R.array.timezone_choices);
+        DateFormatter.setTimezonePreference(new TimezoneStore().get(getContext(), timeZoneChoices));
         initializeSpinningLogo();
 
         return viewBinding.getRoot();
@@ -71,8 +76,8 @@ public class TimeFragment extends BaseFragment {
         OptionsDialogFragment optionsDialogFragment = new OptionsDialogFragment();
         optionsDialogFragment.setOnOptionPicked(new OptionsDialogFragment.OnOptionPicked() {
             @Override
-            public void onTimezonePicked(String timezone) {
-                timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timezone));
+            public void onTimezonePicked(Integer timezone) {
+                timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timeZoneChoices));
             }
 
             public void onMeasurementPicked(Integer measurement) {
@@ -81,7 +86,7 @@ public class TimeFragment extends BaseFragment {
             }
 
             @Override
-            public void onLocationPicked(String units) {
+            public void onLocationPicked(Integer units) {
                 viewBinding.setLocationstorage(new LocationStorageConsumer(CoordinateConverter.byName(units)));
             }
         });
@@ -113,7 +118,7 @@ public class TimeFragment extends BaseFragment {
             }
         }, invalidationFrequency, invalidationFrequency);
 
-        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext()));
+        timezoneDisplay.setText(new TimezoneStore().getTimeZoneShortName(getContext(), timeZoneChoices));
 
         super.onResume();
     }

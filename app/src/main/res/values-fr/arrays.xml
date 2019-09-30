@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="location_choices">
+        <item>WGS84 (Lat/Long)</item>
+        <item>UTM</item>
+        <item>MGRS</item>
+        <item>OLC (Plus Codes)</item>
+    </string-array>
+
+    <string-array name="timezone_choices">
+        <item>UTC</item>
+        <item>Fuseau horaire local</item>
+        <item>Fuseau horaire Decimal</item>
+        <item>Fuseau horaire Swatch Internet</item>
+    </string-array>
+
+    <string-array name="measurement_choices">
+        <item>Metric/SI</item>
+        <item>Imperial/US</item>
+    </string-array>
+
+    <string-array name="tab_names">
+        <item>Temps</item>
+        <item>Satellites</item>
+        <item>Serveur</item>
+        <item>Détails</item>
+    </string-array>
+
+    <string-array name="stratum_choices">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="network_choices">
+        <item>eth0</item>
+        <item>wan0</item>
+        <item>usb0</item>
+    </string-array>
+
+    <string-array name="interface_choices">
+        <item>123</item>
+        <item>1234</item>
+    </string-array>
+
+    <string-array name="packet_choices">
+        <item>Illimitée</item>
+        <item>9000</item>
+        <item>4800</item>
+        <item>2400</item>
+        <item>1200</item>
+        <item>600</item>
+    </string-array>
+
+</resources>

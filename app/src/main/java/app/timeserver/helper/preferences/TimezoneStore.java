@@ -26,16 +26,16 @@ public class TimezoneStore extends StringPreferenceStore {
         DateFormatter.setTimezonePreference(value);
     }
 
-    public String getTimeZoneShortName(Context context) {
-        return getTimeZoneShortName(context, new TimezoneStore().get(context));
+    public String getTimeZoneShortName(Context context, String[] choices) {
+        return getTimeZoneShortName(context, new TimezoneStore().get(context, choices));
     }
 
     public String getTimeZoneShortName(Context context, Integer zone) {
         if (zone.equals(0)) {
-            return zone;
-        }else if (zone.equals(1)) {
-            return "decMs";
+            return "UTC";
         }else if (zone.equals(2)) {
+            return "decMs";
+        }else if (zone.equals(3)) {
             return ".beats";
         } else {
             Locale locale = LocaleHelper.getUserLocale(context);

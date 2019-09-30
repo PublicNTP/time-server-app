@@ -1,15 +1,15 @@
 package app.timeserver.repository.location.converters;
 
 public class CoordinateConverter {
-    public static CoordinateConverter byName(String name) {
+    public static CoordinateConverter byName(Integer name) {
         switch(name) {
-            case "WGS84 (Lat/Long)":
+            case 0:
                 return new LatLongConverter();
-            case "UTM":
+            case 1:
                 return new UTMConverter();
-            case "MGRS":
+            case 2:
                 return new MGRSConverter();
-            case "OLC (Plus Codes)":
+            case 3:
                 return new OLCConverter();
             default:
                 throw new RuntimeException("Invalid Coordinate System");
