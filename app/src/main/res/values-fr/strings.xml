@@ -60,7 +60,7 @@
     <string name="compass_disabled">Boussole désactivée</string>
     <string name="help">Aider</string>
     <string name="app_name">Serveur de temps</string>
-    <string name="carrier_frequency">Fréq. Télécom</string>
+    <string name="carrier_frequency">Fréq. Porteuse</string>
     <string name="minutes_passed">Minutes Après</string>
-    <string name="signal_to_noise_ratio">Télécom-du-Bruit Ratio:</string>
+    <string name="signal_to_noise_ratio">Rapport porteuse sur bruit:</string>
 </resources>
