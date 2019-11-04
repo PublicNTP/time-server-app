@@ -62,4 +62,5 @@
     <string name="compass_disabled">Brújula deshabilitada</string>
     <string name="help">ayuda</string>
     <string name="signal_to_noise_ratio">Relación Portadora/ruido</string>
+    <string name="minutes_passed">Minutes Ago</string>
 </resources>

@@ -61,4 +61,6 @@
     <string name="compass_enabled">Kompass aktiviert</string>
     <string name="compass_disabled">Kompass deaktiviert</string>
     <string name="help">Hilfe</string>
+    <string name="carrier_frequency">Carrier Freq:</string>
+    <string name="minutes_passed">Minutes Ago</string>
 </resources>

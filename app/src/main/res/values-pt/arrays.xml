@@ -20,7 +20,7 @@
     </string-array>
 
     <string-array name="tab_names">
-        <item>Tiempo</item>
+        <item>Tempo</item>
         <item>Satélites</item>
         <item>Servidor</item>
         <item>Informação</item>
