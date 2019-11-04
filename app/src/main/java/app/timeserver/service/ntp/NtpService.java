@@ -132,6 +132,7 @@ public class NtpService extends Service {
                 .setContentTitle(getString(R.string.server_running))
                 .setPriority(PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
+                .setShowBadge(false)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
 
         port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
