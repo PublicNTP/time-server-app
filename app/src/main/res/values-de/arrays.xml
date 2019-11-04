@@ -23,7 +23,7 @@
         <item>Tiempo</item>
         <item>Satélites</item>
         <item>Servidor</item>
-        <item>Informação</item>
+        <item>Info</item>
     </string-array>
 
     <string-array name="stratum_choices">
