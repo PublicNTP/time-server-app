@@ -97,6 +97,8 @@ public class NtpService extends Service {
             NotificationChannel chan1 = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
             chan1.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            chan1.canShowBadge();
+            chan1.setShowBadge(false);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(chan1);
         }
@@ -132,7 +134,6 @@ public class NtpService extends Service {
                 .setContentTitle(getString(R.string.server_running))
                 .setPriority(PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
-                .setShowBadge(false)
                 .addAction(R.drawable.icon_publicntp_logo, getString(R.string.kill_ntp_service), pendingKillServiceIntent);
 
         port = (selectedPort != null && !selectedPort.isEmpty() && !selectedPort.equals("null"))
