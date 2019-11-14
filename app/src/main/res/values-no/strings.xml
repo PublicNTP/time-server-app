@@ -11,12 +11,12 @@
     <string name="contact_email_subject">PublicNTP-forespørsel</string>
     <string name="donate_text">Finn ut mer om PublicNTP.</string>
     <string name="donate_title">BESØK</string>
-    <string name="about_text_credit_title">kreditter</string>
+    <string name="about_text_credit_title">Kreditter</string>
     <string name="about_individual_title">Enkeltpersoner</string>
-    <string name="about_organization_title">organisasjoner</string>
-    <string name="about_projects_title">prosjekter</string>
-    <string name="title_action_info">info</string>
-    <string name="title_action_satl">satelitter</string>
+    <string name="about_organization_title">Organisasjoner</string>
+    <string name="about_projects_title">Prosjekter</string>
+    <string name="title_action_info">Info</string>
+    <string name="title_action_satl">Satelitter</string>
     <string name="title_action_serv">Server</string>
     <string name="title_action_time">Tid</string>
     <string name="chooser_app_email">Send e-post med ...</string>
