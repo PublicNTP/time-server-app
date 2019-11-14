@@ -47,7 +47,7 @@
     <string name="unreliable_connection_warning">Sem conexão confiável - conecte à Ethernet ou Wi-Fi</string>
     <string name="running">Ligado a</string>
     <string name="carrier_frequency">Carrier Freq:</string>
-    <string name="signal_to_noise_ratio">Carrier Freq:</string>
+    <string name="signal_to_noise_ratio">Carrier-to-Noise Ratio:</string>
     <string name="stratum_title">Nível do estrato</string>
     <string name="network_title">Network Interface</string>
     <string name="port_title">Porta de Interface</string>
