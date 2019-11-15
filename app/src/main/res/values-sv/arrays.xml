@@ -20,10 +20,10 @@
     </string-array>
 
     <string-array name="tab_names">
-        <item>Time</item>
+        <item>Tid</item>
         <item>Satelliter</item>
         <item>Servern</item>
-        <item>Tid</item>
+        <item>Info</item>
     </string-array>
 
     <string-array name="stratum_choices">
