@@ -32,12 +32,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    lintOptions {
-        abortOnError false
-    }
 
     dataBinding {
         enabled = true
+    }
+    namespace 'app.timeserver'
+    lint {
+        abortOnError false
     }
 }
 
