@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:8.1.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -37,8 +37,8 @@ ext {
     // and location APIs introduced in that version.
 
     minSdkVersion = 24
-    targetSdkVersion = 28
-    compileSdkVersion = 28
+    targetSdkVersion = 33
+    compileSdkVersion = 33
 
     supportLibraryVersion = '27.0.2'
 }

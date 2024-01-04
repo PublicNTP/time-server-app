@@ -104,10 +104,10 @@ public class NtpService extends Service {
         }
 
         Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent killServiceIntent = KillServiceReceiver.getAddressedIntent();
-        PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, 0);
+        PendingIntent pendingKillServiceIntent = PendingIntent.getBroadcast(this, 0, killServiceIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NetworkInterfaceHelper networkInterfaceHelper = new NetworkInterfaceHelper();
 
